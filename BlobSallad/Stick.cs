@@ -14,54 +14,54 @@ namespace BlobSallad
 
         public Stick(PointMass pointMassA, PointMass pointMassB)
         {
-            this._pointMassA = pointMassA;
-            this._pointMassB = pointMassB;
-            this._length = PointMassDist(pointMassA, pointMassB);
-            this._lengthSquared = this._length * this._length;
+            _pointMassA = pointMassA;
+            _pointMassB = pointMassB;
+            _length = PointMassDist(pointMassA, pointMassB);
+            _lengthSquared = _length * _length;
         }
 
         public double GetLength()
         {
-            return this._length;
+            return _length;
         }
 
         public double GetLengthSquared()
         {
-            return this._lengthSquared;
+            return _lengthSquared;
         }
 
         public static double PointMassDist(PointMass pointMassA, PointMass pointMassB)
         {
-            double aXbX = pointMassA.GetXPos() - pointMassB.GetXPos();
-            double aYbY = pointMassA.GetYPos() - pointMassB.GetYPos();
+            var aXbX = pointMassA.GetXPos() - pointMassB.GetXPos();
+            var aYbY = pointMassA.GetYPos() - pointMassB.GetYPos();
             return Math.Sqrt(aXbX * aXbX + aYbY * aYbY);
         }
 
         public PointMass GetPointMassA()
         {
-            return this._pointMassA;
+            return _pointMassA;
         }
 
         public PointMass GetPointMassB()
         {
-            return this._pointMassB;
+            return _pointMassB;
         }
 
         public void Scale(double scaleFactor)
         {
-            this._length *= scaleFactor;
-            this._lengthSquared = this._length * this._length;
+            _length *= scaleFactor;
+            _lengthSquared = _length * _length;
         }
 
         public void Sc(Environment env)
         {
-            Vector pointMassAPos = this._pointMassA.GetPos();
-            Vector pointMassBPos = this._pointMassB.GetPos();
+            var pointMassAPos = _pointMassA.GetPos();
+            var pointMassBPos = _pointMassB.GetPos();
 
-            Vector delta = new Vector(pointMassBPos);
+            var delta = new Vector(pointMassBPos);
             delta.Sub(pointMassAPos);
-            double dotProd = delta.DotProd(delta);
-            double scaleFactor = this._lengthSquared / (dotProd + this._lengthSquared) - 0.5;
+            var dotProd = delta.DotProd(delta);
+            var scaleFactor = _lengthSquared / (dotProd + _lengthSquared) - 0.5;
             delta.Scale(scaleFactor);
             pointMassAPos.Sub(delta);
             pointMassBPos.Add(delta);
@@ -69,20 +69,20 @@ namespace BlobSallad
 
         public void SetForce(Vector force)
         {
-            this._pointMassA.SetForce(force);
-            this._pointMassB.SetForce(force);
+            _pointMassA.SetForce(force);
+            _pointMassB.SetForce(force);
         }
 
         public void AddForce(Vector force)
         {
-            this._pointMassA.AddForce(force);
-            this._pointMassB.AddForce(force);
+            _pointMassA.AddForce(force);
+            _pointMassB.AddForce(force);
         }
 
         public void Move(double dt)
         {
-            this._pointMassA.Move(dt);
-            this._pointMassB.Move(dt);
+            _pointMassA.Move(dt);
+            _pointMassB.Move(dt);
         }
 
         public void Draw(Canvas canvas, double scaleFactor)

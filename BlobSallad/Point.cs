@@ -7,18 +7,18 @@
 
         public Point(double x, double y)
         {
-            this._x = x;
-            this._y = y;
+            _x = x;
+            _y = y;
         }
 
         public double GetX()
         {
-            return this._x;
+            return _x;
         }
 
         public double GetY()
         {
-            return this._y;
+            return _y;
         }
     }
 }

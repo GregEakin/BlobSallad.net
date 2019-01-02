@@ -18,12 +18,12 @@ namespace BlobSalladTests
         [Test]
         public void CtorTest()
         {
-            Blob blob = new Blob(71.0, 67.0, 11.0, 5);
+            var blob = new Blob(71.0, 67.0, 11.0, 5);
             Assert.AreEqual(71.0, blob.GetXPos());
             Assert.AreEqual(67.0, blob.GetYPos());
             Assert.AreEqual(11.0, blob.GetRadius());
 
-            PointMass pointMas = blob.GetMiddlePointMass();
+            var pointMas = blob.GetMiddlePointMass();
             Assert.AreEqual(71.0, pointMas.GetXPos());
             Assert.AreEqual(67.0, pointMas.GetYPos());
             Assert.AreEqual(1.0, pointMas.GetMass());
@@ -69,8 +69,8 @@ namespace BlobSalladTests
             var joints = blob.GetJoints();
             foreach (var joint in joints)
             {
-                PointMass pointMassA = joint.GetPointMassA();
-                PointMass pointMassB = joint.GetPointMassB();
+                var pointMassA = joint.GetPointMassA();
+                var pointMassB = joint.GetPointMassB();
                 DrawDot(canvas, Brushes.Red, pointMassA.GetMass(), pointMassA.GetXPos(), pointMassA.GetYPos());
                 DrawLine(canvas, Brushes.Black, 
                         pointMassA.GetXPos(), pointMassA.GetYPos(),
@@ -87,8 +87,8 @@ namespace BlobSalladTests
             {
                 Width = 2.0 * radius,
                 Height = 2.0 * radius,
-                Fill = System.Windows.Media.Brushes.Black,
-                Stroke = System.Windows.Media.Brushes.Black,
+                Fill = Brushes.Black,
+                Stroke = Brushes.Black,
                 StrokeThickness = 1.0,
                 // RenderTransform = translateTransform,
             };
@@ -125,17 +125,17 @@ namespace BlobSalladTests
         [Test]
         public void CtorPointMassTest()
         {
-            Blob blob = new Blob(71.0, 67.0, 11.0, 5);
-            for (int i = 0; i < 5; i++)
+            var blob = new Blob(71.0, 67.0, 11.0, 5);
+            for (var i = 0; i < 5; i++)
             {
-                PointMass pointMas = blob.GetPointMass(i);
+                var pointMas = blob.GetPointMass(i);
 
-                double mass = i < 2 ? 4.0 : 1.0;
+                var mass = i < 2 ? 4.0 : 1.0;
                 Assert.AreEqual(mass, pointMas.GetMass());
 
-                double theta = (double) i * 2.0 * Math.PI / (double) 5;
-                double cx = Math.Cos(theta) * 11.0 + 71.0;
-                double cy = Math.Sin(theta) * 11.0 + 67.0;
+                var theta = (double) i * 2.0 * Math.PI / (double) 5;
+                var cx = Math.Cos(theta) * 11.0 + 71.0;
+                var cy = Math.Sin(theta) * 11.0 + 67.0;
                 Assert.AreEqual(cx, pointMas.GetXPos());
                 Assert.AreEqual(cy, pointMas.GetYPos());
             }
@@ -144,10 +144,10 @@ namespace BlobSalladTests
         [Test]
         public void AddBlob2Test()
         {
-            Blob blob1 = new Blob(17.0, 19.0, 11.0, 5);
-            Blob blob2 = new Blob(59.0, 61.0, 13.0, 5);
+            var blob1 = new Blob(17.0, 19.0, 11.0, 5);
+            var blob2 = new Blob(59.0, 61.0, 13.0, 5);
             blob1.AddBlob(blob2);
-            Joint joint = blob1.GetJoints()[10];
+            var joint = blob1.GetJoints()[10];
             Assert.AreEqual(22.800, joint.GetShortConst(), 0.01);
             Assert.AreEqual(0.0, joint.GetLongConst(), 0.01);
         }
@@ -157,8 +157,8 @@ namespace BlobSalladTests
         {
             var canvas = new Canvas { Width = 100, Height = 100 };
 
-            Blob blob1 = new Blob(17.0, 19.0, 11.0, 5);
-            Blob blob2 = new Blob(59.0, 61.0, 13.0, 5);
+            var blob1 = new Blob(17.0, 19.0, 11.0, 5);
+            var blob2 = new Blob(59.0, 61.0, 13.0, 5);
             blob1.AddBlob(blob2);
 
             var middlePointMass = blob1.GetMiddlePointMass();
@@ -169,8 +169,8 @@ namespace BlobSalladTests
             var joints = blob1.GetJoints();
             foreach (var joint in joints)
             {
-                PointMass pointMassA = joint.GetPointMassA();
-                PointMass pointMassB = joint.GetPointMassB();
+                var pointMassA = joint.GetPointMassA();
+                var pointMassB = joint.GetPointMassB();
                 DrawDot(canvas, Brushes.Red, 2.0, pointMassA.GetXPos(), pointMassA.GetYPos());
                 DrawLine(canvas, Brushes.Black, 
                         pointMassA.GetXPos(), pointMassA.GetYPos(),
@@ -201,7 +201,7 @@ namespace BlobSalladTests
         {
             var canvas = new Canvas { Width = 100, Height = 100 };
 
-            Blob blob = new Blob(41.0, 43.0, 23.0, 5);
+            var blob = new Blob(41.0, 43.0, 23.0, 5);
             blob.SetForce(new Vector(3.0, 3.0));
             blob.Move(2.0);
 
@@ -240,7 +240,7 @@ namespace BlobSalladTests
         {
             var canvas = new Canvas {Width = 100, Height = 100};
 
-            Blob blob = new Blob(41.0, 43.0, 23.0, 5);
+            var blob = new Blob(41.0, 43.0, 23.0, 5);
             blob.MoveTo(61.0, 59.0);
             blob.DrawSimpleBody(canvas, 1.0);
 

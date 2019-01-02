@@ -13,18 +13,18 @@
 
         public Joint(PointMass pointMassA, PointMass pointMassB, double shortConst, double longConst)
         {
-            this._pointMassA = pointMassA;
-            this._pointMassB = pointMassB;
-            this._pointMassAPos = pointMassA.GetPos();
-            this._pointMassBPos = pointMassB.GetPos();
+            _pointMassA = pointMassA;
+            _pointMassB = pointMassB;
+            _pointMassAPos = pointMassA.GetPos();
+            _pointMassBPos = pointMassB.GetPos();
 
-            Vector delta = new Vector(this._pointMassBPos);
-            delta.Sub(this._pointMassAPos);
-            double length = delta.Length();
-            this._shortConst = length * shortConst;
-            this._longConst = length * longConst;
-            this._scSquared = this._shortConst * this._shortConst;
-            this._lcSquared = this._longConst * this._longConst;
+            var delta = new Vector(_pointMassBPos);
+            delta.Sub(_pointMassAPos);
+            var length = delta.Length();
+            _shortConst = length * shortConst;
+            _longConst = length * longConst;
+            _scSquared = _shortConst * _shortConst;
+            _lcSquared = _longConst * _longConst;
         }
 
         public PointMass GetPointMassA()
@@ -49,38 +49,38 @@
 
         public void SetDist(double shortConst, double longConst)
         {
-            this._shortConst = shortConst;
-            this._longConst = longConst;
-            this._scSquared = this._shortConst * this._shortConst;
-            this._lcSquared = this._longConst * this._longConst;
+            _shortConst = shortConst;
+            _longConst = longConst;
+            _scSquared = _shortConst * _shortConst;
+            _lcSquared = _longConst * _longConst;
         }
 
         public void Scale(double scaleFactor)
         {
-            this._shortConst *= scaleFactor;
-            this._longConst *= scaleFactor;
-            this._scSquared = this._shortConst * this._shortConst;
-            this._lcSquared = this._longConst * this._longConst;
+            _shortConst *= scaleFactor;
+            _longConst *= scaleFactor;
+            _scSquared = _shortConst * _shortConst;
+            _lcSquared = _longConst * _longConst;
         }
 
         public void Sc()
         {
-            Vector delta = new Vector(this._pointMassBPos);
-            delta.Sub(this._pointMassAPos);
-            double dp = delta.DotProd(delta);
-            if (this._shortConst != 0.0 && dp < this._scSquared)
+            var delta = new Vector(_pointMassBPos);
+            delta.Sub(_pointMassAPos);
+            var dp = delta.DotProd(delta);
+            if (_shortConst != 0.0 && dp < _scSquared)
             {
-                double scaleFactor = this._scSquared / (dp + this._scSquared) - 0.5;
+                var scaleFactor = _scSquared / (dp + _scSquared) - 0.5;
                 delta.Scale(scaleFactor);
-                this._pointMassAPos.Sub(delta);
-                this._pointMassBPos.Add(delta);
+                _pointMassAPos.Sub(delta);
+                _pointMassBPos.Add(delta);
             }
-            else if (this._longConst != 0.0 && dp > this._lcSquared)
+            else if (_longConst != 0.0 && dp > _lcSquared)
             {
-                double scaleFactor = this._lcSquared / (dp + this._lcSquared) - 0.5;
+                var scaleFactor = _lcSquared / (dp + _lcSquared) - 0.5;
                 delta.Scale(scaleFactor);
-                this._pointMassAPos.Sub(delta);
-                this._pointMassBPos.Add(delta);
+                _pointMassAPos.Sub(delta);
+                _pointMassBPos.Add(delta);
             }
         }
     }

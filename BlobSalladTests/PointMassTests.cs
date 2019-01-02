@@ -16,15 +16,15 @@ namespace BlobSalladTests
         [Test]
         public void CtorTest()
         {
-            PointMass pointMass = new PointMass(31.0, 23.0, 11.0);
+            var pointMass = new PointMass(31.0, 23.0, 11.0);
             Assert.AreEqual(11.0, pointMass.GetMass());
         }
 
         [Test]
         public void MoveTest()
         {
-            PointMass pointMass = new PointMass(31.0, 23.0, 11.0);
-            Vector force = new Vector(7, 13);
+            var pointMass = new PointMass(31.0, 23.0, 11.0);
+            var force = new Vector(7, 13);
             pointMass.SetForce(force);
 
             pointMass.Move(3.0);

@@ -48,9 +48,9 @@ namespace BlobSallad
             if (numPointMasses < 2)
                 throw new ArgumentException("Not enough point masses.");
 
-            this._x = x;
-            this._y = y;
-            this._radius = radius;
+            _x = x;
+            _y = y;
+            _radius = radius;
 
             for (var i = 0; i < numPointMasses; ++i)
             {
@@ -59,31 +59,31 @@ namespace BlobSallad
                 var cy = Math.Sin(theta) * radius + y;
                 var mass = i < 2 ? 4.0 : 1.0;
                 var pointMass = new PointMass(cx, cy, mass);
-                this._pointMasses.Add(pointMass);
+                _pointMasses.Add(pointMass);
             }
 
-            this._middlePointMass = new PointMass(x, y, 1.0);
+            _middlePointMass = new PointMass(x, y, 1.0);
 
             for (var i = 0; i < numPointMasses; ++i)
             {
-                var pointMassA = this._pointMasses[i];
+                var pointMassA = _pointMasses[i];
                 var index = (i + 1) % numPointMasses;
-                var pointMassB = this._pointMasses[index];
+                var pointMassB = _pointMasses[index];
                 var stick = new Stick(pointMassA, pointMassB);
-                this._sticks.Add(stick);
+                _sticks.Add(stick);
             }
 
             var low = 0.95;
             var high = 1.05;
             for (var i = 0; i < numPointMasses; ++i)
             {
-                var pointMassA = this._pointMasses[i];
+                var pointMassA = _pointMasses[i];
                 var index = (i + numPointMasses / 2 + 1) % numPointMasses;
-                var pointMassB = this._pointMasses[index];
+                var pointMassB = _pointMasses[index];
                 var joint1 = new Joint(pointMassA, pointMassB, low, high);
-                this._joints.Add(joint1);
-                var joint2 = new Joint(pointMassA, this._middlePointMass, high * 0.9, low * 1.1);
-                this._joints.Add(joint2);
+                _joints.Add(joint1);
+                var joint2 = new Joint(pointMassA, _middlePointMass, high * 0.9, low * 1.1);
+                _joints.Add(joint2);
             }
         }
 
@@ -104,30 +104,30 @@ namespace BlobSallad
 
         public PointMass GetMiddlePointMass()
         {
-            return this._middlePointMass;
+            return _middlePointMass;
         }
 
         public double GetRadius()
         {
-            return this._radius;
+            return _radius;
         }
 
         public void AddBlob(Blob blob)
         {
-            var dist = this._radius + blob.GetRadius();
-            var joint = new Joint(this._middlePointMass, blob.GetMiddlePointMass(), 0.0, 0.0);
+            var dist = _radius + blob.GetRadius();
+            var joint = new Joint(_middlePointMass, blob.GetMiddlePointMass(), 0.0, 0.0);
             joint.SetDist(dist * 0.95, 0.0);
-            this._joints.Add(joint);
+            _joints.Add(joint);
         }
 
         public double GetXPos()
         {
-            return this._middlePointMass.GetXPos();
+            return _middlePointMass.GetXPos();
         }
 
         public double GetYPos()
         {
-            return this._middlePointMass.GetYPos();
+            return _middlePointMass.GetYPos();
         }
 
         public void Scale(double scaleFactor)
@@ -138,7 +138,7 @@ namespace BlobSallad
             foreach (var stick in _sticks)
                 stick.Scale(scaleFactor);
 
-            this._radius *= scaleFactor;
+            _radius *= scaleFactor;
         }
 
         public void Move(double dt)
@@ -146,7 +146,7 @@ namespace BlobSallad
             foreach (var pointMass in _pointMasses)
                 pointMass.Move(dt);
 
-            this._middlePointMass.Move(dt);
+            _middlePointMass.Move(dt);
         }
 
         public void Sc(Environment env)
@@ -177,7 +177,7 @@ namespace BlobSallad
             foreach (var pointMass in _pointMasses)
                 pointMass.SetForce(force);
 
-            this._middlePointMass.SetForce(force);
+            _middlePointMass.SetForce(force);
         }
 
         public void AddForce(Vector force)
@@ -185,8 +185,8 @@ namespace BlobSallad
             foreach (var pointMass in _pointMasses)
                 pointMass.AddForce(force);
 
-            this._middlePointMass.AddForce(force);
-            var pointMass1 = this._pointMasses[0];
+            _middlePointMass.AddForce(force);
+            var pointMass1 = _pointMasses[0];
             pointMass1.AddForce(force);
             pointMass1.AddForce(force);
             pointMass1.AddForce(force);
@@ -195,7 +195,7 @@ namespace BlobSallad
 
         public void MoveTo(double x, double y)
         {
-            var blobPos = this._middlePointMass.GetPos();
+            var blobPos = _middlePointMass.GetPos();
             x -= blobPos.GetX();
             y -= blobPos.GetY();
 
@@ -206,19 +206,19 @@ namespace BlobSallad
                 blobPos.AddY(y);
             }
 
-            blobPos = this._middlePointMass.GetPos();
+            blobPos = _middlePointMass.GetPos();
             blobPos.AddX(x);
             blobPos.AddY(y);
         }
 
         public bool GetSelected()
         {
-            return this._selected;
+            return _selected;
         }
 
         public void SetSelected(bool selected)
         {
-            this._selected = selected;
+            _selected = selected;
         }
 
         public void DrawEars(Canvas canvas, double scaleFactor)
@@ -504,57 +504,57 @@ namespace BlobSallad
 
         public void UpdateFace()
         {
-            if (this._drawFaceStyle == Face.Smile && _random.NextDouble() < 0.05)
+            if (_drawFaceStyle == Face.Smile && _random.NextDouble() < 0.05)
             {
-                this._drawFaceStyle = Face.Open;
+                _drawFaceStyle = Face.Open;
             }
-            else if (this._drawFaceStyle == Face.Open && _random.NextDouble() < 0.1)
+            else if (_drawFaceStyle == Face.Open && _random.NextDouble() < 0.1)
             {
-                this._drawFaceStyle = Face.Smile;
+                _drawFaceStyle = Face.Smile;
             }
 
-            if (this._drawEyeStyle == Eye.Open && _random.NextDouble() < 0.025)
+            if (_drawEyeStyle == Eye.Open && _random.NextDouble() < 0.025)
             {
-                this._drawEyeStyle = Eye.Closed;
+                _drawEyeStyle = Eye.Closed;
             }
-            else if (this._drawEyeStyle == Eye.Closed && _random.NextDouble() < 0.3)
+            else if (_drawEyeStyle == Eye.Closed && _random.NextDouble() < 0.3)
             {
-                this._drawEyeStyle = Eye.Open;
+                _drawEyeStyle = Eye.Open;
             }
         }
 
         public void DrawFace(Canvas canvas, double scaleFactor, TranslateTransform translateTransform)
         {
-            if (this._middlePointMass.GetVelocity() > 0.004)
+            if (_middlePointMass.GetVelocity() > 0.004)
             {
-                this.DrawOohFace(canvas, scaleFactor, translateTransform);
+                DrawOohFace(canvas, scaleFactor, translateTransform);
             }
             else
             {
-                if (this._drawFaceStyle == Face.Smile)
+                if (_drawFaceStyle == Face.Smile)
                 {
-                    this.DrawSmile(canvas, scaleFactor, translateTransform);
+                    DrawSmile(canvas, scaleFactor, translateTransform);
                 }
                 else
                 {
-                    this.DrawOpenMouth(canvas, scaleFactor, translateTransform);
+                    DrawOpenMouth(canvas, scaleFactor, translateTransform);
                 }
 
-                if (this._drawEyeStyle == Eye.Open)
+                if (_drawEyeStyle == Eye.Open)
                 {
-                    this.DrawEyesOpen(canvas, scaleFactor, translateTransform);
+                    DrawEyesOpen(canvas, scaleFactor, translateTransform);
                 }
                 else
                 {
-                    this.DrawEyesClosed(canvas, scaleFactor, translateTransform);
+                    DrawEyesClosed(canvas, scaleFactor, translateTransform);
                 }
             }
         }
 
         public PointMass GetPointMass(int index)
         {
-            index %= this._pointMasses.Count;
-            return this._pointMasses[index];
+            index %= _pointMasses.Count;
+            return _pointMasses[index];
         }
 
         public void DrawBody(Canvas canvas, double scaleFactor)
@@ -611,18 +611,18 @@ namespace BlobSallad
             DrawBody(canvas, scaleFactor);
             //    graphics.setColor(Color.WHITE);
             //    AffineTransform savedTransform = g2.getTransform();
-            var tx = this._middlePointMass.GetXPos() * scaleFactor;
-            var ty = (this._middlePointMass.GetYPos() - 0.35 * this._radius) * scaleFactor;
+            var tx = _middlePointMass.GetXPos() * scaleFactor;
+            var ty = (_middlePointMass.GetYPos() - 0.35 * _radius) * scaleFactor;
             var translateTransform = new TranslateTransform(tx, ty);
 
-            Vector up = new Vector(0.0, -1.0);
-            Vector ori = new Vector(0.0, 0.0);
-            ori.Set(this._pointMasses[0].GetPos());
-            ori.Sub(this._middlePointMass.GetPos());
-            double ang = Math.Acos(ori.DotProd(up) / ori.Length());
+            var up = new Vector(0.0, -1.0);
+            var ori = new Vector(0.0, 0.0);
+            ori.Set(_pointMasses[0].GetPos());
+            ori.Sub(_middlePointMass.GetPos());
+            var ang = Math.Acos(ori.DotProd(up) / ori.Length());
             //    g2.rotate(ori.getX() < 0.0 ? -ang : ang);
-            this.UpdateFace();
-            this.DrawFace(canvas, scaleFactor, translateTransform);
+            UpdateFace();
+            DrawFace(canvas, scaleFactor, translateTransform);
             //    g2.setTransform(savedTransform);
         }
     }

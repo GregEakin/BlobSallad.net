@@ -16,100 +16,100 @@ namespace BlobSallad
 
         public PointMass(double cx, double cy, double mass)
         {
-            this._cur = new Vector(cx, cy);
-            this._prev = new Vector(cx, cy);
-            this._mass = mass;
+            _cur = new Vector(cx, cy);
+            _prev = new Vector(cx, cy);
+            _mass = mass;
         }
 
         public double GetXPos()
         {
-            return this._cur.GetX();
+            return _cur.GetX();
         }
 
         public double GetYPos()
         {
-            return this._cur.GetY();
+            return _cur.GetY();
         }
 
         public Vector GetPos()
         {
-            return this._cur;
+            return _cur;
         }
 
         public double GetXPrevPos()
         {
-            return this._prev.GetX();
+            return _prev.GetX();
         }
 
         public double GetYPrevPos()
         {
-            return this._prev.GetY();
+            return _prev.GetY();
         }
 
         public Vector GetPrevPos()
         {
-            return this._prev;
+            return _prev;
         }
 
         public void AddXPos(double dx)
         {
-            this._cur.AddX(dx);
+            _cur.AddX(dx);
         }
 
         public void AddYPos(double dy)
         {
-            this._cur.AddY(dy);
+            _cur.AddY(dy);
         }
 
         public void SetForce(Vector force)
         {
-            this._force.Set(force);
+            _force.Set(force);
         }
 
         public void AddForce(Vector force)
         {
-            this._force.Add(force);
+            _force.Add(force);
         }
 
         public double GetMass()
         {
-            return this._mass;
+            return _mass;
         }
 
         public void SetMass(double mass)
         {
-            this._mass = mass;
+            _mass = mass;
         }
 
         public void Move(double dt)
         {
-            double dtdt = dt * dt;
+            var dtdt = dt * dt;
 
-            double ax = this._force.GetX() / this._mass;
-            double cx = this._cur.GetX();
-            double px = this._prev.GetX();
-            double tx = (2.0 - this._friction) * cx - (1.0 - this._friction) * px + ax * dtdt;
-            this._prev.SetX(cx);
-            this._cur.SetX(tx);
+            var ax = _force.GetX() / _mass;
+            var cx = _cur.GetX();
+            var px = _prev.GetX();
+            var tx = (2.0 - _friction) * cx - (1.0 - _friction) * px + ax * dtdt;
+            _prev.SetX(cx);
+            _cur.SetX(tx);
 
-            double ay = this._force.GetY() / this._mass;
-            double cy = this._cur.GetY();
-            double py = this._prev.GetY();
-            double ty = (2.0 - this._friction) * cy - (1.0 - this._friction) * py + ay * dtdt;
-            this._prev.SetY(cy);
-            this._cur.SetY(ty);
+            var ay = _force.GetY() / _mass;
+            var cy = _cur.GetY();
+            var py = _prev.GetY();
+            var ty = (2.0 - _friction) * cy - (1.0 - _friction) * py + ay * dtdt;
+            _prev.SetY(cy);
+            _cur.SetY(ty);
         }
 
         public double GetVelocity()
         {
-            double cXpX = this._cur.GetX() - this._prev.GetX();
-            double cYpY = this._cur.GetY() - this._prev.GetY();
+            var cXpX = _cur.GetX() - _prev.GetX();
+            var cYpY = _cur.GetY() - _prev.GetY();
             return cXpX * cXpX + cYpY * cYpY;
         }
 
         public void SetFriction(double friction)
         {
-            this._friction = friction;
+            _friction = friction;
         }
 
         public void Draw(Canvas canvas, double scaleFactor)

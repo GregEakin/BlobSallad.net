@@ -16,33 +16,33 @@ namespace BlobSallad
 
         private void ToggleGravity()
         {
-            double y = this._gravity.GetY() > 0.0 ? 0.0 : 10.0;
-            this._gravity.SetY(y);
+            var y = _gravity.GetY() > 0.0 ? 0.0 : 10.0;
+            _gravity.SetY(y);
         }
 
         public void Stop()
         {
-            this._stopped = true;
+            _stopped = true;
         }
 
         public void Start()
         {
-            this._stopped = false;
+            _stopped = false;
             // this.timeout();
         }
 
         public void Update()
         {
-            if (this._savedMouseCoords != null && this._selectOffset != null)
+            if (_savedMouseCoords != null && _selectOffset != null)
             {
-                double x = this._savedMouseCoords.GetX() - this._selectOffset.GetX();
-                double y = this._savedMouseCoords.GetY() - this._selectOffset.GetY();
-                this._blobColl.SelectedBlobMoveTo(x, y);
+                var x = _savedMouseCoords.GetX() - _selectOffset.GetX();
+                var y = _savedMouseCoords.GetY() - _selectOffset.GetY();
+                _blobColl.SelectedBlobMoveTo(x, y);
             }
 
-            this._blobColl.Move(0.05);
-            this._blobColl.Sc(this._env);
-            this._blobColl.SetForce(this._gravity);
+            _blobColl.Move(0.05);
+            _blobColl.Sc(_env);
+            _blobColl.SetForce(_gravity);
         }
 
         public void PaintComponent(Canvas canvas)

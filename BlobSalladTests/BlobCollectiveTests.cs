@@ -14,7 +14,7 @@ namespace BlobSalladTests
         [Test]
         public void CtorTest()
         {
-            BlobCollective collective = new BlobCollective(71.0, 67.0, 4);
+            var collective = new BlobCollective(71.0, 67.0, 4);
 
             Assert.AreEqual(4, collective.GetMaxNum());
             Assert.AreEqual(1, collective.GetNumActive());
@@ -52,7 +52,7 @@ namespace BlobSalladTests
         [Test]
         public void SelectBlobMissTest()
         {
-            BlobCollective collective = new BlobCollective(1.0, 1.0, 4);
+            var collective = new BlobCollective(1.0, 1.0, 4);
             collective.SelectBlob(2.0, 2.0);
             Assert.IsNull(collective.GetSelectedBlob());
         }
@@ -60,7 +60,7 @@ namespace BlobSalladTests
         [Test]
         public void SelectBlobHitTest()
         {
-            BlobCollective collective = new BlobCollective(1.0, 1.0, 4);
+            var collective = new BlobCollective(1.0, 1.0, 4);
             collective.SelectBlob(1.0, 1.1);
             Assert.NotNull(collective.GetSelectedBlob());
             Assert.True(collective.GetSelectedBlob().GetSelected());

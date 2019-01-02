@@ -8,7 +8,7 @@ namespace BlobSalladTests
         [Test]
         public void CtorTest()
         {
-            Environment environment = new Environment(37.0, 31.0, 19.0, 17.0);
+            var environment = new Environment(37.0, 31.0, 19.0, 17.0);
             Assert.AreEqual(37.0, environment.GetLeft());
             Assert.AreEqual(56.0, environment.GetRight());
             Assert.AreEqual(31.0, environment.GetTop());
@@ -18,8 +18,8 @@ namespace BlobSalladTests
         [Test]
         public void WidthTest()
         {
-            Environment environment1 = new Environment(37.0, 31.0, 19.0, 17.0);
-            Environment environment = environment1.SetWidth(23.0);
+            var environment1 = new Environment(37.0, 31.0, 19.0, 17.0);
+            var environment = environment1.SetWidth(23.0);
 
             Assert.AreNotSame(environment, environment1);
             Assert.AreEqual(37.0, environment.GetLeft());
@@ -31,8 +31,8 @@ namespace BlobSalladTests
         [Test]
         public void HeightTest()
         {
-            Environment environment1 = new Environment(37.0, 31.0, 19.0, 17.0);
-            Environment environment = environment1.SetHeight(23.0);
+            var environment1 = new Environment(37.0, 31.0, 19.0, 17.0);
+            var environment = environment1.SetHeight(23.0);
 
             Assert.AreNotSame(environment, environment1);
             Assert.AreEqual(37.0, environment.GetLeft());
@@ -44,8 +44,8 @@ namespace BlobSalladTests
         [Test]
         public void NonCollisionTest()
         {
-            Environment environment = new Environment(37.0, 31.0, 19.0, 17.0);
-            Vector curPos = new Vector(47.0, 39.0);
+            var environment = new Environment(37.0, 31.0, 19.0, 17.0);
+            var curPos = new Vector(47.0, 39.0);
             var collision = environment.Collision(curPos, curPos);
             Assert.False(collision);
         }
@@ -53,8 +53,8 @@ namespace BlobSalladTests
         [Test]
         public void LeftCollisionTest()
         {
-            Environment environment = new Environment(37.0, 31.0, 19.0, 17.0);
-            Vector curPos = new Vector(36.0, 39.0);
+            var environment = new Environment(37.0, 31.0, 19.0, 17.0);
+            var curPos = new Vector(36.0, 39.0);
             var collision = environment.Collision(curPos, curPos);
             Assert.True(collision);
             Assert.AreEqual(37.0, curPos.GetX());
@@ -63,8 +63,8 @@ namespace BlobSalladTests
         [Test]
         public void RightCollisionTest()
         {
-            Environment environment = new Environment(37.0, 31.0, 19.0, 17.0);
-            Vector curPos = new Vector(57.0, 39.0);
+            var environment = new Environment(37.0, 31.0, 19.0, 17.0);
+            var curPos = new Vector(57.0, 39.0);
             var collision = environment.Collision(curPos, curPos);
             Assert.True(collision);
             Assert.AreEqual(56.0, curPos.GetX());
@@ -73,8 +73,8 @@ namespace BlobSalladTests
         [Test]
         public void TopCollisionTest()
         {
-            Environment environment = new Environment(37.0, 31.0, 19.0, 17.0);
-            Vector curPos = new Vector(47.0, 49.0);
+            var environment = new Environment(37.0, 31.0, 19.0, 17.0);
+            var curPos = new Vector(47.0, 49.0);
             var collision = environment.Collision(curPos, curPos);
             Assert.True(collision);
             Assert.AreEqual(48.0, curPos.GetY());
@@ -83,8 +83,8 @@ namespace BlobSalladTests
         [Test]
         public void BottomCollisionTest()
         {
-            Environment environment = new Environment(37.0, 31.0, 19.0, 17.0);
-            Vector curPos = new Vector(47.0, 30.0);
+            var environment = new Environment(37.0, 31.0, 19.0, 17.0);
+            var curPos = new Vector(47.0, 30.0);
             var collision = environment.Collision(curPos, curPos);
             Assert.True(collision);
             Assert.AreEqual(31.0, curPos.GetY());

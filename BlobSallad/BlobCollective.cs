@@ -13,8 +13,8 @@ namespace BlobSallad
 
         public BlobCollective(double x, double y, int maxNum)
         {
-            this._maxNum = maxNum;
-            this._blobs.Add(new Blob(x, y, 0.4, 8));
+            _maxNum = maxNum;
+            _blobs.Add(new Blob(x, y, 0.4, 8));
         }
 
         public int GetMaxNum()
@@ -34,16 +34,16 @@ namespace BlobSallad
 
         public void Split()
         {
-            double maxRadius = 0.0;
+            var maxRadius = 0.0;
             Blob motherBlob = null;
-            if (this._numActive == this._maxNum)
+            if (_numActive == _maxNum)
                 return;
 
-            int emptySlot = this._blobs.Count;
+            var emptySlot = _blobs.Count;
 
-            for (int i = 0; i < this._blobs.Count; ++i)
+            for (var i = 0; i < _blobs.Count; ++i)
             {
-                Blob blob = this._blobs[i];
+                var blob = _blobs[i];
                 if (blob == null)
                 {
                     emptySlot = i;
@@ -56,7 +56,7 @@ namespace BlobSallad
             }
 
             motherBlob.Scale(0.75);
-            Blob newBlob = new Blob(motherBlob.GetXPos(), motherBlob.GetYPos(), motherBlob.GetRadius(), 8);
+            var newBlob = new Blob(motherBlob.GetXPos(), motherBlob.GetYPos(), motherBlob.GetRadius(), 8);
 
             foreach (var blob in _blobs)
             {
@@ -67,22 +67,22 @@ namespace BlobSallad
                 newBlob.AddBlob(blob);
             }
 
-            if (emptySlot >= this._blobs.Count)
-                this._blobs.Add(newBlob);
+            if (emptySlot >= _blobs.Count)
+                _blobs.Add(newBlob);
             else
-                this._blobs[emptySlot] = newBlob;
+                _blobs[emptySlot] = newBlob;
 
-            ++this._numActive;
+            ++_numActive;
         }
 
         public int FindSmallest(int exclude)
         {
-            double minRadius = 1000.0;
-            int minIndex = 0;
+            var minRadius = 1000.0;
+            var minIndex = 0;
 
-            for (int i = 0; i < this._blobs.Count; ++i)
+            for (var i = 0; i < _blobs.Count; ++i)
             {
-                Blob blob = this._blobs[i];
+                var blob = _blobs[i];
                 if (i == exclude || blob == null || blob.GetRadius() >= minRadius)
                     continue;
 
@@ -95,20 +95,20 @@ namespace BlobSallad
 
         public int FindClosest(int exclude)
         {
-            double minDist = 1000.0;
-            int foundIndex = 0;
-            PointMass myPointMass = this._blobs[exclude].GetMiddlePointMass();
+            var minDist = 1000.0;
+            var foundIndex = 0;
+            var myPointMass = _blobs[exclude].GetMiddlePointMass();
 
-            for (int i = 0; i < this._blobs.Count; ++i)
+            for (var i = 0; i < _blobs.Count; ++i)
             {
-                Blob blob = this._blobs[i];
+                var blob = _blobs[i];
                 if (i == exclude || blob == null)
                     continue;
 
-                PointMass otherPointMass = blob.GetMiddlePointMass();
-                double aXbX = myPointMass.GetXPos() - otherPointMass.GetXPos();
-                double aYbY = myPointMass.GetYPos() - otherPointMass.GetYPos();
-                double dist = aXbX * aXbX + aYbY * aYbY;
+                var otherPointMass = blob.GetMiddlePointMass();
+                var aXbX = myPointMass.GetXPos() - otherPointMass.GetXPos();
+                var aYbY = myPointMass.GetYPos() - otherPointMass.GetYPos();
+                var dist = aXbX * aXbX + aYbY * aYbY;
                 if (dist >= minDist)
                     continue;
 
@@ -121,25 +121,25 @@ namespace BlobSallad
 
         public void Join()
         {
-            if (this._numActive <= 1)
+            if (_numActive <= 1)
                 return;
 
-            int blob1Index = this.FindSmallest(-1);
-            int blob2Index = this.FindClosest(blob1Index);
-            double r1 = this._blobs[blob1Index].GetRadius();
-            double r2 = this._blobs[blob2Index].GetRadius();
-            double r3 = Math.Sqrt(r1 * r1 + r2 * r2);
-            this._blobs[blob1Index] = null;
-            this._blobs[blob2Index].Scale(0.945 * r3 / r2);
-            --this._numActive;
+            var blob1Index = FindSmallest(-1);
+            var blob2Index = FindClosest(blob1Index);
+            var r1 = _blobs[blob1Index].GetRadius();
+            var r2 = _blobs[blob2Index].GetRadius();
+            var r3 = Math.Sqrt(r1 * r1 + r2 * r2);
+            _blobs[blob1Index] = null;
+            _blobs[blob2Index].Scale(0.945 * r3 / r2);
+            --_numActive;
         }
 
         public Point SelectBlob(double x, double y)
         {
-            if (this._selectedBlob != null)
+            if (_selectedBlob != null)
                 return null;
 
-            double minDist = Double.MaxValue;
+            var minDist = Double.MaxValue;
             Point selectOffset = null;
 
             foreach (var blob in _blobs)
@@ -147,10 +147,10 @@ namespace BlobSallad
                 if (blob == null)
                     continue;
 
-                PointMass otherPointMass = blob.GetMiddlePointMass();
-                double aXbX = x - otherPointMass.GetXPos();
-                double aYbY = y - otherPointMass.GetYPos();
-                double dist = aXbX * aXbX + aYbY * aYbY;
+                var otherPointMass = blob.GetMiddlePointMass();
+                var aXbX = x - otherPointMass.GetXPos();
+                var aYbY = y - otherPointMass.GetYPos();
+                var dist = aXbX * aXbX + aYbY * aYbY;
                 if (dist >= minDist)
                     continue;
 
@@ -158,31 +158,31 @@ namespace BlobSallad
                 if (dist >= blob.GetRadius() / 2.0)
                     continue;
 
-                this._selectedBlob = blob;
+                _selectedBlob = blob;
                 selectOffset = new Point(aXbX, aYbY);
             }
 
-            if (this._selectedBlob != null)
-                this._selectedBlob.SetSelected(true);
+            if (_selectedBlob != null)
+                _selectedBlob.SetSelected(true);
 
             return selectOffset;
         }
 
         public void UnselectBlob()
         {
-            if (this._selectedBlob == null)
+            if (_selectedBlob == null)
                 return;
 
-            this._selectedBlob.SetSelected(false);
-            this._selectedBlob = null;
+            _selectedBlob.SetSelected(false);
+            _selectedBlob = null;
         }
 
         public void SelectedBlobMoveTo(double x, double y)
         {
-            if (this._selectedBlob == null)
+            if (_selectedBlob == null)
                 return;
 
-            this._selectedBlob.MoveTo(x, y);
+            _selectedBlob.MoveTo(x, y);
         }
 
         public void Move(double dt)
@@ -214,7 +214,7 @@ namespace BlobSallad
                 if (blob == null)
                     continue;
 
-                Vector force1 = blob == this._selectedBlob
+                var force1 = blob == _selectedBlob
                     ? new Vector(0.0, 0.0)
                     : force;
                 blob.SetForce(force1);
@@ -227,10 +227,10 @@ namespace BlobSallad
         {
             foreach (var blob in _blobs)
             {
-                if (blob == null || blob == this._selectedBlob)
+                if (blob == null || blob == _selectedBlob)
                     continue;
 
-                Vector tmpForce = new Vector(0.0, 0.0);
+                var tmpForce = new Vector(0.0, 0.0);
                 tmpForce.SetX(force.GetX() * (_random.NextDouble() * 0.75 + 0.25));
                 tmpForce.SetY(force.GetY() * (_random.NextDouble() * 0.75 + 0.25));
                 blob.AddForce(tmpForce);

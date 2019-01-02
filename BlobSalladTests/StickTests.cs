@@ -9,9 +9,9 @@ namespace BlobSalladTests
         [Test]
         public void CtorTest()
         {
-            PointMass massA = new PointMass(13.0, 31.0, 5.0);
-            PointMass massB = new PointMass(17.0, 35.0, 7.0);
-            Stick stick = new Stick(massA, massB);
+            var massA = new PointMass(13.0, 31.0, 5.0);
+            var massB = new PointMass(17.0, 35.0, 7.0);
+            var stick = new Stick(massA, massB);
             Assert.AreSame(massA, stick.GetPointMassA());
             Assert.AreSame(massB, stick.GetPointMassB());
             Assert.AreEqual(5.656, stick.GetLength(), 0.01);
@@ -21,18 +21,18 @@ namespace BlobSalladTests
         [Test]
         public void PointMassDistTest()
         {
-            PointMass massA = new PointMass(13.0, 31.0, 5.0);
-            PointMass massB = new PointMass(17.0, 35.0, 7.0);
-            double dist = Stick.PointMassDist(massA, massB);
+            var massA = new PointMass(13.0, 31.0, 5.0);
+            var massB = new PointMass(17.0, 35.0, 7.0);
+            var dist = Stick.PointMassDist(massA, massB);
             Assert.AreEqual(5.656, dist, 0.01);
         }
 
         [Test]
         public void ScaleTest()
         {
-            PointMass massA = new PointMass(13.0, 31.0, 5.0);
-            PointMass massB = new PointMass(17.0, 35.0, 7.0);
-            Stick stick = new Stick(massA, massB);
+            var massA = new PointMass(13.0, 31.0, 5.0);
+            var massB = new PointMass(17.0, 35.0, 7.0);
+            var stick = new Stick(massA, massB);
             stick.Scale(2.0);
             Assert.AreEqual(11.313, stick.GetLength(), 0.01);
             Assert.AreEqual(128.0, stick.GetLengthSquared(), 0.01);
@@ -41,9 +41,9 @@ namespace BlobSalladTests
         [Test]
         public void LengthTest()
         {
-            PointMass massA = new PointMass(13.0, 31.0, 5.0);
-            PointMass massB = new PointMass(17.0, 35.0, 7.0);
-            Stick stick = new Stick(massA, massB);
+            var massA = new PointMass(13.0, 31.0, 5.0);
+            var massB = new PointMass(17.0, 35.0, 7.0);
+            var stick = new Stick(massA, massB);
 
             Assert.AreEqual(5.657, stick.GetLength(), 0.01);
             Assert.AreEqual(32.000, stick.GetLengthSquared(), 0.01);

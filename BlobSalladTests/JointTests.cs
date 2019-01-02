@@ -64,16 +64,16 @@ namespace BlobSalladTests
         {
             double cxA = 41;
             double cyA = 43;
-            double massA = 4.0;
+            var massA = 4.0;
             _pointMassA = new PointMass(cxA, cyA, massA);
 
-            double cxB = 71.0;
-            double cyB = 67.0;
-            double massB = 1.0;
+            var cxB = 71.0;
+            var cyB = 67.0;
+            var massB = 1.0;
             _pointMassB = new PointMass(cxB, cyB, massB);
 
-            double low = 0.95;
-            double high = 1.05;
+            var low = 0.95;
+            var high = 1.05;
             _joint = new Joint(_pointMassA, _pointMassB, low, high);
         }
     }

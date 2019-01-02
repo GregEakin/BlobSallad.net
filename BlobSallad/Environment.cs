@@ -11,10 +11,10 @@ namespace BlobSallad
 
         public Environment(double x, double y, double w, double h)
         {
-            this._left = x;
-            this._right = x + w;
-            this._top = y;
-            this._bottom = y + h;
+            _left = x;
+            _right = x + w;
+            _top = y;
+            _bottom = y + h;
         }
 
         public double GetLeft()
@@ -39,39 +39,39 @@ namespace BlobSallad
 
         public Environment SetWidth(double w)
         {
-            return new Environment(this._left, this._top, w, this._bottom - this._top);
+            return new Environment(_left, _top, w, _bottom - _top);
         }
 
         public Environment SetHeight(double h)
         {
-            return new Environment(this._left, this._top, this._right - this._left, h);
+            return new Environment(_left, _top, _right - _left, h);
         }
 
         public bool Collision(Vector curPos, Vector prePos)
         {
-            double x = curPos.GetX();
-            if (x < this._left)
+            var x = curPos.GetX();
+            if (x < _left)
             {
-                curPos.SetX(this._left);
+                curPos.SetX(_left);
                 return true;
             }
 
-            if (x > this._right)
+            if (x > _right)
             {
-                curPos.SetX(this._right);
+                curPos.SetX(_right);
                 return true;
             }
 
-            double y = curPos.GetY();
-            if (y < this._top)
+            var y = curPos.GetY();
+            if (y < _top)
             {
-                curPos.SetY(this._top);
+                curPos.SetY(_top);
                 return true;
             }
 
-            if (y > this._bottom)
+            if (y > _bottom)
             {
-                curPos.SetY(this._bottom);
+                curPos.SetY(_bottom);
                 return true;
             }
 

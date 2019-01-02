@@ -9,84 +9,84 @@ namespace BlobSallad
 
         public Vector(double x, double y)
         {
-            this._x = x;
-            this._y = y;
+            _x = x;
+            _y = y;
         }
 
         public Vector(Vector that)
         {
-            this._x = that._x;
-            this._y = that._y;
+            _x = that._x;
+            _y = that._y;
         }
 
         public void AddX(double x)
         {
-            this._x += x;
+            _x += x;
         }
 
         public void AddY(double y)
         {
-            this._y += y;
+            _y += y;
         }
 
         public void Set(Vector that)
         {
-            this._x = that._x;
-            this._y = that._y;
+            _x = that._x;
+            _y = that._y;
         }
 
         public void Add(Vector that)
         {
-            this._x += that._x;
-            this._y += that._y;
+            _x += that._x;
+            _y += that._y;
         }
 
         public void Sub(Vector that)
         {
-            this._x -= that._x;
-            this._y -= that._y;
+            _x -= that._x;
+            _y -= that._y;
         }
 
         public double DotProd(Vector that)
         {
-            return this._x * that._x + this._y * that._y;
+            return _x * that._x + _y * that._y;
         }
 
         public double Length()
         {
-            return Math.Sqrt(this._x * this._x + this._y * this._y);
+            return Math.Sqrt(_x * _x + _y * _y);
         }
 
         public void Scale(double scaleFactor)
         {
-            this._x *= scaleFactor;
-            this._y *= scaleFactor;
+            _x *= scaleFactor;
+            _y *= scaleFactor;
         }
 
         public override string ToString()
         {
             // return String.format("(X: %d, Y: %d)");
-            return "(X: " + this._x + ", Y: " + this._y + ")";
+            return "(X: " + _x + ", Y: " + _y + ")";
         }
 
         public double GetX()
         {
-            return this._x;
+            return _x;
         }
 
         public void SetX(double x)
         {
-            this._x = x;
+            _x = x;
         }
 
         public double GetY()
         {
-            return this._y;
+            return _y;
         }
 
         public void SetY(double y)
         {
-            this._y = y;
+            _y = y;
         }
     }
 }
