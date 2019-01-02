@@ -225,10 +225,8 @@ namespace BlobSallad
         {
         }
 
-        public void drawEyesOpen(Canvas canvas, double scaleFactor)
+        public void drawEyesOpen(Canvas canvas, double scaleFactor, TranslateTransform translateTransform)
         {
-            var translateTransform = new TranslateTransform(x, y);
-
             {
                 var circle = new Ellipse
                 {
@@ -298,10 +296,8 @@ namespace BlobSallad
             }
         }
 
-        public void drawEyesClosed(Canvas canvas, double scaleFactor)
+        public void drawEyesClosed(Canvas canvas, double scaleFactor, TranslateTransform translateTransform)
         {
-            var translateTransform = new TranslateTransform(x, y);
-
             {
                 var circle = new Ellipse
                 {
@@ -365,10 +361,8 @@ namespace BlobSallad
             }
         }
 
-        public void drawSmile(Canvas canvas, double scaleFactor)
+        public void drawSmile(Canvas canvas, double scaleFactor, TranslateTransform translateTransform)
         {
-            var translateTransform = new TranslateTransform(x, y);
-
             var point = new System.Windows.Point(0.25 * radius * scaleFactor, 0.1 * radius * scaleFactor);
             var size = new Size(0.25 * radius * scaleFactor, 0.25 * radius * scaleFactor);
             var arcSegment = new ArcSegment
@@ -401,10 +395,8 @@ namespace BlobSallad
             canvas.Children.Add(arcPath);
         }
 
-        public void drawOpenMouth(Canvas canvas, double scaleFactor)
+        public void drawOpenMouth(Canvas canvas, double scaleFactor, TranslateTransform translateTransform)
         {
-            var translateTransform = new TranslateTransform(x, y);
-
             var point = new System.Windows.Point(0.25 * radius * scaleFactor, 0.1 * radius * scaleFactor);
             var size = new Size(0.25 * radius * scaleFactor, 0.25 * radius * scaleFactor);
             var arcSegment = new ArcSegment
@@ -437,10 +429,8 @@ namespace BlobSallad
             canvas.Children.Add(arcPath);
         }
 
-        public void drawOohFace(Canvas canvas, double scaleFactor)
+        public void drawOohFace(Canvas canvas, double scaleFactor, TranslateTransform translateTransform)
         {
-            var translateTransform = new TranslateTransform(x, y);
-
             {
                 var point = new System.Windows.Point(0.25 * radius * scaleFactor, 0.1 * radius * scaleFactor);
                 var size = new Size(0.25 * radius * scaleFactor, 0.25 * radius * scaleFactor);
@@ -533,30 +523,30 @@ namespace BlobSallad
             }
         }
 
-        public void drawFace(Canvas canvas, double scaleFactor)
+        public void drawFace(Canvas canvas, double scaleFactor, TranslateTransform translateTransform)
         {
             if (this.middlePointMass.getVelocity() > 0.004)
             {
-                this.drawOohFace(canvas, scaleFactor);
+                this.drawOohFace(canvas, scaleFactor, translateTransform);
             }
             else
             {
                 if (this.drawFaceStyle == Face.SMILE)
                 {
-                    this.drawSmile(canvas, scaleFactor);
+                    this.drawSmile(canvas, scaleFactor, translateTransform);
                 }
                 else
                 {
-                    this.drawOpenMouth(canvas, scaleFactor);
+                    this.drawOpenMouth(canvas, scaleFactor, translateTransform);
                 }
 
                 if (this.drawEyeStyle == Eye.OPEN)
                 {
-                    this.drawEyesOpen(canvas, scaleFactor);
+                    this.drawEyesOpen(canvas, scaleFactor, translateTransform);
                 }
                 else
                 {
-                    this.drawEyesClosed(canvas, scaleFactor);
+                    this.drawEyesClosed(canvas, scaleFactor, translateTransform);
                 }
             }
         }
@@ -621,9 +611,10 @@ namespace BlobSallad
             drawBody(canvas, scaleFactor);
             //    graphics.setColor(Color.WHITE);
             //    AffineTransform savedTransform = g2.getTransform();
-            //    readonly double tx = this.middlePointMass.getXPos() * scaleFactor;
-            //    readonly double ty = (this.middlePointMass.getYPos() - 0.35 * this.radius) * scaleFactor;
-            //    g2.translate(tx, ty);
+            var tx = this.middlePointMass.getXPos() * scaleFactor;
+            var ty = (this.middlePointMass.getYPos() - 0.35 * this.radius) * scaleFactor;
+            var translateTransform = new TranslateTransform(tx, ty);
+
             Vector up = new Vector(0.0, -1.0);
             Vector ori = new Vector(0.0, 0.0);
             ori.set(this.pointMasses[0].getPos());
@@ -631,7 +622,7 @@ namespace BlobSallad
             double ang = Math.Acos(ori.dotProd(up) / ori.length());
             //    g2.rotate(ori.getX() < 0.0 ? -ang : ang);
             this.updateFace();
-            this.drawFace(canvas, scaleFactor);
+            this.drawFace(canvas, scaleFactor, translateTransform);
             //    g2.setTransform(savedTransform);
         }
     }

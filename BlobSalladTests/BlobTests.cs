@@ -186,10 +186,11 @@ namespace BlobSalladTests
         {
             var canvas = new Canvas { Width = 100, Height = 100 };
 
+            var translateTransform = new TranslateTransform(41.0, 43.0);
             var blob = new Blob(41.0, 43.0, 23.0, 5);
             blob.scale(3.0);
-            blob.drawSmile(canvas, 1.0);
-            blob.drawEyesOpen(canvas, 1.0);
+            blob.drawSmile(canvas, 1.0, translateTransform);
+            blob.drawEyesOpen(canvas, 1.0, translateTransform);
 
             var wpf = new ContentControl { Content = canvas };
             WpfApprovals.Verify(wpf);
@@ -261,8 +262,9 @@ namespace BlobSalladTests
         {
             var canvas = new Canvas {Width = 100, Height = 100};
 
+            var translateTransform = new TranslateTransform(50.0, 50.0);
             var blob = new Blob(50.0, 50.0, 25.0, 5);
-            blob.drawEyesOpen(canvas, 3.0);
+            blob.drawEyesOpen(canvas, 3.0, translateTransform);
 
             var wpf = new ContentControl {Content = canvas};
             WpfApprovals.Verify(wpf);
@@ -273,8 +275,9 @@ namespace BlobSalladTests
         {
             var canvas = new Canvas {Width = 100, Height = 100};
 
+            var translateTransform = new TranslateTransform(50.0, 50.0);
             var blob = new Blob(50.0, 50.0, 25.0, 5);
-            blob.drawEyesClosed(canvas, 3.0);
+            blob.drawEyesClosed(canvas, 3.0, translateTransform);
 
             var wpf = new ContentControl {Content = canvas};
             WpfApprovals.Verify(wpf);
@@ -285,8 +288,9 @@ namespace BlobSalladTests
         {
             var canvas = new Canvas {Width = 100, Height = 100};
 
+            var translateTransform = new TranslateTransform(50.0, 50.0);
             var blob = new Blob(50.0, 50.0, 25.0, 5);
-            blob.drawSmile(canvas, 3.0);
+            blob.drawSmile(canvas, 3.0, translateTransform);
 
             var wpf = new ContentControl {Content = canvas};
             WpfApprovals.Verify(wpf);
@@ -297,8 +301,9 @@ namespace BlobSalladTests
         {
             var canvas = new Canvas {Width = 100, Height = 100};
 
+            var translateTransform = new TranslateTransform(50.0, 50.0);
             var blob = new Blob(50.0, 50.0, 25.0, 5);
-            blob.drawOpenMouth(canvas, 3.0);
+            blob.drawOpenMouth(canvas, 3.0, translateTransform);
 
             var wpf = new ContentControl {Content = canvas};
             WpfApprovals.Verify(wpf);
@@ -309,8 +314,9 @@ namespace BlobSalladTests
         {
             var canvas = new Canvas {Width = 100, Height = 100};
 
+            var translateTransform = new TranslateTransform(50.0, 50.0);
             var blob = new Blob(50.0, 50.0, 25.0, 5);
-            blob.drawOohFace(canvas, 3.0);
+            blob.drawOohFace(canvas, 3.0, translateTransform);
 
             var wpf = new ContentControl {Content = canvas};
             WpfApprovals.Verify(wpf);
@@ -321,8 +327,9 @@ namespace BlobSalladTests
         {
             var canvas = new Canvas {Width = 100, Height = 100};
 
+            var translateTransform = new TranslateTransform(50.0, 50.0);
             var blob = new Blob(50.0, 50.0, 25.0, 5);
-            blob.drawFace(canvas, 3.0);
+            blob.drawFace(canvas, 3.0, translateTransform);
 
             var wpf = new ContentControl {Content = canvas};
             WpfApprovals.Verify(wpf);

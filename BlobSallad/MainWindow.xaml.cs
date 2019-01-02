@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace BlobSallad
 {
@@ -12,8 +12,9 @@ namespace BlobSallad
         {
             InitializeComponent();
 
+            var translateTransform = new TranslateTransform(100.0, 100.0);
             var blob = new Blob(100.0, 100.0, 25.0, 5);
-            blob.drawOohFace(MyCanvas, 10.0);
+            blob.drawOohFace(MyCanvas, 10.0, translateTransform);
         }
     }
 }
