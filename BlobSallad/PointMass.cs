@@ -123,8 +123,8 @@ namespace BlobSallad
                 StrokeThickness = 2.0,
             };
 
-            Canvas.SetLeft(circle, cur.getX() * scaleFactor);
-            Canvas.SetTop(circle, cur.getY() * scaleFactor);
+            Canvas.SetLeft(circle, (cur.getX() - 4) * scaleFactor);
+            Canvas.SetTop(circle, (cur.getY() - 4) * scaleFactor);
 
             canvas.Children.Add(circle);
         }

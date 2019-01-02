@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Controls;
 
 namespace BlobSallad
 {
@@ -66,7 +67,11 @@ namespace BlobSallad
                 newBlob.addBlob(blob);
             }
 
-            this.blobs[emptySlot] =  newBlob;
+            if (emptySlot >= this.blobs.Count)
+                this.blobs.Add(newBlob);
+            else
+                this.blobs[emptySlot] = newBlob;
+
             ++this.numActive;
         }
 
@@ -210,8 +215,8 @@ namespace BlobSallad
                     continue;
 
                 Vector force1 = blob == this.selectedBlob
-                        ? new Vector(0.0, 0.0)
-                        : force;
+                    ? new Vector(0.0, 0.0)
+                    : force;
                 blob.setForce(force1);
             }
         }
@@ -232,15 +237,15 @@ namespace BlobSallad
             }
         }
 
-        //public void draw(Graphics graphics, double scaleFactor)
-        //{
-        //    for (Blob blob : this.blobs)
-        //    {
-        //        if (blob == null)
-        //            continue;
+        public void draw(Canvas canvas, double scaleFactor)
+        {
+            foreach (var blob in blobs)
+            {
+                if (blob == null)
+                    continue;
 
-        //        blob.draw(graphics, scaleFactor);
-        //    }
-        //}
+                blob.draw(canvas, scaleFactor);
+            }
+        }
     }
 }

@@ -1,9 +1,14 @@
-﻿using ApprovalTests;
+﻿using ApprovalTests.Reporters;
+using ApprovalTests.Wpf;
 using BlobSallad;
 using NUnit.Framework;
+using System.Threading;
+using System.Windows.Controls;
 
 namespace BlobSalladTests
 {
+    [UseReporter(typeof(DiffReporter), typeof(ClipboardReporter))]
+    [Apartment(ApartmentState.STA)]
     public class BlobCollectiveTests
     {
         [Test]
@@ -15,52 +20,34 @@ namespace BlobSalladTests
             Assert.AreEqual(1, collective.getNumActive());
         }
 
-        //[Test]
-        //public void splitTest()
-        //{
-        //    BlobCollective collective = new BlobCollective(1.0, 1.0, 4);
+        [Test]
+        public void splitTest()
+        {
+            var canvas = new Canvas { Width = 200, Height = 200 };
 
-        //    BufferedImage image = new BufferedImage(200, 200, TYPE_INT_RGB);
-        //    Graphics2D graphics = image.createGraphics();
-        //    try
-        //    {
-        //        graphics.setPaint(Color.WHITE);
-        //        graphics.fillRect(0, 0, image.getWidth(), image.getHeight());
+            var collective = new BlobCollective(1.0, 1.0, 4);
+            collective.split();
+            Assert.AreEqual(2, collective.getNumActive());
+            collective.draw(canvas, 100.0);
 
-        //        collective.split();
-        //        Assert.AreEqual(2, collective.getNumActive());
-        //        collective.draw(graphics, 100.0);
-        //        Approvals.verify(image);
-        //    }
-        //    finally
-        //    {
-        //        graphics.dispose();
-        //    }
-        //}
+            var wpf = new ContentControl { Content = canvas };
+            WpfApprovals.Verify(wpf);
+        }
 
-        // [Test]
-        //public void joinTest()
-        //{
-        //    BlobCollective collective = new BlobCollective(1.0, 1.0, 4);
+        [Test]
+        public void joinTest()
+        {
+            var canvas = new Canvas { Width = 200, Height = 200 };
 
-        //    BufferedImage image = new BufferedImage(200, 200, TYPE_INT_RGB);
-        //    Graphics2D graphics = image.createGraphics();
-        //    try
-        //    {
-        //        graphics.setPaint(Color.WHITE);
-        //        graphics.fillRect(0, 0, image.getWidth(), image.getHeight());
+            var collective = new BlobCollective(1.0, 1.0, 4);
+            collective.split();
+            // collective.join();
+            // Assert.AreEqual(2, collective.getNumActive());
+            collective.draw(canvas, 100.0);
 
-        //        collective.split();
-        //        // collective.join();
-        //        //Assert.AreEqual(1, collective.getNumActive());
-        //        collective.draw(graphics, 100.0);
-        //        Approvals.verify(image);
-        //    }
-        //    finally
-        //    {
-        //        graphics.dispose();
-        //    }
-        //}
+            var wpf = new ContentControl { Content = canvas };
+            WpfApprovals.Verify(wpf);
+        }
 
         [Test]
         public void selectBlobMissTest()
@@ -79,25 +66,16 @@ namespace BlobSalladTests
             Assert.True(collective.getSelectedBlob().getSelected());
         }
 
-        //[Test]
-        //public void drawTest()
-        //{
-        //    BlobCollective collective = new BlobCollective(1.0, 1.0, 4);
+        [Test]
+        public void drawTest()
+        {
+            var canvas = new Canvas { Width = 200, Height = 200 };
 
-        //    BufferedImage image = new BufferedImage(200, 200, TYPE_INT_RGB);
-        //    Graphics2D graphics = image.createGraphics();
-        //    try
-        //    {
-        //        graphics.setPaint(Color.WHITE);
-        //        graphics.fillRect(0, 0, image.getWidth(), image.getHeight());
+            var collective = new BlobCollective(1.0, 1.0, 4);
+            collective.draw(canvas, 100.0);
 
-        //        collective.draw(graphics, 100.0);
-        //        Approvals.verify(image);
-        //    }
-        //    finally
-        //    {
-        //        graphics.dispose();
-        //    }
-        //}
+            var wpf = new ContentControl { Content = canvas };
+            WpfApprovals.Verify(wpf);
+        }
     }
 }

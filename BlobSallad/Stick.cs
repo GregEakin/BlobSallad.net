@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Shapes;
 
 namespace BlobSallad
 {
@@ -82,18 +85,34 @@ namespace BlobSallad
             this.pointMassB.move(dt);
         }
 
-        //public void draw(Graphics graphics, double scaleFactor)
-        //{
-        //    this.pointMassA.draw(graphics, scaleFactor);
-        //    this.pointMassB.draw(graphics, scaleFactor);
-        //    BasicStroke stroke = new BasicStroke(3.0F);
-        //    Graphics2D g2d = (Graphics2D)graphics;
-        //    g2d.setColor(Color.BLACK);
-        //    g2d.setStroke(stroke);
-        //    GeneralPath generalPath = new GeneralPath();
-        //    generalPath.moveTo(this.pointMassA.getXPos() * scaleFactor, this.pointMassA.getYPos() * scaleFactor);
-        //    generalPath.lineTo(this.pointMassB.getXPos() * scaleFactor, this.pointMassB.getYPos() * scaleFactor);
-        //    g2d.draw(generalPath);
-        //}
+        public void draw(Canvas canvas, double scaleFactor)
+        {
+            pointMassA.draw(canvas, scaleFactor);
+            pointMassB.draw(canvas, scaleFactor);
+
+            var x1 = pointMassA.getXPos() * scaleFactor;
+            var y1 = pointMassA.getYPos() * scaleFactor;
+            var startPoint = new System.Windows.Point(x1, y1);
+            var pathFigure = new PathFigure {StartPoint = startPoint};
+
+            var x2 = pointMassB.getXPos() * scaleFactor;
+            var y2 = pointMassB.getYPos() * scaleFactor;
+            var point = new System.Windows.Point(x2, y2);
+            var lineSegment1A = new LineSegment {Point = point};
+            pathFigure.Segments.Add(lineSegment1A);
+
+            var pathFigureCollection = new PathFigureCollection {pathFigure};
+            var pathGeometry = new PathGeometry {Figures = pathFigureCollection};
+
+            var path = new Path
+            {
+                Stroke = Brushes.Black,
+                StrokeThickness = 3.0,
+                Data = pathGeometry,
+                // RenderTransform = translateTransform
+            };
+
+            canvas.Children.Add(path);
+        }
     }
 }

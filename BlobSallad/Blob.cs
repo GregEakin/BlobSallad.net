@@ -27,6 +27,7 @@ namespace BlobSallad
         private readonly List<PointMass> pointMasses = new List<PointMass>();
 
         private readonly List<Joint> joints = new List<Joint>();
+        private readonly Random _random = new Random();
 
         //private readonly Color highlight = new Color(255, 204, 204);
         //private readonly Color normal = Color.WHITE;
@@ -220,79 +221,221 @@ namespace BlobSallad
             this.selected = selected;
         }
 
-        //public void drawEars(Graphics graphics, double scaleFactor)
-        //{
-        //}
+        public void drawEars(Canvas canvas, double scaleFactor)
+        {
+        }
 
-        //public void drawEyesOpen(Graphics graphics, double scaleFactor)
-        //{
-        //    scaleFactor *= this.radius;
-        //    BasicStroke stroke = new BasicStroke(1.0F);
-        //    Graphics2D g2d = (Graphics2D)graphics;
-        //    g2d.setStroke(stroke);
-        //    Double arc = new Double();
-        //    arc.setArcByCenter(-0.15 * scaleFactor, -0.2 * scaleFactor, 0.12 * scaleFactor, 0.0, -360.0, 1);
-        //    g2d.setColor(Color.WHITE);
-        //    g2d.fill(arc);
-        //    g2d.setColor(Color.BLACK);
-        //    g2d.draw(arc);
-        //    arc.setArcByCenter(0.15 * scaleFactor, -0.2 * scaleFactor, 0.12 * scaleFactor, 0.0, -360.0, 1);
-        //    g2d.setColor(Color.WHITE);
-        //    g2d.fill(arc);
-        //    g2d.setColor(Color.BLACK);
-        //    g2d.draw(arc);
-        //    g2d.setColor(Color.BLACK);
-        //    arc.setArcByCenter(-0.15 * scaleFactor, -0.17 * scaleFactor, 0.06 * scaleFactor, 0.0, -360.0, 1);
-        //    g2d.fill(arc);
-        //    arc.setArcByCenter(0.15 * scaleFactor, -0.17 * scaleFactor, 0.06 * scaleFactor, 0.0, -360.0, 1);
-        //    g2d.fill(arc);
-        //}
+        public void drawEyesOpen(Canvas canvas, double scaleFactor)
+        {
+            var translateTransform = new TranslateTransform(x, y);
 
-        //public void drawEyesClosed(Graphics graphics, double scaleFactor)
-        //{
-        //    scaleFactor *= this.radius;
-        //    BasicStroke stroke = new BasicStroke(1.0F);
-        //    Graphics2D g2d = (Graphics2D)graphics;
-        //    g2d.setColor(Color.BLACK);
-        //    g2d.setStroke(stroke);
-        //    Double arc = new Double();
-        //    arc.setArcByCenter(-0.15 * scaleFactor, -0.2 * scaleFactor, 0.12 * scaleFactor, 0.0, -360.0, 0);
-        //    g2d.draw(arc);
-        //    arc.setArcByCenter(0.15 * scaleFactor, -0.2 * scaleFactor, 0.12 * scaleFactor, 0.0, -360.0, 0);
-        //    g2d.draw(arc);
-        //    GeneralPath generalPath = new GeneralPath();
-        //    generalPath.moveTo(-0.25 * scaleFactor, -0.2 * scaleFactor);
-        //    generalPath.lineTo(-0.05 * scaleFactor, -0.2 * scaleFactor);
-        //    g2d.draw(generalPath);
-        //    generalPath.reset();
-        //    generalPath.moveTo(0.25 * scaleFactor, -0.2 * scaleFactor);
-        //    generalPath.lineTo(0.05 * scaleFactor, -0.2 * scaleFactor);
-        //    g2d.draw(generalPath);
-        //}
+            {
+                var circle = new Ellipse
+                {
+                    Width = 0.24 * radius * scaleFactor,
+                    Height = 0.24 * radius * scaleFactor,
+                    Fill = Brushes.White,
+                    Stroke = Brushes.Black,
+                    StrokeThickness = 1.0,
+                    RenderTransform = translateTransform,
+                };
 
-        //public void drawSmile(Graphics graphics, double scaleFactor)
-        //{
-        //    scaleFactor *= this.radius;
-        //    BasicStroke stroke = new BasicStroke(2.0F);
-        //    Graphics2D g2d = (Graphics2D)graphics;
-        //    g2d.setColor(Color.BLACK);
-        //    g2d.setStroke(stroke);
-        //    Double arc = new Double();
-        //    arc.setArcByCenter(0.0, 0.0, 0.25 * scaleFactor, 0.0, -180.0, 0);
-        //    g2d.draw(arc);
-        //}
+                Canvas.SetLeft(circle, -0.27 * radius * scaleFactor);
+                Canvas.SetTop(circle, -0.32 * radius * scaleFactor);
 
-        //public void drawOpenMouth(Graphics graphics, double scaleFactor)
-        //{
-        //    scaleFactor *= this.radius;
-        //    BasicStroke stroke = new BasicStroke(2.0F);
-        //    Graphics2D g2d = (Graphics2D)graphics;
-        //    g2d.setColor(Color.BLACK);
-        //    g2d.setStroke(stroke);
-        //    Double arc = new Double();
-        //    arc.setArcByCenter(0.0, 0.0, 0.25 * scaleFactor, 0.0, -180.0, 1);
-        //    g2d.fill(arc);
-        //}
+                canvas.Children.Add(circle);
+            }
+
+            {
+                var circle = new Ellipse
+                {
+                    Width = 0.24 * radius * scaleFactor,
+                    Height = 0.24 * radius * scaleFactor,
+                    Fill = Brushes.White,
+                    Stroke = Brushes.Black,
+                    StrokeThickness = 1.0,
+                    RenderTransform = translateTransform,
+                };
+
+                Canvas.SetLeft(circle, 0.03 * radius * scaleFactor);
+                Canvas.SetTop(circle, -0.32 * radius * scaleFactor);
+
+                canvas.Children.Add(circle);
+            }
+
+            {
+                var circle = new Ellipse
+                {
+                    Width = 0.12 * radius * scaleFactor,
+                    Height = 0.12 * radius * scaleFactor,
+                    Fill = Brushes.Black,
+                    Stroke = Brushes.Black,
+                    StrokeThickness = 1.0,
+                    RenderTransform = translateTransform,
+                };
+
+                Canvas.SetLeft(circle, -0.21 * radius * scaleFactor);
+                Canvas.SetTop(circle, -0.23 * radius * scaleFactor);
+
+                canvas.Children.Add(circle);
+            }
+
+            {
+                var circle = new Ellipse
+                {
+                    Width = 0.12 * radius * scaleFactor,
+                    Height = 0.12 * radius * scaleFactor,
+                    Fill = Brushes.Black,
+                    Stroke = Brushes.Black,
+                    StrokeThickness = 1.0,
+                    RenderTransform = translateTransform,
+                };
+
+                Canvas.SetLeft(circle, 0.09 * radius * scaleFactor);
+                Canvas.SetTop(circle, -0.23 * radius * scaleFactor);
+
+                canvas.Children.Add(circle);
+            }
+        }
+
+        public void drawEyesClosed(Canvas canvas, double scaleFactor)
+        {
+            var translateTransform = new TranslateTransform(x, y);
+
+            {
+                var circle = new Ellipse
+                {
+                    Width = 0.24 * radius * scaleFactor,
+                    Height = 0.24 * radius * scaleFactor,
+                    Fill = Brushes.White,
+                    Stroke = Brushes.Black,
+                    StrokeThickness = 1.0,
+                    RenderTransform = translateTransform,
+                };
+
+                Canvas.SetLeft(circle, -0.27 * radius * scaleFactor);
+                Canvas.SetTop(circle, -0.32 * radius * scaleFactor);
+
+                canvas.Children.Add(circle);
+            }
+
+            {
+                var circle = new Ellipse
+                {
+                    Width = 0.24 * radius * scaleFactor,
+                    Height = 0.24 * radius * scaleFactor,
+                    Fill = Brushes.White,
+                    Stroke = Brushes.Black,
+                    StrokeThickness = 1.0,
+                    RenderTransform = translateTransform,
+                };
+
+                Canvas.SetLeft(circle, 0.03 * radius * scaleFactor);
+                Canvas.SetTop(circle, -0.32 * radius * scaleFactor);
+
+                canvas.Children.Add(circle);
+            }
+
+            {
+                var startPointA = new System.Windows.Point(-0.25 * radius * scaleFactor, -0.2 * radius * scaleFactor);
+                var pathFigureA = new PathFigure {StartPoint = startPointA};
+
+                var pointA = new System.Windows.Point(-0.05 * radius * scaleFactor, -0.2 * radius * scaleFactor);
+                var lineSegment1A = new LineSegment {Point = pointA};
+                pathFigureA.Segments.Add(lineSegment1A);
+
+                var startPointB = new System.Windows.Point(0.25 * radius * scaleFactor, -0.2 * radius * scaleFactor);
+                var pathFigureB = new PathFigure {StartPoint = startPointB};
+
+                var pointB = new System.Windows.Point(0.05 * radius * scaleFactor, -0.2 * radius * scaleFactor);
+                var lineSegment1B = new LineSegment {Point = pointB};
+                pathFigureB.Segments.Add(lineSegment1B);
+
+                var pathGeometry = new PathGeometry {Figures = new PathFigureCollection {pathFigureA, pathFigureB}};
+
+                var orangePath = new Path
+                {
+                    Stroke = Brushes.Black,
+                    StrokeThickness = 1.0,
+                    Data = pathGeometry,
+                    RenderTransform = translateTransform
+                };
+
+                canvas.Children.Add(orangePath);
+            }
+        }
+
+        public void drawSmile(Canvas canvas, double scaleFactor)
+        {
+            var translateTransform = new TranslateTransform(x, y);
+
+            var point = new System.Windows.Point(0.25 * radius * scaleFactor, 0.1 * radius * scaleFactor);
+            var size = new Size(0.25 * radius * scaleFactor, 0.25 * radius * scaleFactor);
+            var arcSegment = new ArcSegment
+            {
+                Point = point,
+                Size = size,
+                IsLargeArc = true,
+                SweepDirection = SweepDirection.Counterclockwise,
+            };
+
+            // pathGeometry = {M-34.5,13.8A27.6,27.6,0,1,0,34.5,13.8}
+            var pathFigure = new PathFigure
+            {
+                StartPoint = new System.Windows.Point(-0.25 * radius * scaleFactor, 0.1 * radius * scaleFactor)
+            };
+            pathFigure.Segments.Add(arcSegment);
+
+            var pathGeometry = new PathGeometry();
+            pathGeometry.Figures.Add(pathFigure);
+
+            var arcPath = new Path
+            {
+                Stroke = Brushes.Black,
+                StrokeThickness = 2.0,
+                Data = pathGeometry,
+                Fill = Brushes.Transparent,
+                RenderTransform = translateTransform
+            };
+
+            canvas.Children.Add(arcPath);
+        }
+
+        public void drawOpenMouth(Canvas canvas, double scaleFactor)
+        {
+            var translateTransform = new TranslateTransform(x, y);
+
+            var point = new System.Windows.Point(0.25 * radius * scaleFactor, 0.1 * radius * scaleFactor);
+            var size = new Size(0.25 * radius * scaleFactor, 0.25 * radius * scaleFactor);
+            var arcSegment = new ArcSegment
+            {
+                Point = point,
+                Size = size,
+                IsLargeArc = true,
+                SweepDirection = SweepDirection.Counterclockwise,
+            };
+
+            // pathGeometry = {M-34.5,13.8A27.6,27.6,0,1,0,34.5,13.8}
+            var pathFigure = new PathFigure
+            {
+                StartPoint = new System.Windows.Point(-0.25 * radius * scaleFactor, 0.1 * radius * scaleFactor)
+            };
+            pathFigure.Segments.Add(arcSegment);
+
+            var pathGeometry = new PathGeometry();
+            pathGeometry.Figures.Add(pathFigure);
+
+            var arcPath = new Path
+            {
+                Stroke = Brushes.Black,
+                StrokeThickness = 2.0,
+                Data = pathGeometry,
+                Fill = Brushes.Black,
+                RenderTransform = translateTransform
+            };
+
+            canvas.Children.Add(arcPath);
+        }
 
         public void drawOohFace(Canvas canvas, double scaleFactor)
         {
@@ -369,74 +512,54 @@ namespace BlobSallad
             }
         }
 
-        //public void drawOohFace(Graphics graphics, double scaleFactor)
-        //{
-        //    scaleFactor *= this.radius;
-        //    BasicStroke stroke = new BasicStroke(2.0F);
-        //    Graphics2D g2d = (Graphics2D)graphics;
-        //    g2d.setColor(Color.BLACK);
-        //    g2d.setStroke(stroke);
-        //    Double arc = new Double();
-        //    arc.setArcByCenter(0.0, 0.1 * scaleFactor, 0.25 * scaleFactor, 0.0, -180.0, 1);
-        //    g2d.fill(arc);
-        //    GeneralPath generalPath = new GeneralPath();
-        //    generalPath.moveTo(-0.25 * scaleFactor, -0.3 * scaleFactor);
-        //    generalPath.lineTo(-0.05 * scaleFactor, -0.2 * scaleFactor);
-        //    generalPath.lineTo(-0.25 * scaleFactor, -0.1 * scaleFactor);
-        //    generalPath.moveTo(0.25 * scaleFactor, -0.3 * scaleFactor);
-        //    generalPath.lineTo(0.05 * scaleFactor, -0.2 * scaleFactor);
-        //    generalPath.lineTo(0.25 * scaleFactor, -0.1 * scaleFactor);
-        //    g2d.draw(generalPath);
-        //}
+        public void updateFace()
+        {
+            if (this.drawFaceStyle == Face.SMILE && _random.NextDouble() < 0.05)
+            {
+                this.drawFaceStyle = Face.OPEN;
+            }
+            else if (this.drawFaceStyle == Face.OPEN && _random.NextDouble() < 0.1)
+            {
+                this.drawFaceStyle = Face.SMILE;
+            }
 
-        //public void updateFace()
-        //{
-        //    if (this.drawFaceStyle == Face.SMILE && Math.random() < 0.05)
-        //    {
-        //        this.drawFaceStyle = Face.OPEN;
-        //    }
-        //    else if (this.drawFaceStyle == Face.OPEN && Math.random() < 0.1)
-        //    {
-        //        this.drawFaceStyle = Face.SMILE;
-        //    }
+            if (this.drawEyeStyle == Eye.OPEN && _random.NextDouble() < 0.025)
+            {
+                this.drawEyeStyle = Eye.CLOSED;
+            }
+            else if (this.drawEyeStyle == Eye.CLOSED && _random.NextDouble() < 0.3)
+            {
+                this.drawEyeStyle = Eye.OPEN;
+            }
+        }
 
-        //    if (this.drawEyeStyle == Eye.OPEN && Math.random() < 0.025)
-        //    {
-        //        this.drawEyeStyle = Eye.CLOSED;
-        //    }
-        //    else if (this.drawEyeStyle == Eye.CLOSED && Math.random() < 0.3)
-        //    {
-        //        this.drawEyeStyle = Eye.OPEN;
-        //    }
-        //}
+        public void drawFace(Canvas canvas, double scaleFactor)
+        {
+            if (this.middlePointMass.getVelocity() > 0.004)
+            {
+                this.drawOohFace(canvas, scaleFactor);
+            }
+            else
+            {
+                if (this.drawFaceStyle == Face.SMILE)
+                {
+                    this.drawSmile(canvas, scaleFactor);
+                }
+                else
+                {
+                    this.drawOpenMouth(canvas, scaleFactor);
+                }
 
-        //public void drawFace(Graphics graphics, double scaleFactor)
-        //{
-        //    if (this.middlePointMass.getVelocity() > 0.004)
-        //    {
-        //        this.drawOohFace(graphics, scaleFactor);
-        //    }
-        //    else
-        //    {
-        //        if (this.drawFaceStyle == Face.SMILE)
-        //        {
-        //            this.drawSmile(graphics, scaleFactor);
-        //        }
-        //        else
-        //        {
-        //            this.drawOpenMouth(graphics, scaleFactor);
-        //        }
-
-        //        if (this.drawEyeStyle == Eye.OPEN)
-        //        {
-        //            this.drawEyesOpen(graphics, scaleFactor);
-        //        }
-        //        else
-        //        {
-        //            this.drawEyesClosed(graphics, scaleFactor);
-        //        }
-        //    }
-        //}
+                if (this.drawEyeStyle == Eye.OPEN)
+                {
+                    this.drawEyesOpen(canvas, scaleFactor);
+                }
+                else
+                {
+                    this.drawEyesClosed(canvas, scaleFactor);
+                }
+            }
+        }
 
         public PointMass getPointMass(int index)
         {
@@ -444,73 +567,72 @@ namespace BlobSallad
             return this.pointMasses[index];
         }
 
-        //public void drawBody(Graphics graphics, double scaleFactor)
-        //{
-        //    GeneralPath generalPath = new GeneralPath();
-        //    generalPath.moveTo(this.pointMasses.get(0).getXPos() * scaleFactor, this.pointMasses.get(0).getYPos() * scaleFactor);
+        public void drawBody(Canvas canvas, double scaleFactor)
+        {
+            //    GeneralPath generalPath = new GeneralPath();
+            //    generalPath.moveTo(this.pointMasses.get(0).getXPos() * scaleFactor, this.pointMasses.get(0).getYPos() * scaleFactor);
 
-        //    for (int i = 0; i < this.pointMasses.size(); ++i)
-        //    {
-        //        PointMass prevPointMass = this.getPointMass(i - 1);
-        //        PointMass currentPointMass = this.pointMasses.get(i);
-        //        PointMass nextPointMass = this.getPointMass(i + 1);
-        //        PointMass nextNextPointMass = this.getPointMass(i + 2);
-        //        double tx = nextPointMass.getXPos();
-        //        double ty = nextPointMass.getYPos();
-        //        double cx = currentPointMass.getXPos();
-        //        double cy = currentPointMass.getYPos();
-        //        double px = cx * 0.5 + tx * 0.5;
-        //        double py = cy * 0.5 + ty * 0.5;
-        //        double nx = cx - prevPointMass.getXPos() + tx - nextNextPointMass.getXPos();
-        //        double ny = cy - prevPointMass.getYPos() + ty - nextNextPointMass.getYPos();
-        //        px += nx * 0.16;
-        //        py += ny * 0.16;
-        //        px *= scaleFactor;
-        //        py *= scaleFactor;
-        //        tx *= scaleFactor;
-        //        ty *= scaleFactor;
-        //        generalPath.curveTo(px, py, tx, ty, tx, ty);
-        //    }
+            //    for (int i = 0; i < this.pointMasses.size(); ++i)
+            //    {
+            //        PointMass prevPointMass = this.getPointMass(i - 1);
+            //        PointMass currentPointMass = this.pointMasses.get(i);
+            //        PointMass nextPointMass = this.getPointMass(i + 1);
+            //        PointMass nextNextPointMass = this.getPointMass(i + 2);
+            //        double tx = nextPointMass.getXPos();
+            //        double ty = nextPointMass.getYPos();
+            //        double cx = currentPointMass.getXPos();
+            //        double cy = currentPointMass.getYPos();
+            //        double px = cx * 0.5 + tx * 0.5;
+            //        double py = cy * 0.5 + ty * 0.5;
+            //        double nx = cx - prevPointMass.getXPos() + tx - nextNextPointMass.getXPos();
+            //        double ny = cy - prevPointMass.getYPos() + ty - nextNextPointMass.getYPos();
+            //        px += nx * 0.16;
+            //        py += ny * 0.16;
+            //        px *= scaleFactor;
+            //        py *= scaleFactor;
+            //        tx *= scaleFactor;
+            //        ty *= scaleFactor;
+            //        generalPath.curveTo(px, py, tx, ty, tx, ty);
+            //    }
 
-        //    generalPath.closePath();
-        //    BasicStroke stroke = new BasicStroke(5.0F);
-        //    Color color = this.selected ? highlight : normal;
+            //    generalPath.closePath();
+            //    BasicStroke stroke = new BasicStroke(5.0F);
+            //    Color color = this.selected ? highlight : normal;
 
-        //    Graphics2D g2d = (Graphics2D)graphics;
-        //    g2d.setColor(Color.BLACK);
-        //    g2d.setStroke(stroke);
-        //    g2d.draw(generalPath);
-        //    g2d.setColor(color);
-        //    g2d.fill(generalPath);
-        //}
+            //    Graphics2D g2d = (Graphics2D)graphics;
+            //    g2d.setColor(Color.BLACK);
+            //    g2d.setStroke(stroke);
+            //    g2d.draw(generalPath);
+            //    g2d.setColor(color);
+            //    g2d.fill(generalPath);
+        }
 
-        //public void drawSimpleBody(Graphics graphics, double scaleFactor)
-        //{
-        //    for (Stick stick : this.sticks)
-        //        stick.draw(graphics, scaleFactor);
+        public void drawSimpleBody(Canvas canvas, double scaleFactor)
+        {
+            foreach (var stick in sticks)
+                stick.draw(canvas, scaleFactor);
 
-        //    for (PointMass pointMass : this.pointMasses)
-        //        pointMass.draw(graphics, scaleFactor);
-        //}
+            foreach (var pointMass in pointMasses)
+                pointMass.draw(canvas, scaleFactor);
+        }
 
-        //public void draw(Graphics graphics, double scaleFactor)
-        //{
-        //    Graphics2D g2 = (Graphics2D)graphics;
-        //    this.drawBody(g2, scaleFactor);
-        //    graphics.setColor(Color.WHITE);
-        //    AffineTransform savedTransform = g2.getTransform();
-        //    readonly double tx = this.middlePointMass.getXPos() * scaleFactor;
-        //    readonly double ty = (this.middlePointMass.getYPos() - 0.35 * this.radius) * scaleFactor;
-        //    g2.translate(tx, ty);
-        //    Vector up = new Vector(0.0, -1.0);
-        //    Vector ori = new Vector(0.0, 0.0);
-        //    ori.set(this.pointMasses.get(0).getPos());
-        //    ori.sub(this.middlePointMass.getPos());
-        //    double ang = Math.acos(ori.dotProd(up) / ori.length());
-        //    g2.rotate(ori.getX() < 0.0 ? -ang : ang);
-        //    this.updateFace();
-        //    this.drawFace(g2, scaleFactor);
-        //    g2.setTransform(savedTransform);
-        //}
+        public void draw(Canvas canvas, double scaleFactor)
+        {
+            drawBody(canvas, scaleFactor);
+            //    graphics.setColor(Color.WHITE);
+            //    AffineTransform savedTransform = g2.getTransform();
+            //    readonly double tx = this.middlePointMass.getXPos() * scaleFactor;
+            //    readonly double ty = (this.middlePointMass.getYPos() - 0.35 * this.radius) * scaleFactor;
+            //    g2.translate(tx, ty);
+            Vector up = new Vector(0.0, -1.0);
+            Vector ori = new Vector(0.0, 0.0);
+            ori.set(this.pointMasses[0].getPos());
+            ori.sub(this.middlePointMass.getPos());
+            double ang = Math.Acos(ori.dotProd(up) / ori.length());
+            //    g2.rotate(ori.getX() < 0.0 ? -ang : ang);
+            this.updateFace();
+            this.drawFace(canvas, scaleFactor);
+            //    g2.setTransform(savedTransform);
+        }
     }
 }

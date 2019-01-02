@@ -4,8 +4,10 @@ using BlobSallad;
 using NUnit.Framework;
 using System;
 using System.Threading;
-using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Shapes;
+using Environment = BlobSallad.Environment;
 
 namespace BlobSalladTests
 {
@@ -27,125 +29,98 @@ namespace BlobSalladTests
             Assert.AreEqual(1.0, pointMas.getMass());
         }
 
-        //[Test]
-        //public void ctorPointMassesTest()
-        //{
-        //    Blob blob = new Blob(41.0, 43.0, 23.0, 5);
+        [Test]
+        public void ctorPointMassesTest()
+        {
+            var canvas = new Canvas { Width = 100, Height = 100 };
 
-        //    BufferedImage image = new BufferedImage(100, 100, TYPE_INT_RGB);
-        //    Graphics2D graphics = image.createGraphics();
-        //    try
-        //    {
-        //        graphics.setPaint(Color.WHITE);
-        //        graphics.fillRect(0, 0, image.getWidth(), image.getHeight());
-        //        graphics.setColor(Color.BLACK);
-        //        BasicStroke stroke = new BasicStroke(1.0F);
-        //        graphics.setStroke(stroke);
+            var blob = new Blob(41.0, 43.0, 23.0, 5);
+            var pointMasses = blob.getPointMasses();
+            foreach (var pointMass in pointMasses)
+                DrawDot(canvas, Brushes.Black, pointMass.getMass(), pointMass.getXPos(), pointMass.getYPos());
 
-        //        PointMass[] pointMasses = blob.getPointMasses();
-        //        for (PointMass pointMass : pointMasses)
-        //        {
-        //            Arc2D.Double arc = new Arc2D.Double();
-        //            final double x = pointMass.getXPos();
-        //            final double y = pointMass.getYPos();
-        //            final double radius = pointMass.getMass();
-        //            final double angSt = 0.0;
-        //            final double angExt = -360.0;
-        //            final int closure = 0;
-        //            arc.setArcByCenter(x, y, radius, angSt, angExt, closure);
-        //            graphics.draw(arc);
-        //        }
+            var wpf = new ContentControl { Content = canvas };
+            WpfApprovals.Verify(wpf);
+        }
 
-        //        Approvals.verify(image);
-        //    }
-        //    finally
-        //    {
-        //        graphics.dispose();
-        //    }
-        //}
+        [Test]
+        public void ctorSticksTest()
+        {
+            var canvas = new Canvas { Width = 100, Height = 100 };
 
-        //[Test]
-        //public void ctorSticksTest()
-        //{
-        //    Blob blob = new Blob(41.0, 43.0, 23.0, 5);
+            var blob = new Blob(41.0, 43.0, 23.0, 5);
+            var sticks = blob.getSticks();
+            foreach (var stick in sticks)
+                stick.draw(canvas, 1.0);
 
-        //    BufferedImage image = new BufferedImage(100, 100, TYPE_INT_RGB);
-        //    Graphics2D graphics = image.createGraphics();
-        //    try
-        //    {
-        //        graphics.setPaint(Color.WHITE);
-        //        graphics.fillRect(0, 0, image.getWidth(), image.getHeight());
-        //        graphics.setColor(Color.BLACK);
-        //        BasicStroke stroke = new BasicStroke(1.0F);
-        //        graphics.setStroke(stroke);
+            var wpf = new ContentControl { Content = canvas };
+            WpfApprovals.Verify(wpf);
+        }
 
-        //        Stick[] sticks = blob.getSticks();
-        //        for (Stick stick : sticks)
-        //            stick.draw(graphics, 1.0);
+        [Test]
+        public void ctorJointsTest()
+        {
+            var canvas = new Canvas { Width = 100, Height = 100 };
 
-        //        Approvals.verify(image);
-        //    }
-        //    finally
-        //    {
-        //        graphics.dispose();
-        //    }
-        //}
+            var blob = new Blob(41.0, 43.0, 23.0, 5);
+            var middlePointMass = blob.getMiddlePointMass();
+            DrawDot(canvas, Brushes.Blue, middlePointMass.getMass(), middlePointMass.getXPos(), middlePointMass.getYPos());
 
-        //[Test]
-        //public void ctorJointsTest()
-        //{
-        //    Blob blob = new Blob(41.0, 43.0, 23.0, 5);
+            var joints = blob.getJoints();
+            foreach (var joint in joints)
+            {
+                PointMass pointMassA = joint.getPointMassA();
+                PointMass pointMassB = joint.getPointMassB();
+                DrawDot(canvas, Brushes.Red, pointMassA.getMass(), pointMassA.getXPos(), pointMassA.getYPos());
+                DrawLine(canvas, Brushes.Black, 
+                        pointMassA.getXPos(), pointMassA.getYPos(),
+                        pointMassB.getXPos(), pointMassB.getYPos());
+            }
 
-        //    BufferedImage image = new BufferedImage(100, 100, TYPE_INT_RGB);
-        //    Graphics2D graphics = image.createGraphics();
-        //    try
-        //    {
-        //        graphics.setPaint(Color.WHITE);
-        //        graphics.fillRect(0, 0, image.getWidth(), image.getHeight());
-        //        BasicStroke stroke = new BasicStroke(1.0F);
-        //        graphics.setStroke(stroke);
+            var wpf = new ContentControl { Content = canvas };
+            WpfApprovals.Verify(wpf);
+        }
 
-        //        final PointMass middlePointMass = blob.getMiddlePointMass();
-        //        DrawDot(graphics, Color.BLUE, 2.0, middlePointMass.getXPos(), middlePointMass.getYPos());
+        private void DrawDot(Canvas canvas, Brush brush, double radius, double x, double y)
+        {
+            var circle = new Ellipse
+            {
+                Width = 2.0 * radius,
+                Height = 2.0 * radius,
+                Fill = System.Windows.Media.Brushes.Black,
+                Stroke = System.Windows.Media.Brushes.Black,
+                StrokeThickness = 1.0,
+                // RenderTransform = translateTransform,
+            };
 
-        //        Joint[] joints = blob.getJoints();
-        //        for (Joint joint : joints)
-        //        {
-        //            PointMass pointMassA = joint.getPointMassA();
-        //            PointMass pointMassB = joint.getPointMassB();
-        //            DrawDot(graphics, Color.RED, 2.0, pointMassA.getXPos(), pointMassA.getYPos());
-        //            DrawLine(graphics, Color.BLACK,
-        //                    pointMassA.getXPos(), pointMassA.getYPos(),
-        //                    pointMassB.getXPos(), pointMassB.getYPos());
-        //        }
+            Canvas.SetLeft(circle, x - radius);
+            Canvas.SetTop(circle, y - radius);
 
-        //        Approvals.verify(image);
-        //    }
-        //    finally
-        //    {
-        //        graphics.dispose();
-        //    }
-        //}
+            canvas.Children.Add(circle);
+        }
 
-        //private void DrawDot(Graphics2D graphics, Color color, double radius, double x, double y)
-        //{
-        //    graphics.setColor(color);
-        //    Arc2D.Double arc = new Arc2D.Double();
-        //    final double angSt = 0.0;
-        //    final double angExt = -360.0;
-        //    final int closure = 0;
-        //    arc.setArcByCenter(x, y, radius, angSt, angExt, closure);
-        //    graphics.draw(arc);
-        //}
+        private void DrawLine(Canvas canvas, Brush brush, double x1, double y1, double x2, double y2)
+        {
+            var startPoint = new System.Windows.Point(x1, y1);
+            var pathFigure = new PathFigure { StartPoint = startPoint };
 
-        //private void DrawLine(Graphics2D graphics, Color color, double x1, double y1, double x2, double y2)
-        //{
-        //    graphics.setColor(color);
-        //    GeneralPath generalPath = new GeneralPath();
-        //    generalPath.moveTo(x1, y1);
-        //    generalPath.lineTo(x2, y2);
-        //    graphics.draw(generalPath);
-        //}
+            var point = new System.Windows.Point(x2, y2);
+            var lineSegment1A = new LineSegment { Point = point };
+            pathFigure.Segments.Add(lineSegment1A);
+
+            var pathFigureCollection = new PathFigureCollection { pathFigure };
+            var pathGeometry = new PathGeometry { Figures = pathFigureCollection };
+
+            var path = new Path
+            {
+                Stroke = brush,
+                StrokeThickness = 1.0,
+                Data = pathGeometry,
+                // RenderTransform = translateTransform
+            };
+
+            canvas.Children.Add(path);
+        }
 
         [Test]
         public void ctorPointMassTest()
@@ -158,7 +133,7 @@ namespace BlobSalladTests
                 double mass = i < 2 ? 4.0 : 1.0;
                 Assert.AreEqual(mass, pointMas.getMass());
 
-                double theta = (double)i * 2.0 * Math.PI / (double)5;
+                double theta = (double) i * 2.0 * Math.PI / (double) 5;
                 double cx = Math.Cos(theta) * 11.0 + 71.0;
                 double cy = Math.Sin(theta) * 11.0 + 67.0;
                 Assert.AreEqual(cx, pointMas.getXPos());
@@ -177,125 +152,81 @@ namespace BlobSalladTests
             Assert.AreEqual(0.0, joint.getLongConst(), 0.01);
         }
 
-        //[Test]
-        //public void addBlobTest()
-        //{
-        //    Blob blob1 = new Blob(17.0, 19.0, 11.0, 5);
-        //    Blob blob2 = new Blob(59.0, 61.0, 13.0, 5);
-        //    blob1.addBlob(blob2);
+        [Test]
+        public void addBlobTest()
+        {
+            var canvas = new Canvas { Width = 100, Height = 100 };
 
-        //    BufferedImage image = new BufferedImage(100, 100, TYPE_INT_RGB);
-        //    Graphics2D graphics = image.createGraphics();
-        //    try
-        //    {
-        //        graphics.setPaint(Color.WHITE);
-        //        graphics.fillRect(0, 0, image.getWidth(), image.getHeight());
-        //        BasicStroke stroke = new BasicStroke(1.0F);
-        //        graphics.setStroke(stroke);
+            Blob blob1 = new Blob(17.0, 19.0, 11.0, 5);
+            Blob blob2 = new Blob(59.0, 61.0, 13.0, 5);
+            blob1.addBlob(blob2);
 
-        //        final PointMass middlePointMass = blob1.getMiddlePointMass();
-        //        DrawDot(graphics, Color.BLUE, 2.0, middlePointMass.getXPos(), middlePointMass.getYPos());
+            var middlePointMass = blob1.getMiddlePointMass();
+            DrawDot(canvas, Brushes.Blue, middlePointMass.getMass(), middlePointMass.getXPos(), middlePointMass.getYPos());
 
-        //        blob2.drawSimpleBody(graphics, 1.0);
+            blob2.drawSimpleBody(canvas, 1.0);
 
-        //        Joint[] joints = blob1.getJoints();
-        //        for (Joint joint : joints)
-        //        {
-        //            PointMass pointMassA = joint.getPointMassA();
-        //            PointMass pointMassB = joint.getPointMassB();
-        //            DrawDot(graphics, Color.RED, 2.0, pointMassA.getXPos(), pointMassA.getYPos());
-        //            DrawLine(graphics, Color.BLACK,
-        //                    pointMassA.getXPos(), pointMassA.getYPos(),
-        //                    pointMassB.getXPos(), pointMassB.getYPos());
-        //        }
+            var joints = blob1.getJoints();
+            foreach (var joint in joints)
+            {
+                PointMass pointMassA = joint.getPointMassA();
+                PointMass pointMassB = joint.getPointMassB();
+                DrawDot(canvas, Brushes.Red, 2.0, pointMassA.getXPos(), pointMassA.getYPos());
+                DrawLine(canvas, Brushes.Black, 
+                        pointMassA.getXPos(), pointMassA.getYPos(),
+                        pointMassB.getXPos(), pointMassB.getYPos());
+            }
 
-        //        Approvals.verify(image);
-        //    }
-        //    finally
-        //    {
-        //        graphics.dispose();
-        //    }
-        //}
+            var wpf = new ContentControl { Content = canvas };
+            WpfApprovals.Verify(wpf);
+        }
 
-        //[Test]
-        //public void scaleTest()
-        //{
-        //    Blob blob = new Blob(41.0, 43.0, 23.0, 5);
-        //    blob.scale(3.0);
+        [Test]
+        public void scaleTest()
+        {
+            var canvas = new Canvas { Width = 100, Height = 100 };
 
-        //    BufferedImage image = new BufferedImage(100, 100, TYPE_INT_RGB);
-        //    Graphics2D graphics = image.createGraphics();
-        //    try
-        //    {
-        //        graphics.setPaint(Color.WHITE);
-        //        graphics.fillRect(0, 0, image.getWidth(), image.getHeight());
-        //        BasicStroke stroke = new BasicStroke(1.0F);
-        //        graphics.setStroke(stroke);
-        //        graphics.translate(50.0, 50.0);
+            var blob = new Blob(41.0, 43.0, 23.0, 5);
+            blob.scale(3.0);
+            blob.drawSmile(canvas, 1.0);
+            blob.drawEyesOpen(canvas, 1.0);
 
-        //        blob.drawSmile(graphics, 1.0);
-        //        blob.drawEyesOpen(graphics, 1.0);
-        //        Approvals.verify(image);
-        //    }
-        //    finally
-        //    {
-        //        graphics.dispose();
-        //    }
-        //}
+            var wpf = new ContentControl { Content = canvas };
+            WpfApprovals.Verify(wpf);
+        }
 
-        //[Test]
-        //void moveTest()
-        //{
-        //    Blob blob = new Blob(41.0, 43.0, 23.0, 5);
-        //    blob.setForce(new Vector(3.0, 3.0));
-        //    blob.move(2.0);
+        [Test]
+        public void moveTest()
+        {
+            var canvas = new Canvas { Width = 100, Height = 100 };
 
-        //    BufferedImage image = new BufferedImage(100, 100, TYPE_INT_RGB);
-        //    Graphics2D graphics = image.createGraphics();
-        //    try
-        //    {
-        //        graphics.setPaint(Color.WHITE);
-        //        graphics.fillRect(0, 0, image.getWidth(), image.getHeight());
-        //        BasicStroke stroke = new BasicStroke(1.0F);
-        //        graphics.setStroke(stroke);
+            Blob blob = new Blob(41.0, 43.0, 23.0, 5);
+            blob.setForce(new Vector(3.0, 3.0));
+            blob.move(2.0);
 
-        //        final PointMass middlePointMass = blob.getMiddlePointMass();
-        //        DrawDot(graphics, Color.BLUE, 2.0, middlePointMass.getXPos(), middlePointMass.getYPos());
-        //        blob.drawSimpleBody(graphics, 1.0);
-        //        Approvals.verify(image);
-        //    }
-        //    finally
-        //    {
-        //        graphics.dispose();
-        //    }
-        //}
+            var middlePointMass = blob.getMiddlePointMass();
+            DrawDot(canvas, Brushes.Blue, 2.0, middlePointMass.getXPos(), middlePointMass.getYPos());
+            blob.drawSimpleBody(canvas, 1.0);
 
-        //[Test]
-        //void scTest()
-        //{
-        //    Environment environment = new Environment(0.0, 0.0, 100.0, 100.0);
-        //    Blob blob = new Blob(71.0, 67.0, 23.0, 5);
-        //    blob.setForce(new Vector(3.0, 3.0));
-        //    blob.move(3.0);
-        //    blob.sc(environment);
+            var wpf = new ContentControl { Content = canvas };
+            WpfApprovals.Verify(wpf);
+        }
 
-        //    BufferedImage image = new BufferedImage(100, 100, TYPE_INT_RGB);
-        //    Graphics2D graphics = image.createGraphics();
-        //    try
-        //    {
-        //        graphics.setPaint(Color.WHITE);
-        //        graphics.fillRect(0, 0, image.getWidth(), image.getHeight());
-        //        BasicStroke stroke = new BasicStroke(1.0F);
-        //        graphics.setStroke(stroke);
+        [Test]
+        public void scTest()
+        {
+            var canvas = new Canvas { Width = 100, Height = 100 };
 
-        //        blob.drawSimpleBody(graphics, 1.0);
-        //        Approvals.verify(image);
-        //    }
-        //    finally
-        //    {
-        //        graphics.dispose();
-        //    }
-        //}
+            var environment = new Environment(0.0, 0.0, 100.0, 100.0);
+            var blob = new Blob(71.0, 67.0, 23.0, 5);
+            blob.setForce(new Vector(3.0, 3.0));
+            blob.move(3.0);
+            blob.sc(environment);
+            blob.drawSimpleBody(canvas, 1.0);
+
+            var wpf = new ContentControl { Content = canvas };
+            WpfApprovals.Verify(wpf);
+        }
 
         [Test]
         public void setForceTest()
@@ -303,32 +234,21 @@ namespace BlobSalladTests
             // TODO:
         }
 
-        //[Test]
-        //void moveToTest()
-        //{
-        //    Blob blob = new Blob(41.0, 43.0, 23.0, 5);
-        //    blob.moveTo(61.0, 59.0);
+        [Test]
+        public void moveToTest()
+        {
+            var canvas = new Canvas {Width = 100, Height = 100};
 
-        //    BufferedImage image = new BufferedImage(100, 100, TYPE_INT_RGB);
-        //    Graphics2D graphics = image.createGraphics();
-        //    try
-        //    {
-        //        graphics.setPaint(Color.WHITE);
-        //        graphics.fillRect(0, 0, image.getWidth(), image.getHeight());
-        //        BasicStroke stroke = new BasicStroke(1.0F);
-        //        graphics.setStroke(stroke);
+            Blob blob = new Blob(41.0, 43.0, 23.0, 5);
+            blob.moveTo(61.0, 59.0);
+            blob.drawSimpleBody(canvas, 1.0);
 
-        //        final PointMass middlePointMass = blob.getMiddlePointMass();
-        //        DrawDot(graphics, Color.BLUE, 2.0, middlePointMass.getXPos(), middlePointMass.getYPos());
+            var middlePointMass = blob.getMiddlePointMass();
+            DrawDot(canvas, Brushes.Blue, 2.0, middlePointMass.getXPos(), middlePointMass.getXPos());
 
-        //        blob.drawSimpleBody(graphics, 1.0);
-        //        Approvals.verify(image);
-        //    }
-        //    finally
-        //    {
-        //        graphics.dispose();
-        //    }
-        //}
+            var wpf = new ContentControl {Content = canvas};
+            WpfApprovals.Verify(wpf);
+        }
 
         [Test]
         public void addForceTest()
@@ -336,183 +256,100 @@ namespace BlobSalladTests
             // TODO:
         }
 
-        //[Test]
-        //public void drawHappyEyes1Test()
-        //{
-        //    Blob blob = new Blob(7.0, 11.0, 13.0, 5);
+        [Test]
+        public void drawEyesOpenTest()
+        {
+            var canvas = new Canvas {Width = 100, Height = 100};
 
-        //    BufferedImage image = new BufferedImage(100, 100, TYPE_INT_RGB);
-        //    Graphics2D graphics = image.createGraphics();
-        //    try
-        //    {
-        //        graphics.setPaint(Color.WHITE);
-        //        graphics.fillRect(0, 0, image.getWidth(), image.getHeight());
+            var blob = new Blob(50.0, 50.0, 25.0, 5);
+            blob.drawEyesOpen(canvas, 3.0);
 
-        //        final double tx = blob.getMiddlePointMass().getXPos() * 6.0;
-        //        final double ty = (blob.getMiddlePointMass().getYPos() - 0.35 * 11.0) * 6.0;
-        //        graphics.translate(tx, ty);
+            var wpf = new ContentControl {Content = canvas};
+            WpfApprovals.Verify(wpf);
+        }
 
-        //        blob.drawEyesOpen(graphics, 5.0);
-        //        Approvals.verify(image);
-        //    }
-        //    finally
-        //    {
-        //        graphics.dispose();
-        //    }
-        //}
+        [Test]
+        public void drawEyesClosedTest()
+        {
+            var canvas = new Canvas {Width = 100, Height = 100};
 
-        //[Test]
-        //public void drawHappyEyes2Test()
-        //{
-        //    Blob blob = new Blob(7.0, 11.0, 13.0, 5);
+            var blob = new Blob(50.0, 50.0, 25.0, 5);
+            blob.drawEyesClosed(canvas, 3.0);
 
-        //    BufferedImage image = new BufferedImage(100, 100, TYPE_INT_RGB);
-        //    Graphics2D graphics = image.createGraphics();
-        //    try
-        //    {
-        //        graphics.setPaint(Color.WHITE);
-        //        graphics.fillRect(0, 0, image.getWidth(), image.getHeight());
+            var wpf = new ContentControl {Content = canvas};
+            WpfApprovals.Verify(wpf);
+        }
 
-        //        final double tx = blob.getMiddlePointMass().getXPos() * 6.0;
-        //        final double ty = (blob.getMiddlePointMass().getYPos() - 0.35 * 11.0) * 6.0;
-        //        graphics.translate(tx, ty);
+        [Test]
+        public void drawSmileTest()
+        {
+            var canvas = new Canvas {Width = 100, Height = 100};
 
-        //        blob.drawEyesClosed(graphics, 5.0);
-        //        Approvals.verify(image);
-        //    }
-        //    finally
-        //    {
-        //        graphics.dispose();
-        //    }
-        //}
+            var blob = new Blob(50.0, 50.0, 25.0, 5);
+            blob.drawSmile(canvas, 3.0);
 
-        //[Test]
-        //public void drawHappyFace1Test()
-        //{
-        //    Blob blob = new Blob(7.0, 11.0, 13.0, 5);
+            var wpf = new ContentControl {Content = canvas};
+            WpfApprovals.Verify(wpf);
+        }
 
-        //    BufferedImage image = new BufferedImage(100, 100, TYPE_INT_RGB);
-        //    Graphics2D graphics = image.createGraphics();
-        //    try
-        //    {
-        //        graphics.setPaint(Color.WHITE);
-        //        graphics.fillRect(0, 0, image.getWidth(), image.getHeight());
+        [Test]
+        public void drawOpenMouthTest()
+        {
+            var canvas = new Canvas {Width = 100, Height = 100};
 
-        //        final double tx = blob.getMiddlePointMass().getXPos() * 6.0;
-        //        final double ty = (blob.getMiddlePointMass().getYPos() - 0.35 * 11.0) * 6.0;
-        //        graphics.translate(tx, ty);
+            var blob = new Blob(50.0, 50.0, 25.0, 5);
+            blob.drawOpenMouth(canvas, 3.0);
 
-        //        blob.drawSmile(graphics, 5.0);
-        //        Approvals.verify(image);
-        //    }
-        //    finally
-        //    {
-        //        graphics.dispose();
-        //    }
-        //}
-
-        //[Test]
-        //public void drawHappyFace2Test()
-        //{
-        //    Blob blob = new Blob(7.0, 11.0, 13.0, 5);
-
-        //    BufferedImage image = new BufferedImage(100, 100, TYPE_INT_RGB);
-        //    Graphics2D graphics = image.createGraphics();
-        //    try
-        //    {
-        //        graphics.setPaint(Color.WHITE);
-        //        graphics.fillRect(0, 0, image.getWidth(), image.getHeight());
-
-        //        final double tx = blob.getMiddlePointMass().getXPos() * 6.0;
-        //        final double ty = (blob.getMiddlePointMass().getYPos() - 0.35 * 11.0) * 6.0;
-        //        graphics.translate(tx, ty);
-
-        //        blob.drawOpenMouth(graphics, 5.0);
-        //        Approvals.verify(image);
-        //    }
-        //    finally
-        //    {
-        //        graphics.dispose();
-        //    }
-        //}
+            var wpf = new ContentControl {Content = canvas};
+            WpfApprovals.Verify(wpf);
+        }
 
         [Test]
         public void drawOohFaceTest()
         {
-            var panel = new Canvas {Width = 100, Height = 100};
+            var canvas = new Canvas {Width = 100, Height = 100};
 
             var blob = new Blob(50.0, 50.0, 25.0, 5);
-            blob.drawOohFace(panel, 3.0);
+            blob.drawOohFace(canvas, 3.0);
 
-            var wpf = new ContentControl {Content = panel};
+            var wpf = new ContentControl {Content = canvas};
             WpfApprovals.Verify(wpf);
         }
 
-        //[Test]
-        //public void drawFaceTest()
-        //{
-        //    Blob blob = new Blob(7.0, 11.0, 13.0, 5);
+        [Test]
+        public void drawFaceTest()
+        {
+            var canvas = new Canvas {Width = 100, Height = 100};
 
-        //    BufferedImage image = new BufferedImage(100, 100, TYPE_INT_RGB);
-        //    Graphics2D graphics = image.createGraphics();
-        //    try
-        //    {
-        //        graphics.setPaint(Color.WHITE);
-        //        graphics.fillRect(0, 0, image.getWidth(), image.getHeight());
+            var blob = new Blob(50.0, 50.0, 25.0, 5);
+            blob.drawFace(canvas, 3.0);
 
-        //        final double tx = blob.getMiddlePointMass().getXPos() * 6.0;
-        //        final double ty = (blob.getMiddlePointMass().getYPos() - 0.35 * 11.0) * 6.0;
-        //        graphics.translate(tx, ty);
+            var wpf = new ContentControl {Content = canvas};
+            WpfApprovals.Verify(wpf);
+        }
 
-        //        blob.drawFace(graphics, 6.0);
-        //        Approvals.verify(image);
-        //    }
-        //    finally
-        //    {
-        //        graphics.dispose();
-        //    }
-        //}
+        [Test]
+        public void drawSimpleBodyTest()
+        {
+            var canvas = new Canvas {Width = 100, Height = 100};
 
-        //[Test]
-        //public void drawSimpleBodyTest()
-        //{
-        //    Blob blob = new Blob(13.0, 17.0, 11.0, 5);
+            var blob = new Blob(50.0, 50.0, 25.0, 5);
+            blob.drawSimpleBody(canvas, 1.0);
 
-        //    BufferedImage image = new BufferedImage(200, 200, TYPE_INT_RGB);
-        //    Graphics2D graphics = image.createGraphics();
-        //    try
-        //    {
-        //        graphics.setPaint(Color.WHITE);
-        //        graphics.fillRect(0, 0, image.getWidth(), image.getHeight());
+            var wpf = new ContentControl {Content = canvas};
+            WpfApprovals.Verify(wpf);
+        }
 
-        //        blob.drawSimpleBody(graphics, 5.0);
-        //        Approvals.verify(image);
-        //    }
-        //    finally
-        //    {
-        //        graphics.dispose();
-        //    }
-        //}
+        [Test]
+        public void drawTest()
+        {
+            var canvas = new Canvas {Width = 200, Height = 200};
 
-        //// [Test]
-        //public void drawTest()
-        //{
-        //    Blob blob = new Blob(13.0, 17.0, 11.0, 5);
+            var blob = new Blob(13.0, 17.0, 11.0, 5);
+            blob.draw(canvas, 5.0);
 
-        //    BufferedImage image = new BufferedImage(200, 200, TYPE_INT_RGB);
-        //    Graphics2D graphics = image.createGraphics();
-        //    try
-        //    {
-        //        graphics.setPaint(Color.WHITE);
-        //        graphics.fillRect(0, 0, image.getWidth(), image.getHeight());
-
-        //        blob.draw(graphics, 5.0);
-        //        Approvals.verify(image);
-        //    }
-        //    finally
-        //    {
-        //        graphics.dispose();
-        //    }
-        //}
+            var wpf = new ContentControl {Content = canvas};
+            WpfApprovals.Verify(wpf);
+        }
     }
 }

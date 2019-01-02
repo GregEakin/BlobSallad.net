@@ -1,4 +1,6 @@
-﻿namespace BlobSallad
+﻿using System.Windows.Controls;
+
+namespace BlobSallad
 {
     public class Environment
     {
@@ -76,8 +78,8 @@
             return false;
         }
 
-        //public void draw(Graphics graphics, double scaleFactor)
-        //{
-        //}
+        public void draw(Canvas canvas, double scaleFactor)
+        {
+        }
     }
 }
