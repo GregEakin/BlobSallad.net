@@ -6,106 +6,106 @@ namespace BlobSalladTests
     public class VectorTests
     {
         [Test]
-        public void ctorTest()
+        public void CtorTest()
         {
             Vector vector = new Vector(71, 67);
-            Assert.AreEqual(71.0, vector.getX());
-            Assert.AreEqual(67.0, vector.getY());
+            Assert.AreEqual(71.0, vector.GetX());
+            Assert.AreEqual(67.0, vector.GetY());
         }
 
         [Test]
-        public void addXTest()
+        public void AddXTest()
         {
             Vector vector = new Vector(71.0, 67.0);
-            vector.addX(100.0);
-            Assert.AreEqual(171.0, vector.getX());
+            vector.AddX(100.0);
+            Assert.AreEqual(171.0, vector.GetX());
         }
 
         [Test]
-        public void addYTest()
+        public void AddYTest()
         {
             Vector vector = new Vector(71.0, 67.0);
-            vector.addY(100.0);
-            Assert.AreEqual(167.0, vector.getY());
+            vector.AddY(100.0);
+            Assert.AreEqual(167.0, vector.GetY());
         }
 
         [Test]
-        public void setTest()
+        public void SetTest()
         {
             Vector vector = new Vector(71.0, 67.0);
             Vector setter = new Vector(61.0, 59.0);
-            vector.set(setter);
-            Assert.AreEqual(61.0, vector.getX());
-            Assert.AreEqual(59.0, vector.getY());
+            vector.Set(setter);
+            Assert.AreEqual(61.0, vector.GetX());
+            Assert.AreEqual(59.0, vector.GetY());
         }
 
         [Test]
-        public void addTest()
+        public void AddTest()
         {
             Vector vector = new Vector(71.0, 67.0);
             Vector setter = new Vector(13.0, 11.0);
-            vector.add(setter);
-            Assert.AreEqual(84.0, vector.getX());
-            Assert.AreEqual(78.0, vector.getY());
+            vector.Add(setter);
+            Assert.AreEqual(84.0, vector.GetX());
+            Assert.AreEqual(78.0, vector.GetY());
         }
 
         [Test]
-        public void subTest()
+        public void SubTest()
         {
             Vector vector = new Vector(71.0, 67.0);
             Vector setter = new Vector(13.0, 11.0);
-            vector.sub(setter);
-            Assert.AreEqual(58.0, vector.getX());
-            Assert.AreEqual(56.0, vector.getY());
+            vector.Sub(setter);
+            Assert.AreEqual(58.0, vector.GetX());
+            Assert.AreEqual(56.0, vector.GetY());
         }
 
         [Test]
-        public void dotTest()
+        public void DotTest()
         {
             Vector vector = new Vector(71.0, 67.0);
             Vector setter = new Vector(13.0, 11.0);
-            double dot = vector.dotProd(setter);
+            double dot = vector.DotProd(setter);
             Assert.AreEqual(1660.0, dot);
         }
 
         [Test]
-        public void lengthTest()
+        public void LengthTest()
         {
             Vector vector = new Vector(71.0, 67.0);
-            double length = vector.length();
+            double length = vector.Length();
             Assert.AreEqual(97.621, length, 0.01);
         }
 
         [Test]
-        public void scaleTest()
+        public void ScaleTest()
         {
             Vector vector = new Vector(71.0, 67.0);
-            vector.scale(2.0);
-            Assert.AreEqual(142.0, vector.getX());
-            Assert.AreEqual(134.0, vector.getY());
+            vector.Scale(2.0);
+            Assert.AreEqual(142.0, vector.GetX());
+            Assert.AreEqual(134.0, vector.GetY());
         }
 
         [Test]
-        public void stringTest()
+        public void StringTest()
         {
             Vector vector = new Vector(71.0, 67.0);
-            Assert.AreEqual("(X: 71, Y: 67)", vector.toString());
+            Assert.AreEqual("(X: 71, Y: 67)", vector.ToString());
         }
 
         [Test]
-        public void setXTest()
+        public void SetXTest()
         {
             Vector vector = new Vector(71.0, 67.0);
-            vector.setX(99.0);
-            Assert.AreEqual(99.0, vector.getX());
+            vector.SetX(99.0);
+            Assert.AreEqual(99.0, vector.GetX());
         }
 
         [Test]
-        public void setYTest()
+        public void SetYTest()
         {
             Vector vector = new Vector(71.0, 67.0);
-            vector.setY(99.0);
-            Assert.AreEqual(99.0, vector.getY());
+            vector.SetY(99.0);
+            Assert.AreEqual(99.0, vector.GetY());
         }
     }
 }

@@ -6,108 +6,108 @@ namespace BlobSallad
 {
     public class BlobCollective
     {
-        private readonly int maxNum;
-        private readonly List<Blob> blobs = new List<Blob>();
-        private int numActive = 1;
-        private Blob selectedBlob;
+        private readonly int _maxNum;
+        private readonly List<Blob> _blobs = new List<Blob>();
+        private int _numActive = 1;
+        private Blob _selectedBlob;
 
         public BlobCollective(double x, double y, int maxNum)
         {
-            this.maxNum = maxNum;
-            this.blobs.Add(new Blob(x, y, 0.4, 8));
+            this._maxNum = maxNum;
+            this._blobs.Add(new Blob(x, y, 0.4, 8));
         }
 
-        public int getMaxNum()
+        public int GetMaxNum()
         {
-            return maxNum;
+            return _maxNum;
         }
 
-        public int getNumActive()
+        public int GetNumActive()
         {
-            return numActive;
+            return _numActive;
         }
 
-        public Blob getSelectedBlob()
+        public Blob GetSelectedBlob()
         {
-            return selectedBlob;
+            return _selectedBlob;
         }
 
-        public void split()
+        public void Split()
         {
             double maxRadius = 0.0;
             Blob motherBlob = null;
-            if (this.numActive == this.maxNum)
+            if (this._numActive == this._maxNum)
                 return;
 
-            int emptySlot = this.blobs.Count;
+            int emptySlot = this._blobs.Count;
 
-            for (int i = 0; i < this.blobs.Count; ++i)
+            for (int i = 0; i < this._blobs.Count; ++i)
             {
-                Blob blob = this.blobs[i];
+                Blob blob = this._blobs[i];
                 if (blob == null)
                 {
                     emptySlot = i;
                 }
-                else if (blob.getRadius() > maxRadius)
+                else if (blob.GetRadius() > maxRadius)
                 {
-                    maxRadius = blob.getRadius();
+                    maxRadius = blob.GetRadius();
                     motherBlob = blob;
                 }
             }
 
-            motherBlob.scale(0.75);
-            Blob newBlob = new Blob(motherBlob.getXPos(), motherBlob.getYPos(), motherBlob.getRadius(), 8);
+            motherBlob.Scale(0.75);
+            Blob newBlob = new Blob(motherBlob.GetXPos(), motherBlob.GetYPos(), motherBlob.GetRadius(), 8);
 
-            foreach (var blob in blobs)
+            foreach (var blob in _blobs)
             {
                 if (blob == null)
                     continue;
 
-                blob.addBlob(newBlob);
-                newBlob.addBlob(blob);
+                blob.AddBlob(newBlob);
+                newBlob.AddBlob(blob);
             }
 
-            if (emptySlot >= this.blobs.Count)
-                this.blobs.Add(newBlob);
+            if (emptySlot >= this._blobs.Count)
+                this._blobs.Add(newBlob);
             else
-                this.blobs[emptySlot] = newBlob;
+                this._blobs[emptySlot] = newBlob;
 
-            ++this.numActive;
+            ++this._numActive;
         }
 
-        public int findSmallest(int exclude)
+        public int FindSmallest(int exclude)
         {
             double minRadius = 1000.0;
             int minIndex = 0;
 
-            for (int i = 0; i < this.blobs.Count; ++i)
+            for (int i = 0; i < this._blobs.Count; ++i)
             {
-                Blob blob = this.blobs[i];
-                if (i == exclude || blob == null || blob.getRadius() >= minRadius)
+                Blob blob = this._blobs[i];
+                if (i == exclude || blob == null || blob.GetRadius() >= minRadius)
                     continue;
 
                 minIndex = i;
-                minRadius = blob.getRadius();
+                minRadius = blob.GetRadius();
             }
 
             return minIndex;
         }
 
-        public int findClosest(int exclude)
+        public int FindClosest(int exclude)
         {
             double minDist = 1000.0;
             int foundIndex = 0;
-            PointMass myPointMass = this.blobs[exclude].getMiddlePointMass();
+            PointMass myPointMass = this._blobs[exclude].GetMiddlePointMass();
 
-            for (int i = 0; i < this.blobs.Count; ++i)
+            for (int i = 0; i < this._blobs.Count; ++i)
             {
-                Blob blob = this.blobs[i];
+                Blob blob = this._blobs[i];
                 if (i == exclude || blob == null)
                     continue;
 
-                PointMass otherPointMass = blob.getMiddlePointMass();
-                double aXbX = myPointMass.getXPos() - otherPointMass.getXPos();
-                double aYbY = myPointMass.getYPos() - otherPointMass.getYPos();
+                PointMass otherPointMass = blob.GetMiddlePointMass();
+                double aXbX = myPointMass.GetXPos() - otherPointMass.GetXPos();
+                double aYbY = myPointMass.GetYPos() - otherPointMass.GetYPos();
                 double dist = aXbX * aXbX + aYbY * aYbY;
                 if (dist >= minDist)
                     continue;
@@ -119,132 +119,132 @@ namespace BlobSallad
             return foundIndex;
         }
 
-        public void join()
+        public void Join()
         {
-            if (this.numActive <= 1)
+            if (this._numActive <= 1)
                 return;
 
-            int blob1Index = this.findSmallest(-1);
-            int blob2Index = this.findClosest(blob1Index);
-            double r1 = this.blobs[blob1Index].getRadius();
-            double r2 = this.blobs[blob2Index].getRadius();
+            int blob1Index = this.FindSmallest(-1);
+            int blob2Index = this.FindClosest(blob1Index);
+            double r1 = this._blobs[blob1Index].GetRadius();
+            double r2 = this._blobs[blob2Index].GetRadius();
             double r3 = Math.Sqrt(r1 * r1 + r2 * r2);
-            this.blobs[blob1Index] = null;
-            this.blobs[blob2Index].scale(0.945 * r3 / r2);
-            --this.numActive;
+            this._blobs[blob1Index] = null;
+            this._blobs[blob2Index].Scale(0.945 * r3 / r2);
+            --this._numActive;
         }
 
-        public Point selectBlob(double x, double y)
+        public Point SelectBlob(double x, double y)
         {
-            if (this.selectedBlob != null)
+            if (this._selectedBlob != null)
                 return null;
 
             double minDist = Double.MaxValue;
             Point selectOffset = null;
 
-            foreach (var blob in blobs)
+            foreach (var blob in _blobs)
             {
                 if (blob == null)
                     continue;
 
-                PointMass otherPointMass = blob.getMiddlePointMass();
-                double aXbX = x - otherPointMass.getXPos();
-                double aYbY = y - otherPointMass.getYPos();
+                PointMass otherPointMass = blob.GetMiddlePointMass();
+                double aXbX = x - otherPointMass.GetXPos();
+                double aYbY = y - otherPointMass.GetYPos();
                 double dist = aXbX * aXbX + aYbY * aYbY;
                 if (dist >= minDist)
                     continue;
 
                 minDist = dist;
-                if (dist >= blob.getRadius() / 2.0)
+                if (dist >= blob.GetRadius() / 2.0)
                     continue;
 
-                this.selectedBlob = blob;
+                this._selectedBlob = blob;
                 selectOffset = new Point(aXbX, aYbY);
             }
 
-            if (this.selectedBlob != null)
-                this.selectedBlob.setSelected(true);
+            if (this._selectedBlob != null)
+                this._selectedBlob.SetSelected(true);
 
             return selectOffset;
         }
 
-        public void unselectBlob()
+        public void UnselectBlob()
         {
-            if (this.selectedBlob == null)
+            if (this._selectedBlob == null)
                 return;
 
-            this.selectedBlob.setSelected(false);
-            this.selectedBlob = null;
+            this._selectedBlob.SetSelected(false);
+            this._selectedBlob = null;
         }
 
-        public void selectedBlobMoveTo(double x, double y)
+        public void SelectedBlobMoveTo(double x, double y)
         {
-            if (this.selectedBlob == null)
+            if (this._selectedBlob == null)
                 return;
 
-            this.selectedBlob.moveTo(x, y);
+            this._selectedBlob.MoveTo(x, y);
         }
 
-        public void move(double dt)
+        public void Move(double dt)
         {
-            foreach (var blob in blobs)
+            foreach (var blob in _blobs)
             {
                 if (blob == null)
                     continue;
 
-                blob.move(dt);
+                blob.Move(dt);
             }
         }
 
-        public void sc(Environment env)
+        public void Sc(Environment env)
         {
-            foreach (var blob in blobs)
+            foreach (var blob in _blobs)
             {
                 if (blob == null)
                     continue;
 
-                blob.sc(env);
+                blob.Sc(env);
             }
         }
 
-        public void setForce(Vector force)
+        public void SetForce(Vector force)
         {
-            foreach (var blob in blobs)
+            foreach (var blob in _blobs)
             {
                 if (blob == null)
                     continue;
 
-                Vector force1 = blob == this.selectedBlob
+                Vector force1 = blob == this._selectedBlob
                     ? new Vector(0.0, 0.0)
                     : force;
-                blob.setForce(force1);
+                blob.SetForce(force1);
             }
         }
 
-        private readonly Random random = new Random();
+        private readonly Random _random = new Random();
 
-        public void addForce(Vector force)
+        public void AddForce(Vector force)
         {
-            foreach (var blob in blobs)
+            foreach (var blob in _blobs)
             {
-                if (blob == null || blob == this.selectedBlob)
+                if (blob == null || blob == this._selectedBlob)
                     continue;
 
                 Vector tmpForce = new Vector(0.0, 0.0);
-                tmpForce.setX(force.getX() * (random.NextDouble() * 0.75 + 0.25));
-                tmpForce.setY(force.getY() * (random.NextDouble() * 0.75 + 0.25));
-                blob.addForce(tmpForce);
+                tmpForce.SetX(force.GetX() * (_random.NextDouble() * 0.75 + 0.25));
+                tmpForce.SetY(force.GetY() * (_random.NextDouble() * 0.75 + 0.25));
+                blob.AddForce(tmpForce);
             }
         }
 
-        public void draw(Canvas canvas, double scaleFactor)
+        public void Draw(Canvas canvas, double scaleFactor)
         {
-            foreach (var blob in blobs)
+            foreach (var blob in _blobs)
             {
                 if (blob == null)
                     continue;
 
-                blob.draw(canvas, scaleFactor);
+                blob.Draw(canvas, scaleFactor);
             }
         }
     }

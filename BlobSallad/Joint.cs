@@ -2,85 +2,85 @@
 {
     public class Joint
     {
-        private readonly PointMass pointMassA;
-        private readonly PointMass pointMassB;
-        private readonly Vector pointMassAPos;
-        private readonly Vector pointMassBPos;
-        private double shortConst;
-        private double longConst;
-        private double scSquared;
-        private double lcSquared;
+        private readonly PointMass _pointMassA;
+        private readonly PointMass _pointMassB;
+        private readonly Vector _pointMassAPos;
+        private readonly Vector _pointMassBPos;
+        private double _shortConst;
+        private double _longConst;
+        private double _scSquared;
+        private double _lcSquared;
 
         public Joint(PointMass pointMassA, PointMass pointMassB, double shortConst, double longConst)
         {
-            this.pointMassA = pointMassA;
-            this.pointMassB = pointMassB;
-            this.pointMassAPos = pointMassA.getPos();
-            this.pointMassBPos = pointMassB.getPos();
+            this._pointMassA = pointMassA;
+            this._pointMassB = pointMassB;
+            this._pointMassAPos = pointMassA.GetPos();
+            this._pointMassBPos = pointMassB.GetPos();
 
-            Vector delta = new Vector(this.pointMassBPos);
-            delta.sub(this.pointMassAPos);
-            double length = delta.length();
-            this.shortConst = length * shortConst;
-            this.longConst = length * longConst;
-            this.scSquared = this.shortConst * this.shortConst;
-            this.lcSquared = this.longConst * this.longConst;
+            Vector delta = new Vector(this._pointMassBPos);
+            delta.Sub(this._pointMassAPos);
+            double length = delta.Length();
+            this._shortConst = length * shortConst;
+            this._longConst = length * longConst;
+            this._scSquared = this._shortConst * this._shortConst;
+            this._lcSquared = this._longConst * this._longConst;
         }
 
-        public PointMass getPointMassA()
+        public PointMass GetPointMassA()
         {
-            return pointMassA;
+            return _pointMassA;
         }
 
-        public PointMass getPointMassB()
+        public PointMass GetPointMassB()
         {
-            return pointMassB;
+            return _pointMassB;
         }
 
-        public double getLongConst()
+        public double GetLongConst()
         {
-            return longConst;
+            return _longConst;
         }
 
-        public double getShortConst()
+        public double GetShortConst()
         {
-            return shortConst;
+            return _shortConst;
         }
 
-        public void setDist(double shortConst, double longConst)
+        public void SetDist(double shortConst, double longConst)
         {
-            this.shortConst = shortConst;
-            this.longConst = longConst;
-            this.scSquared = this.shortConst * this.shortConst;
-            this.lcSquared = this.longConst * this.longConst;
+            this._shortConst = shortConst;
+            this._longConst = longConst;
+            this._scSquared = this._shortConst * this._shortConst;
+            this._lcSquared = this._longConst * this._longConst;
         }
 
-        public void scale(double scaleFactor)
+        public void Scale(double scaleFactor)
         {
-            this.shortConst *= scaleFactor;
-            this.longConst *= scaleFactor;
-            this.scSquared = this.shortConst * this.shortConst;
-            this.lcSquared = this.longConst * this.longConst;
+            this._shortConst *= scaleFactor;
+            this._longConst *= scaleFactor;
+            this._scSquared = this._shortConst * this._shortConst;
+            this._lcSquared = this._longConst * this._longConst;
         }
 
-        public void sc()
+        public void Sc()
         {
-            Vector delta = new Vector(this.pointMassBPos);
-            delta.sub(this.pointMassAPos);
-            double dp = delta.dotProd(delta);
-            if (this.shortConst != 0.0 && dp < this.scSquared)
+            Vector delta = new Vector(this._pointMassBPos);
+            delta.Sub(this._pointMassAPos);
+            double dp = delta.DotProd(delta);
+            if (this._shortConst != 0.0 && dp < this._scSquared)
             {
-                double scaleFactor = this.scSquared / (dp + this.scSquared) - 0.5;
-                delta.scale(scaleFactor);
-                this.pointMassAPos.sub(delta);
-                this.pointMassBPos.add(delta);
+                double scaleFactor = this._scSquared / (dp + this._scSquared) - 0.5;
+                delta.Scale(scaleFactor);
+                this._pointMassAPos.Sub(delta);
+                this._pointMassBPos.Add(delta);
             }
-            else if (this.longConst != 0.0 && dp > this.lcSquared)
+            else if (this._longConst != 0.0 && dp > this._lcSquared)
             {
-                double scaleFactor = this.lcSquared / (dp + this.lcSquared) - 0.5;
-                delta.scale(scaleFactor);
-                this.pointMassAPos.sub(delta);
-                this.pointMassBPos.add(delta);
+                double scaleFactor = this._lcSquared / (dp + this._lcSquared) - 0.5;
+                delta.Scale(scaleFactor);
+                this._pointMassAPos.Sub(delta);
+                this._pointMassBPos.Add(delta);
             }
         }
     }

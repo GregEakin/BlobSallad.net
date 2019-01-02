@@ -14,7 +14,7 @@ namespace BlobSallad
 
             var translateTransform = new TranslateTransform(100.0, 100.0);
             var blob = new Blob(100.0, 100.0, 25.0, 5);
-            blob.drawOohFace(MyCanvas, 10.0, translateTransform);
+            blob.DrawOohFace(MyCanvas, 10.0, translateTransform);
         }
     }
 }

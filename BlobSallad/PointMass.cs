@@ -7,112 +7,112 @@ namespace BlobSallad
 {
     public class PointMass
     {
-        private readonly Vector cur;
-        private readonly Vector prev;
-        private readonly Vector force = new Vector(0.0, 0.0);
-        private readonly Vector result = new Vector(0.0, 0.0);
-        private double mass;
-        private double friction = 0.01;
+        private readonly Vector _cur;
+        private readonly Vector _prev;
+        private readonly Vector _force = new Vector(0.0, 0.0);
+        private readonly Vector _result = new Vector(0.0, 0.0);
+        private double _mass;
+        private double _friction = 0.01;
 
         public PointMass(double cx, double cy, double mass)
         {
-            this.cur = new Vector(cx, cy);
-            this.prev = new Vector(cx, cy);
-            this.mass = mass;
+            this._cur = new Vector(cx, cy);
+            this._prev = new Vector(cx, cy);
+            this._mass = mass;
         }
 
-        public double getXPos()
+        public double GetXPos()
         {
-            return this.cur.getX();
+            return this._cur.GetX();
         }
 
-        public double getYPos()
+        public double GetYPos()
         {
-            return this.cur.getY();
+            return this._cur.GetY();
         }
 
-        public Vector getPos()
+        public Vector GetPos()
         {
-            return this.cur;
+            return this._cur;
         }
 
-        public double getXPrevPos()
+        public double GetXPrevPos()
         {
-            return this.prev.getX();
+            return this._prev.GetX();
         }
 
-        public double getYPrevPos()
+        public double GetYPrevPos()
         {
-            return this.prev.getY();
+            return this._prev.GetY();
         }
 
-        public Vector getPrevPos()
+        public Vector GetPrevPos()
         {
-            return this.prev;
+            return this._prev;
         }
 
-        public void addXPos(double dx)
+        public void AddXPos(double dx)
         {
-            this.cur.addX(dx);
+            this._cur.AddX(dx);
         }
 
-        public void addYPos(double dy)
+        public void AddYPos(double dy)
         {
-            this.cur.addY(dy);
+            this._cur.AddY(dy);
         }
 
-        public void setForce(Vector force)
+        public void SetForce(Vector force)
         {
-            this.force.set(force);
+            this._force.Set(force);
         }
 
-        public void addForce(Vector force)
+        public void AddForce(Vector force)
         {
-            this.force.add(force);
+            this._force.Add(force);
         }
 
-        public double getMass()
+        public double GetMass()
         {
-            return this.mass;
+            return this._mass;
         }
 
-        public void setMass(double mass)
+        public void SetMass(double mass)
         {
-            this.mass = mass;
+            this._mass = mass;
         }
 
-        public void move(double dt)
+        public void Move(double dt)
         {
             double dtdt = dt * dt;
 
-            double ax = this.force.getX() / this.mass;
-            double cx = this.cur.getX();
-            double px = this.prev.getX();
-            double tx = (2.0 - this.friction) * cx - (1.0 - this.friction) * px + ax * dtdt;
-            this.prev.setX(cx);
-            this.cur.setX(tx);
+            double ax = this._force.GetX() / this._mass;
+            double cx = this._cur.GetX();
+            double px = this._prev.GetX();
+            double tx = (2.0 - this._friction) * cx - (1.0 - this._friction) * px + ax * dtdt;
+            this._prev.SetX(cx);
+            this._cur.SetX(tx);
 
-            double ay = this.force.getY() / this.mass;
-            double cy = this.cur.getY();
-            double py = this.prev.getY();
-            double ty = (2.0 - this.friction) * cy - (1.0 - this.friction) * py + ay * dtdt;
-            this.prev.setY(cy);
-            this.cur.setY(ty);
+            double ay = this._force.GetY() / this._mass;
+            double cy = this._cur.GetY();
+            double py = this._prev.GetY();
+            double ty = (2.0 - this._friction) * cy - (1.0 - this._friction) * py + ay * dtdt;
+            this._prev.SetY(cy);
+            this._cur.SetY(ty);
         }
 
-        public double getVelocity()
+        public double GetVelocity()
         {
-            double cXpX = this.cur.getX() - this.prev.getX();
-            double cYpY = this.cur.getY() - this.prev.getY();
+            double cXpX = this._cur.GetX() - this._prev.GetX();
+            double cYpY = this._cur.GetY() - this._prev.GetY();
             return cXpX * cXpX + cYpY * cYpY;
         }
 
-        public void setFriction(double friction)
+        public void SetFriction(double friction)
         {
-            this.friction = friction;
+            this._friction = friction;
         }
 
-        public void draw(Canvas canvas, double scaleFactor)
+        public void Draw(Canvas canvas, double scaleFactor)
         {
             var circle = new Ellipse
             {
@@ -123,8 +123,8 @@ namespace BlobSallad
                 StrokeThickness = 2.0,
             };
 
-            Canvas.SetLeft(circle, (cur.getX() - 4) * scaleFactor);
-            Canvas.SetTop(circle, (cur.getY() - 4) * scaleFactor);
+            Canvas.SetLeft(circle, (_cur.GetX() - 4) * scaleFactor);
+            Canvas.SetTop(circle, (_cur.GetY() - 4) * scaleFactor);
 
             canvas.Children.Add(circle);
         }

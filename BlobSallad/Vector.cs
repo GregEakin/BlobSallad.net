@@ -4,89 +4,89 @@ namespace BlobSallad
 {
     public class Vector
     {
-        private double x;
-        private double y;
+        private double _x;
+        private double _y;
 
         public Vector(double x, double y)
         {
-            this.x = x;
-            this.y = y;
+            this._x = x;
+            this._y = y;
         }
 
         public Vector(Vector that)
         {
-            this.x = that.x;
-            this.y = that.y;
+            this._x = that._x;
+            this._y = that._y;
         }
 
-        public void addX(double x)
+        public void AddX(double x)
         {
-            this.x += x;
+            this._x += x;
         }
 
-        public void addY(double y)
+        public void AddY(double y)
         {
-            this.y += y;
+            this._y += y;
         }
 
-        public void set(Vector that)
+        public void Set(Vector that)
         {
-            this.x = that.x;
-            this.y = that.y;
+            this._x = that._x;
+            this._y = that._y;
         }
 
-        public void add(Vector that)
+        public void Add(Vector that)
         {
-            this.x += that.x;
-            this.y += that.y;
+            this._x += that._x;
+            this._y += that._y;
         }
 
-        public void sub(Vector that)
+        public void Sub(Vector that)
         {
-            this.x -= that.x;
-            this.y -= that.y;
+            this._x -= that._x;
+            this._y -= that._y;
         }
 
-        public double dotProd(Vector that)
+        public double DotProd(Vector that)
         {
-            return this.x * that.x + this.y * that.y;
+            return this._x * that._x + this._y * that._y;
         }
 
-        public double length()
+        public double Length()
         {
-            return Math.Sqrt(this.x * this.x + this.y * this.y);
+            return Math.Sqrt(this._x * this._x + this._y * this._y);
         }
 
-        public void scale(double scaleFactor)
+        public void Scale(double scaleFactor)
         {
-            this.x *= scaleFactor;
-            this.y *= scaleFactor;
+            this._x *= scaleFactor;
+            this._y *= scaleFactor;
         }
 
-        public string toString()
+        public override string ToString()
         {
             // return String.format("(X: %d, Y: %d)");
-            return "(X: " + this.x + ", Y: " + this.y + ")";
+            return "(X: " + this._x + ", Y: " + this._y + ")";
         }
 
-        public double getX()
+        public double GetX()
         {
-            return this.x;
+            return this._x;
         }
 
-        public void setX(double x)
+        public void SetX(double x)
         {
-            this.x = x;
+            this._x = x;
         }
 
-        public double getY()
+        public double GetY()
         {
-            return this.y;
+            return this._y;
         }
 
-        public void setY(double y)
+        public void SetY(double y)
         {
-            this.y = y;
+            this._y = y;
         }
     }
 }

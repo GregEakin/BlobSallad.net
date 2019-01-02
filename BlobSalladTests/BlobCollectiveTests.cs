@@ -12,67 +12,67 @@ namespace BlobSalladTests
     public class BlobCollectiveTests
     {
         [Test]
-        public void ctorTest()
+        public void CtorTest()
         {
             BlobCollective collective = new BlobCollective(71.0, 67.0, 4);
 
-            Assert.AreEqual(4, collective.getMaxNum());
-            Assert.AreEqual(1, collective.getNumActive());
+            Assert.AreEqual(4, collective.GetMaxNum());
+            Assert.AreEqual(1, collective.GetNumActive());
         }
 
         [Test]
-        public void splitTest()
+        public void SplitTest()
         {
             var canvas = new Canvas { Width = 200, Height = 200 };
 
             var collective = new BlobCollective(1.0, 1.0, 4);
-            collective.split();
-            Assert.AreEqual(2, collective.getNumActive());
-            collective.draw(canvas, 100.0);
+            collective.Split();
+            Assert.AreEqual(2, collective.GetNumActive());
+            collective.Draw(canvas, 100.0);
 
             var wpf = new ContentControl { Content = canvas };
             WpfApprovals.Verify(wpf);
         }
 
         [Test]
-        public void joinTest()
+        public void JoinTest()
         {
             var canvas = new Canvas { Width = 200, Height = 200 };
 
             var collective = new BlobCollective(1.0, 1.0, 4);
-            collective.split();
+            collective.Split();
             // collective.join();
             // Assert.AreEqual(2, collective.getNumActive());
-            collective.draw(canvas, 100.0);
+            collective.Draw(canvas, 100.0);
 
             var wpf = new ContentControl { Content = canvas };
             WpfApprovals.Verify(wpf);
         }
 
         [Test]
-        public void selectBlobMissTest()
+        public void SelectBlobMissTest()
         {
             BlobCollective collective = new BlobCollective(1.0, 1.0, 4);
-            collective.selectBlob(2.0, 2.0);
-            Assert.IsNull(collective.getSelectedBlob());
+            collective.SelectBlob(2.0, 2.0);
+            Assert.IsNull(collective.GetSelectedBlob());
         }
 
         [Test]
-        public void selectBlobHitTest()
+        public void SelectBlobHitTest()
         {
             BlobCollective collective = new BlobCollective(1.0, 1.0, 4);
-            collective.selectBlob(1.0, 1.1);
-            Assert.NotNull(collective.getSelectedBlob());
-            Assert.True(collective.getSelectedBlob().getSelected());
+            collective.SelectBlob(1.0, 1.1);
+            Assert.NotNull(collective.GetSelectedBlob());
+            Assert.True(collective.GetSelectedBlob().GetSelected());
         }
 
         [Test]
-        public void drawTest()
+        public void DrawTest()
         {
             var canvas = new Canvas { Width = 200, Height = 200 };
 
             var collective = new BlobCollective(1.0, 1.0, 4);
-            collective.draw(canvas, 100.0);
+            collective.Draw(canvas, 100.0);
 
             var wpf = new ContentControl { Content = canvas };
             WpfApprovals.Verify(wpf);

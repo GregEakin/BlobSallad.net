@@ -16,65 +16,65 @@ namespace BlobSalladTests
     public class BlobTests
     {
         [Test]
-        public void ctorTest()
+        public void CtorTest()
         {
             Blob blob = new Blob(71.0, 67.0, 11.0, 5);
-            Assert.AreEqual(71.0, blob.getXPos());
-            Assert.AreEqual(67.0, blob.getYPos());
-            Assert.AreEqual(11.0, blob.getRadius());
+            Assert.AreEqual(71.0, blob.GetXPos());
+            Assert.AreEqual(67.0, blob.GetYPos());
+            Assert.AreEqual(11.0, blob.GetRadius());
 
-            PointMass pointMas = blob.getMiddlePointMass();
-            Assert.AreEqual(71.0, pointMas.getXPos());
-            Assert.AreEqual(67.0, pointMas.getYPos());
-            Assert.AreEqual(1.0, pointMas.getMass());
+            PointMass pointMas = blob.GetMiddlePointMass();
+            Assert.AreEqual(71.0, pointMas.GetXPos());
+            Assert.AreEqual(67.0, pointMas.GetYPos());
+            Assert.AreEqual(1.0, pointMas.GetMass());
         }
 
         [Test]
-        public void ctorPointMassesTest()
+        public void CtorPointMassesTest()
         {
             var canvas = new Canvas { Width = 100, Height = 100 };
 
             var blob = new Blob(41.0, 43.0, 23.0, 5);
-            var pointMasses = blob.getPointMasses();
+            var pointMasses = blob.GetPointMasses();
             foreach (var pointMass in pointMasses)
-                DrawDot(canvas, Brushes.Black, pointMass.getMass(), pointMass.getXPos(), pointMass.getYPos());
+                DrawDot(canvas, Brushes.Black, pointMass.GetMass(), pointMass.GetXPos(), pointMass.GetYPos());
 
             var wpf = new ContentControl { Content = canvas };
             WpfApprovals.Verify(wpf);
         }
 
         [Test]
-        public void ctorSticksTest()
+        public void CtorSticksTest()
         {
             var canvas = new Canvas { Width = 100, Height = 100 };
 
             var blob = new Blob(41.0, 43.0, 23.0, 5);
-            var sticks = blob.getSticks();
+            var sticks = blob.GetSticks();
             foreach (var stick in sticks)
-                stick.draw(canvas, 1.0);
+                stick.Draw(canvas, 1.0);
 
             var wpf = new ContentControl { Content = canvas };
             WpfApprovals.Verify(wpf);
         }
 
         [Test]
-        public void ctorJointsTest()
+        public void CtorJointsTest()
         {
             var canvas = new Canvas { Width = 100, Height = 100 };
 
             var blob = new Blob(41.0, 43.0, 23.0, 5);
-            var middlePointMass = blob.getMiddlePointMass();
-            DrawDot(canvas, Brushes.Blue, middlePointMass.getMass(), middlePointMass.getXPos(), middlePointMass.getYPos());
+            var middlePointMass = blob.GetMiddlePointMass();
+            DrawDot(canvas, Brushes.Blue, middlePointMass.GetMass(), middlePointMass.GetXPos(), middlePointMass.GetYPos());
 
-            var joints = blob.getJoints();
+            var joints = blob.GetJoints();
             foreach (var joint in joints)
             {
-                PointMass pointMassA = joint.getPointMassA();
-                PointMass pointMassB = joint.getPointMassB();
-                DrawDot(canvas, Brushes.Red, pointMassA.getMass(), pointMassA.getXPos(), pointMassA.getYPos());
+                PointMass pointMassA = joint.GetPointMassA();
+                PointMass pointMassB = joint.GetPointMassB();
+                DrawDot(canvas, Brushes.Red, pointMassA.GetMass(), pointMassA.GetXPos(), pointMassA.GetYPos());
                 DrawLine(canvas, Brushes.Black, 
-                        pointMassA.getXPos(), pointMassA.getYPos(),
-                        pointMassB.getXPos(), pointMassB.getYPos());
+                        pointMassA.GetXPos(), pointMassA.GetYPos(),
+                        pointMassB.GetXPos(), pointMassB.GetYPos());
             }
 
             var wpf = new ContentControl { Content = canvas };
@@ -123,58 +123,58 @@ namespace BlobSalladTests
         }
 
         [Test]
-        public void ctorPointMassTest()
+        public void CtorPointMassTest()
         {
             Blob blob = new Blob(71.0, 67.0, 11.0, 5);
             for (int i = 0; i < 5; i++)
             {
-                PointMass pointMas = blob.getPointMass(i);
+                PointMass pointMas = blob.GetPointMass(i);
 
                 double mass = i < 2 ? 4.0 : 1.0;
-                Assert.AreEqual(mass, pointMas.getMass());
+                Assert.AreEqual(mass, pointMas.GetMass());
 
                 double theta = (double) i * 2.0 * Math.PI / (double) 5;
                 double cx = Math.Cos(theta) * 11.0 + 71.0;
                 double cy = Math.Sin(theta) * 11.0 + 67.0;
-                Assert.AreEqual(cx, pointMas.getXPos());
-                Assert.AreEqual(cy, pointMas.getYPos());
+                Assert.AreEqual(cx, pointMas.GetXPos());
+                Assert.AreEqual(cy, pointMas.GetYPos());
             }
         }
 
         [Test]
-        public void addBlob2Test()
+        public void AddBlob2Test()
         {
             Blob blob1 = new Blob(17.0, 19.0, 11.0, 5);
             Blob blob2 = new Blob(59.0, 61.0, 13.0, 5);
-            blob1.addBlob(blob2);
-            Joint joint = blob1.getJoints()[10];
-            Assert.AreEqual(22.800, joint.getShortConst(), 0.01);
-            Assert.AreEqual(0.0, joint.getLongConst(), 0.01);
+            blob1.AddBlob(blob2);
+            Joint joint = blob1.GetJoints()[10];
+            Assert.AreEqual(22.800, joint.GetShortConst(), 0.01);
+            Assert.AreEqual(0.0, joint.GetLongConst(), 0.01);
         }
 
         [Test]
-        public void addBlobTest()
+        public void AddBlobTest()
         {
             var canvas = new Canvas { Width = 100, Height = 100 };
 
             Blob blob1 = new Blob(17.0, 19.0, 11.0, 5);
             Blob blob2 = new Blob(59.0, 61.0, 13.0, 5);
-            blob1.addBlob(blob2);
+            blob1.AddBlob(blob2);
 
-            var middlePointMass = blob1.getMiddlePointMass();
-            DrawDot(canvas, Brushes.Blue, middlePointMass.getMass(), middlePointMass.getXPos(), middlePointMass.getYPos());
+            var middlePointMass = blob1.GetMiddlePointMass();
+            DrawDot(canvas, Brushes.Blue, middlePointMass.GetMass(), middlePointMass.GetXPos(), middlePointMass.GetYPos());
 
-            blob2.drawSimpleBody(canvas, 1.0);
+            blob2.DrawSimpleBody(canvas, 1.0);
 
-            var joints = blob1.getJoints();
+            var joints = blob1.GetJoints();
             foreach (var joint in joints)
             {
-                PointMass pointMassA = joint.getPointMassA();
-                PointMass pointMassB = joint.getPointMassB();
-                DrawDot(canvas, Brushes.Red, 2.0, pointMassA.getXPos(), pointMassA.getYPos());
+                PointMass pointMassA = joint.GetPointMassA();
+                PointMass pointMassB = joint.GetPointMassB();
+                DrawDot(canvas, Brushes.Red, 2.0, pointMassA.GetXPos(), pointMassA.GetYPos());
                 DrawLine(canvas, Brushes.Black, 
-                        pointMassA.getXPos(), pointMassA.getYPos(),
-                        pointMassB.getXPos(), pointMassB.getYPos());
+                        pointMassA.GetXPos(), pointMassA.GetYPos(),
+                        pointMassB.GetXPos(), pointMassB.GetYPos());
             }
 
             var wpf = new ContentControl { Content = canvas };
@@ -182,178 +182,178 @@ namespace BlobSalladTests
         }
 
         [Test]
-        public void scaleTest()
+        public void ScaleTest()
         {
             var canvas = new Canvas { Width = 100, Height = 100 };
 
             var translateTransform = new TranslateTransform(41.0, 43.0);
             var blob = new Blob(41.0, 43.0, 23.0, 5);
-            blob.scale(3.0);
-            blob.drawSmile(canvas, 1.0, translateTransform);
-            blob.drawEyesOpen(canvas, 1.0, translateTransform);
+            blob.Scale(3.0);
+            blob.DrawSmile(canvas, 1.0, translateTransform);
+            blob.DrawEyesOpen(canvas, 1.0, translateTransform);
 
             var wpf = new ContentControl { Content = canvas };
             WpfApprovals.Verify(wpf);
         }
 
         [Test]
-        public void moveTest()
+        public void MoveTest()
         {
             var canvas = new Canvas { Width = 100, Height = 100 };
 
             Blob blob = new Blob(41.0, 43.0, 23.0, 5);
-            blob.setForce(new Vector(3.0, 3.0));
-            blob.move(2.0);
+            blob.SetForce(new Vector(3.0, 3.0));
+            blob.Move(2.0);
 
-            var middlePointMass = blob.getMiddlePointMass();
-            DrawDot(canvas, Brushes.Blue, 2.0, middlePointMass.getXPos(), middlePointMass.getYPos());
-            blob.drawSimpleBody(canvas, 1.0);
+            var middlePointMass = blob.GetMiddlePointMass();
+            DrawDot(canvas, Brushes.Blue, 2.0, middlePointMass.GetXPos(), middlePointMass.GetYPos());
+            blob.DrawSimpleBody(canvas, 1.0);
 
             var wpf = new ContentControl { Content = canvas };
             WpfApprovals.Verify(wpf);
         }
 
         [Test]
-        public void scTest()
+        public void ScTest()
         {
             var canvas = new Canvas { Width = 100, Height = 100 };
 
             var environment = new Environment(0.0, 0.0, 100.0, 100.0);
             var blob = new Blob(71.0, 67.0, 23.0, 5);
-            blob.setForce(new Vector(3.0, 3.0));
-            blob.move(3.0);
-            blob.sc(environment);
-            blob.drawSimpleBody(canvas, 1.0);
+            blob.SetForce(new Vector(3.0, 3.0));
+            blob.Move(3.0);
+            blob.Sc(environment);
+            blob.DrawSimpleBody(canvas, 1.0);
 
             var wpf = new ContentControl { Content = canvas };
             WpfApprovals.Verify(wpf);
         }
 
         [Test]
-        public void setForceTest()
+        public void SetForceTest()
         {
             // TODO:
         }
 
         [Test]
-        public void moveToTest()
+        public void MoveToTest()
         {
             var canvas = new Canvas {Width = 100, Height = 100};
 
             Blob blob = new Blob(41.0, 43.0, 23.0, 5);
-            blob.moveTo(61.0, 59.0);
-            blob.drawSimpleBody(canvas, 1.0);
+            blob.MoveTo(61.0, 59.0);
+            blob.DrawSimpleBody(canvas, 1.0);
 
-            var middlePointMass = blob.getMiddlePointMass();
-            DrawDot(canvas, Brushes.Blue, 2.0, middlePointMass.getXPos(), middlePointMass.getXPos());
+            var middlePointMass = blob.GetMiddlePointMass();
+            DrawDot(canvas, Brushes.Blue, 2.0, middlePointMass.GetXPos(), middlePointMass.GetXPos());
 
             var wpf = new ContentControl {Content = canvas};
             WpfApprovals.Verify(wpf);
         }
 
         [Test]
-        public void addForceTest()
+        public void AddForceTest()
         {
             // TODO:
         }
 
         [Test]
-        public void drawEyesOpenTest()
+        public void DrawEyesOpenTest()
         {
             var canvas = new Canvas {Width = 100, Height = 100};
 
             var translateTransform = new TranslateTransform(50.0, 50.0);
             var blob = new Blob(50.0, 50.0, 25.0, 5);
-            blob.drawEyesOpen(canvas, 3.0, translateTransform);
+            blob.DrawEyesOpen(canvas, 3.0, translateTransform);
 
             var wpf = new ContentControl {Content = canvas};
             WpfApprovals.Verify(wpf);
         }
 
         [Test]
-        public void drawEyesClosedTest()
+        public void DrawEyesClosedTest()
         {
             var canvas = new Canvas {Width = 100, Height = 100};
 
             var translateTransform = new TranslateTransform(50.0, 50.0);
             var blob = new Blob(50.0, 50.0, 25.0, 5);
-            blob.drawEyesClosed(canvas, 3.0, translateTransform);
+            blob.DrawEyesClosed(canvas, 3.0, translateTransform);
 
             var wpf = new ContentControl {Content = canvas};
             WpfApprovals.Verify(wpf);
         }
 
         [Test]
-        public void drawSmileTest()
+        public void DrawSmileTest()
         {
             var canvas = new Canvas {Width = 100, Height = 100};
 
             var translateTransform = new TranslateTransform(50.0, 50.0);
             var blob = new Blob(50.0, 50.0, 25.0, 5);
-            blob.drawSmile(canvas, 3.0, translateTransform);
+            blob.DrawSmile(canvas, 3.0, translateTransform);
 
             var wpf = new ContentControl {Content = canvas};
             WpfApprovals.Verify(wpf);
         }
 
         [Test]
-        public void drawOpenMouthTest()
+        public void DrawOpenMouthTest()
         {
             var canvas = new Canvas {Width = 100, Height = 100};
 
             var translateTransform = new TranslateTransform(50.0, 50.0);
             var blob = new Blob(50.0, 50.0, 25.0, 5);
-            blob.drawOpenMouth(canvas, 3.0, translateTransform);
+            blob.DrawOpenMouth(canvas, 3.0, translateTransform);
 
             var wpf = new ContentControl {Content = canvas};
             WpfApprovals.Verify(wpf);
         }
 
         [Test]
-        public void drawOohFaceTest()
+        public void DrawOohFaceTest()
         {
             var canvas = new Canvas {Width = 100, Height = 100};
 
             var translateTransform = new TranslateTransform(50.0, 50.0);
             var blob = new Blob(50.0, 50.0, 25.0, 5);
-            blob.drawOohFace(canvas, 3.0, translateTransform);
+            blob.DrawOohFace(canvas, 3.0, translateTransform);
 
             var wpf = new ContentControl {Content = canvas};
             WpfApprovals.Verify(wpf);
         }
 
         [Test]
-        public void drawFaceTest()
+        public void DrawFaceTest()
         {
             var canvas = new Canvas {Width = 100, Height = 100};
 
             var translateTransform = new TranslateTransform(50.0, 50.0);
             var blob = new Blob(50.0, 50.0, 25.0, 5);
-            blob.drawFace(canvas, 3.0, translateTransform);
+            blob.DrawFace(canvas, 3.0, translateTransform);
 
             var wpf = new ContentControl {Content = canvas};
             WpfApprovals.Verify(wpf);
         }
 
         [Test]
-        public void drawSimpleBodyTest()
+        public void DrawSimpleBodyTest()
         {
             var canvas = new Canvas {Width = 100, Height = 100};
 
             var blob = new Blob(50.0, 50.0, 25.0, 5);
-            blob.drawSimpleBody(canvas, 1.0);
+            blob.DrawSimpleBody(canvas, 1.0);
 
             var wpf = new ContentControl {Content = canvas};
             WpfApprovals.Verify(wpf);
         }
 
         [Test]
-        public void drawTest()
+        public void DrawTest()
         {
             var canvas = new Canvas {Width = 200, Height = 200};
 
             var blob = new Blob(13.0, 17.0, 11.0, 5);
-            blob.draw(canvas, 5.0);
+            blob.Draw(canvas, 5.0);
 
             var wpf = new ContentControl {Content = canvas};
             WpfApprovals.Verify(wpf);

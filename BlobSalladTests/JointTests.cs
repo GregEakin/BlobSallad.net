@@ -5,76 +5,76 @@ namespace BlobSalladTests
 {
     public class JointTests
     {
-        private Joint joint;
-        private PointMass pointMassA;
-        private PointMass pointMassB;
+        private Joint _joint;
+        private PointMass _pointMassA;
+        private PointMass _pointMassB;
 
         [Test]
-        public void ctorTest()
+        public void CtorTest()
         {
-            Assert.AreEqual(36.498, joint.getShortConst(), 0.01);
-            Assert.AreEqual(40.340, joint.getLongConst(), 0.01);
+            Assert.AreEqual(36.498, _joint.GetShortConst(), 0.01);
+            Assert.AreEqual(40.340, _joint.GetLongConst(), 0.01);
         }
 
         [Test]
-        public void setDistTest()
+        public void SetDistTest()
         {
-            joint.setDist(38.5, 36.4);
+            _joint.SetDist(38.5, 36.4);
 
-            Assert.AreEqual(38.5, joint.getShortConst(), 0.01);
-            Assert.AreEqual(36.4, joint.getLongConst(), 0.01);
+            Assert.AreEqual(38.5, _joint.GetShortConst(), 0.01);
+            Assert.AreEqual(36.4, _joint.GetLongConst(), 0.01);
 
         }
 
         [Test]
-        public void scaleTest()
+        public void ScaleTest()
         {
-            joint.scale(10.0);
+            _joint.Scale(10.0);
 
-            Assert.AreEqual(364.978, joint.getShortConst(), 0.01);
-            Assert.AreEqual(403.397, joint.getLongConst(), 0.01);
+            Assert.AreEqual(364.978, _joint.GetShortConst(), 0.01);
+            Assert.AreEqual(403.397, _joint.GetLongConst(), 0.01);
         }
 
         [Test]
-        public void scShortTest()
+        public void ScShortTest()
         {
-            joint.setDist(38.5, 36.4);
-            joint.sc();
+            _joint.SetDist(38.5, 36.4);
+            _joint.Sc();
 
-            Assert.AreEqual(40.968, pointMassA.getXPos(), 0.01);
-            Assert.AreEqual(42.975, pointMassA.getYPos(), 0.01);
-            Assert.AreEqual(71.032, pointMassB.getXPos(), 0.01);
-            Assert.AreEqual(67.025, pointMassB.getYPos(), 0.01);
+            Assert.AreEqual(40.968, _pointMassA.GetXPos(), 0.01);
+            Assert.AreEqual(42.975, _pointMassA.GetYPos(), 0.01);
+            Assert.AreEqual(71.032, _pointMassB.GetXPos(), 0.01);
+            Assert.AreEqual(67.025, _pointMassB.GetYPos(), 0.01);
         }
 
         [Test]
-        public void scLongTest()
+        public void ScLongTest()
         {
-            joint.setDist(36.498, 36.4);
-            joint.sc();
+            _joint.SetDist(36.498, 36.4);
+            _joint.Sc();
 
-            Assert.AreEqual(41.809, pointMassA.getXPos(), 0.01);
-            Assert.AreEqual(43.647, pointMassA.getYPos(), 0.01);
-            Assert.AreEqual(70.191, pointMassB.getXPos(), 0.01);
-            Assert.AreEqual(66.353, pointMassB.getYPos(), 0.01);
+            Assert.AreEqual(41.809, _pointMassA.GetXPos(), 0.01);
+            Assert.AreEqual(43.647, _pointMassA.GetYPos(), 0.01);
+            Assert.AreEqual(70.191, _pointMassB.GetXPos(), 0.01);
+            Assert.AreEqual(66.353, _pointMassB.GetYPos(), 0.01);
         }
 
         [SetUp]
-        public void createJoint()
+        public void CreateJoint()
         {
             double cxA = 41;
             double cyA = 43;
             double massA = 4.0;
-            pointMassA = new PointMass(cxA, cyA, massA);
+            _pointMassA = new PointMass(cxA, cyA, massA);
 
             double cxB = 71.0;
             double cyB = 67.0;
             double massB = 1.0;
-            pointMassB = new PointMass(cxB, cyB, massB);
+            _pointMassB = new PointMass(cxB, cyB, massB);
 
             double low = 0.95;
             double high = 1.05;
-            joint = new Joint(pointMassA, pointMassB, low, high);
+            _joint = new Joint(_pointMassA, _pointMassB, low, high);
         }
     }
 }

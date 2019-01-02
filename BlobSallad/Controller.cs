@@ -4,48 +4,48 @@ namespace BlobSallad
 {
     public class Controller
     {
-        private readonly double scaleFactor = 200.0;
-        private readonly BlobCollective blobColl = new BlobCollective(1.0, 1.0, 0xC0);
-        private readonly Vector gravity = new Vector(0.0, 10.0);
-        private volatile bool stopped = false;
-        private Environment env = new Environment(0.2, 0.2, 2.6, 1.6);
-        private Point savedMouseCoords = null;
+        private readonly double _scaleFactor = 200.0;
+        private readonly BlobCollective _blobColl = new BlobCollective(1.0, 1.0, 0xC0);
+        private readonly Vector _gravity = new Vector(0.0, 10.0);
+        private volatile bool _stopped = false;
+        private Environment _env = new Environment(0.2, 0.2, 2.6, 1.6);
+        private Point _savedMouseCoords = null;
 
-        private Point selectOffset = null;
+        private Point _selectOffset = null;
         // private Timer timer;
 
-        private void toggleGravity()
+        private void ToggleGravity()
         {
-            double y = this.gravity.getY() > 0.0 ? 0.0 : 10.0;
-            this.gravity.setY(y);
+            double y = this._gravity.GetY() > 0.0 ? 0.0 : 10.0;
+            this._gravity.SetY(y);
         }
 
-        public void stop()
+        public void Stop()
         {
-            this.stopped = true;
+            this._stopped = true;
         }
 
-        public void start()
+        public void Start()
         {
-            this.stopped = false;
+            this._stopped = false;
             // this.timeout();
         }
 
-        public void update()
+        public void Update()
         {
-            if (this.savedMouseCoords != null && this.selectOffset != null)
+            if (this._savedMouseCoords != null && this._selectOffset != null)
             {
-                double x = this.savedMouseCoords.getX() - this.selectOffset.getX();
-                double y = this.savedMouseCoords.getY() - this.selectOffset.getY();
-                this.blobColl.selectedBlobMoveTo(x, y);
+                double x = this._savedMouseCoords.GetX() - this._selectOffset.GetX();
+                double y = this._savedMouseCoords.GetY() - this._selectOffset.GetY();
+                this._blobColl.SelectedBlobMoveTo(x, y);
             }
 
-            this.blobColl.move(0.05);
-            this.blobColl.sc(this.env);
-            this.blobColl.setForce(this.gravity);
+            this._blobColl.Move(0.05);
+            this._blobColl.Sc(this._env);
+            this._blobColl.SetForce(this._gravity);
         }
 
-        public void paintComponent(Canvas canvas)
+        public void PaintComponent(Canvas canvas)
         {
             // int width = this.view.getWidth();
             // readonly double w =
@@ -62,12 +62,12 @@ namespace BlobSallad
             // g2d.dispose();
         }
 
-        public void draw()
+        public void Draw()
         {
             // this.view.repaint();
         }
 
-        private void timeout()
+        private void Timeout()
         {
             // if (this.timer != null)
             //     this.timer.cancel();
@@ -217,7 +217,7 @@ namespace BlobSallad
         //    return new Point(x, y);
         //}
 
-        public void requestFocus()
+        public void RequestFocus()
         {
             //this.view.setFocusable(true);
             //this.view.requestFocus();

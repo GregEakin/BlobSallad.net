@@ -7,96 +7,96 @@ namespace BlobSallad
 {
     public class Stick
     {
-        private readonly PointMass pointMassA;
-        private readonly PointMass pointMassB;
-        private double length;
-        private double lengthSquared;
+        private readonly PointMass _pointMassA;
+        private readonly PointMass _pointMassB;
+        private double _length;
+        private double _lengthSquared;
 
         public Stick(PointMass pointMassA, PointMass pointMassB)
         {
-            this.pointMassA = pointMassA;
-            this.pointMassB = pointMassB;
-            this.length = pointMassDist(pointMassA, pointMassB);
-            this.lengthSquared = this.length * this.length;
+            this._pointMassA = pointMassA;
+            this._pointMassB = pointMassB;
+            this._length = PointMassDist(pointMassA, pointMassB);
+            this._lengthSquared = this._length * this._length;
         }
 
-        public double getLength()
+        public double GetLength()
         {
-            return this.length;
+            return this._length;
         }
 
-        public double getLengthSquared()
+        public double GetLengthSquared()
         {
-            return this.lengthSquared;
+            return this._lengthSquared;
         }
 
-        public static double pointMassDist(PointMass pointMassA, PointMass pointMassB)
+        public static double PointMassDist(PointMass pointMassA, PointMass pointMassB)
         {
-            double aXbX = pointMassA.getXPos() - pointMassB.getXPos();
-            double aYbY = pointMassA.getYPos() - pointMassB.getYPos();
+            double aXbX = pointMassA.GetXPos() - pointMassB.GetXPos();
+            double aYbY = pointMassA.GetYPos() - pointMassB.GetYPos();
             return Math.Sqrt(aXbX * aXbX + aYbY * aYbY);
         }
 
-        public PointMass getPointMassA()
+        public PointMass GetPointMassA()
         {
-            return this.pointMassA;
+            return this._pointMassA;
         }
 
-        public PointMass getPointMassB()
+        public PointMass GetPointMassB()
         {
-            return this.pointMassB;
+            return this._pointMassB;
         }
 
-        public void scale(double scaleFactor)
+        public void Scale(double scaleFactor)
         {
-            this.length *= scaleFactor;
-            this.lengthSquared = this.length * this.length;
+            this._length *= scaleFactor;
+            this._lengthSquared = this._length * this._length;
         }
 
-        public void sc(Environment env)
+        public void Sc(Environment env)
         {
-            Vector pointMassAPos = this.pointMassA.getPos();
-            Vector pointMassBPos = this.pointMassB.getPos();
+            Vector pointMassAPos = this._pointMassA.GetPos();
+            Vector pointMassBPos = this._pointMassB.GetPos();
 
             Vector delta = new Vector(pointMassBPos);
-            delta.sub(pointMassAPos);
-            double dotProd = delta.dotProd(delta);
-            double scaleFactor = this.lengthSquared / (dotProd + this.lengthSquared) - 0.5;
-            delta.scale(scaleFactor);
-            pointMassAPos.sub(delta);
-            pointMassBPos.add(delta);
+            delta.Sub(pointMassAPos);
+            double dotProd = delta.DotProd(delta);
+            double scaleFactor = this._lengthSquared / (dotProd + this._lengthSquared) - 0.5;
+            delta.Scale(scaleFactor);
+            pointMassAPos.Sub(delta);
+            pointMassBPos.Add(delta);
         }
 
-        public void setForce(Vector force)
+        public void SetForce(Vector force)
         {
-            this.pointMassA.setForce(force);
-            this.pointMassB.setForce(force);
+            this._pointMassA.SetForce(force);
+            this._pointMassB.SetForce(force);
         }
 
-        public void addForce(Vector force)
+        public void AddForce(Vector force)
         {
-            this.pointMassA.addForce(force);
-            this.pointMassB.addForce(force);
+            this._pointMassA.AddForce(force);
+            this._pointMassB.AddForce(force);
         }
 
-        public void move(double dt)
+        public void Move(double dt)
         {
-            this.pointMassA.move(dt);
-            this.pointMassB.move(dt);
+            this._pointMassA.Move(dt);
+            this._pointMassB.Move(dt);
         }
 
-        public void draw(Canvas canvas, double scaleFactor)
+        public void Draw(Canvas canvas, double scaleFactor)
         {
-            pointMassA.draw(canvas, scaleFactor);
-            pointMassB.draw(canvas, scaleFactor);
+            _pointMassA.Draw(canvas, scaleFactor);
+            _pointMassB.Draw(canvas, scaleFactor);
 
-            var x1 = pointMassA.getXPos() * scaleFactor;
-            var y1 = pointMassA.getYPos() * scaleFactor;
+            var x1 = _pointMassA.GetXPos() * scaleFactor;
+            var y1 = _pointMassA.GetYPos() * scaleFactor;
             var startPoint = new System.Windows.Point(x1, y1);
             var pathFigure = new PathFigure {StartPoint = startPoint};
 
-            var x2 = pointMassB.getXPos() * scaleFactor;
-            var y2 = pointMassB.getYPos() * scaleFactor;
+            var x2 = _pointMassB.GetXPos() * scaleFactor;
+            var y2 = _pointMassB.GetYPos() * scaleFactor;
             var point = new System.Windows.Point(x2, y2);
             var lineSegment1A = new LineSegment {Point = point};
             pathFigure.Segments.Add(lineSegment1A);

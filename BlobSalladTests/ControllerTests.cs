@@ -12,12 +12,12 @@ namespace BlobSalladTests
     public class ControllerTests
     {
         // [Test]
-        public void drawTest()
+        public void DrawTest()
         {
             var canvas = new Canvas { Width = 100, Height = 100 };
 
             var controller = new Controller();
-            controller.paintComponent(canvas);
+            controller.PaintComponent(canvas);
 
             var wpf = new ContentControl { Content = canvas };
             WpfApprovals.Verify(wpf);

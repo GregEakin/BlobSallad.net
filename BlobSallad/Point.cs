@@ -2,23 +2,23 @@
 {
     public class Point
     {
-        private readonly double x;
-        private readonly double y;
+        private readonly double _x;
+        private readonly double _y;
 
         public Point(double x, double y)
         {
-            this.x = x;
-            this.y = y;
+            this._x = x;
+            this._y = y;
         }
 
-        public double getX()
+        public double GetX()
         {
-            return this.x;
+            return this._x;
         }
 
-        public double getY()
+        public double GetY()
         {
-            return this.y;
+            return this._y;
         }
     }
 }

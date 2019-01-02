@@ -4,81 +4,81 @@ namespace BlobSallad
 {
     public class Environment
     {
-        private readonly double left;
-        private readonly double right;
-        private readonly double top;
-        private readonly double bottom;
+        private readonly double _left;
+        private readonly double _right;
+        private readonly double _top;
+        private readonly double _bottom;
 
         public Environment(double x, double y, double w, double h)
         {
-            this.left = x;
-            this.right = x + w;
-            this.top = y;
-            this.bottom = y + h;
+            this._left = x;
+            this._right = x + w;
+            this._top = y;
+            this._bottom = y + h;
         }
 
-        public double getLeft()
+        public double GetLeft()
         {
-            return left;
+            return _left;
         }
 
-        public double getRight()
+        public double GetRight()
         {
-            return right;
+            return _right;
         }
 
-        public double getTop()
+        public double GetTop()
         {
-            return top;
+            return _top;
         }
 
-        public double getBottom()
+        public double GetBottom()
         {
-            return bottom;
+            return _bottom;
         }
 
-        public Environment setWidth(double w)
+        public Environment SetWidth(double w)
         {
-            return new Environment(this.left, this.top, w, this.bottom - this.top);
+            return new Environment(this._left, this._top, w, this._bottom - this._top);
         }
 
-        public Environment setHeight(double h)
+        public Environment SetHeight(double h)
         {
-            return new Environment(this.left, this.top, this.right - this.left, h);
+            return new Environment(this._left, this._top, this._right - this._left, h);
         }
 
-        public bool collision(Vector curPos, Vector prePos)
+        public bool Collision(Vector curPos, Vector prePos)
         {
-            double x = curPos.getX();
-            if (x < this.left)
+            double x = curPos.GetX();
+            if (x < this._left)
             {
-                curPos.setX(this.left);
+                curPos.SetX(this._left);
                 return true;
             }
 
-            if (x > this.right)
+            if (x > this._right)
             {
-                curPos.setX(this.right);
+                curPos.SetX(this._right);
                 return true;
             }
 
-            double y = curPos.getY();
-            if (y < this.top)
+            double y = curPos.GetY();
+            if (y < this._top)
             {
-                curPos.setY(this.top);
+                curPos.SetY(this._top);
                 return true;
             }
 
-            if (y > this.bottom)
+            if (y > this._bottom)
             {
-                curPos.setY(this.bottom);
+                curPos.SetY(this._bottom);
                 return true;
             }
 
             return false;
         }
 
-        public void draw(Canvas canvas, double scaleFactor)
+        public void Draw(Canvas canvas, double scaleFactor)
         {
         }
     }

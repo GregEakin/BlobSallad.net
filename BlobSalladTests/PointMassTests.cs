@@ -14,34 +14,34 @@ namespace BlobSalladTests
     public class PointMassTests
     {
         [Test]
-        public void ctorTest()
+        public void CtorTest()
         {
             PointMass pointMass = new PointMass(31.0, 23.0, 11.0);
-            Assert.AreEqual(11.0, pointMass.getMass());
+            Assert.AreEqual(11.0, pointMass.GetMass());
         }
 
         [Test]
-        public void moveTest()
+        public void MoveTest()
         {
             PointMass pointMass = new PointMass(31.0, 23.0, 11.0);
             Vector force = new Vector(7, 13);
-            pointMass.setForce(force);
+            pointMass.SetForce(force);
 
-            pointMass.move(3.0);
-            Assert.AreEqual(31.0, pointMass.getXPrevPos(), 0.01);
-            Assert.AreEqual(23.0, pointMass.getYPrevPos(), 0.01);
-            Assert.AreEqual(36.727, pointMass.getXPos(), 0.01);
-            Assert.AreEqual(33.636, pointMass.getYPos(), 0.01);
+            pointMass.Move(3.0);
+            Assert.AreEqual(31.0, pointMass.GetXPrevPos(), 0.01);
+            Assert.AreEqual(23.0, pointMass.GetYPrevPos(), 0.01);
+            Assert.AreEqual(36.727, pointMass.GetXPos(), 0.01);
+            Assert.AreEqual(33.636, pointMass.GetYPos(), 0.01);
         }
 
         [Test]
         [STAThread]
-        public void drawTest()
+        public void DrawTest()
         {
             var panel = new Canvas { Width = 100, Height = 100 };
 
             var pointMass = new PointMass(11.0, 13.0, 11.0);
-            pointMass.draw(panel, 2.0);
+            pointMass.Draw(panel, 2.0);
 
             var wpf = new ContentControl { Content = panel };
             WpfApprovals.Verify(wpf);
