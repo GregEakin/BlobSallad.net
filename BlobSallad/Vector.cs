@@ -59,8 +59,8 @@ namespace BlobSallad
 
         public void scale(double scaleFactor)
         {
-            this.x = this.x * scaleFactor;
-            this.y = this.y * scaleFactor;
+            this.x *= scaleFactor;
+            this.y *= scaleFactor;
         }
 
         public string toString()
