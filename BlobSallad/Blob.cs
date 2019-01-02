@@ -1,5 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Shapes;
 
 namespace BlobSallad
 {
@@ -47,37 +51,37 @@ namespace BlobSallad
             this.y = y;
             this.radius = radius;
 
-            for (int i = 0; i < numPointMasses; ++i)
+            for (var i = 0; i < numPointMasses; ++i)
             {
-                double theta = (double) i * 2.0 * Math.PI / (double) numPointMasses;
-                double cx = Math.Cos(theta) * radius + x;
-                double cy = Math.Sin(theta) * radius + y;
-                double mass = i < 2 ? 4.0 : 1.0;
-                PointMass pointMass = new PointMass(cx, cy, mass);
+                var theta = (double) i * 2.0 * Math.PI / (double) numPointMasses;
+                var cx = Math.Cos(theta) * radius + x;
+                var cy = Math.Sin(theta) * radius + y;
+                var mass = i < 2 ? 4.0 : 1.0;
+                var pointMass = new PointMass(cx, cy, mass);
                 this.pointMasses.Add(pointMass);
             }
 
             this.middlePointMass = new PointMass(x, y, 1.0);
 
-            for (int i = 0; i < numPointMasses; ++i)
+            for (var i = 0; i < numPointMasses; ++i)
             {
-                PointMass pointMassA = this.pointMasses[i];
-                int index = (i + 1) % numPointMasses;
-                PointMass pointMassB = this.pointMasses[index];
-                Stick stick = new Stick(pointMassA, pointMassB);
+                var pointMassA = this.pointMasses[i];
+                var index = (i + 1) % numPointMasses;
+                var pointMassB = this.pointMasses[index];
+                var stick = new Stick(pointMassA, pointMassB);
                 this.sticks.Add(stick);
             }
 
-            double low = 0.95;
-            double high = 1.05;
-            for (int i = 0; i < numPointMasses; ++i)
+            var low = 0.95;
+            var high = 1.05;
+            for (var i = 0; i < numPointMasses; ++i)
             {
-                PointMass pointMassA = this.pointMasses[i];
-                int index = (i + numPointMasses / 2 + 1) % numPointMasses;
-                PointMass pointMassB = this.pointMasses[index];
-                Joint joint1 = new Joint(pointMassA, pointMassB, low, high);
+                var pointMassA = this.pointMasses[i];
+                var index = (i + numPointMasses / 2 + 1) % numPointMasses;
+                var pointMassB = this.pointMasses[index];
+                var joint1 = new Joint(pointMassA, pointMassB, low, high);
                 this.joints.Add(joint1);
-                Joint joint2 = new Joint(pointMassA, this.middlePointMass, high * 0.9, low * 1.1);
+                var joint2 = new Joint(pointMassA, this.middlePointMass, high * 0.9, low * 1.1);
                 this.joints.Add(joint2);
             }
         }
@@ -109,8 +113,8 @@ namespace BlobSallad
 
         public void addBlob(Blob blob)
         {
-            double dist = this.radius + blob.getRadius();
-            Joint joint = new Joint(this.middlePointMass, blob.getMiddlePointMass(), 0.0, 0.0);
+            var dist = this.radius + blob.getRadius();
+            var joint = new Joint(this.middlePointMass, blob.getMiddlePointMass(), 0.0, 0.0);
             joint.setDist(dist * 0.95, 0.0);
             this.joints.Add(joint);
         }
@@ -146,12 +150,12 @@ namespace BlobSallad
 
         public void sc(Environment env)
         {
-            for (int j = 0; j < 4; ++j)
+            for (var j = 0; j < 4; ++j)
             {
                 foreach (var pointMass in pointMasses)
                 {
-                    bool collision = env.collision(pointMass.getPos(), pointMass.getPrevPos());
-                    double friction = collision ? 0.75 : 0.01;
+                    var collision = env.collision(pointMass.getPos(), pointMass.getPrevPos());
+                    var friction = collision ? 0.75 : 0.01;
                     pointMass.setFriction(friction);
                 }
 
@@ -181,7 +185,7 @@ namespace BlobSallad
                 pointMass.addForce(force);
 
             this.middlePointMass.addForce(force);
-            PointMass pointMass1 = this.pointMasses[0];
+            var pointMass1 = this.pointMasses[0];
             pointMass1.addForce(force);
             pointMass1.addForce(force);
             pointMass1.addForce(force);
@@ -190,7 +194,7 @@ namespace BlobSallad
 
         public void moveTo(double x, double y)
         {
-            Vector blobPos = this.middlePointMass.getPos();
+            var blobPos = this.middlePointMass.getPos();
             x -= blobPos.getX();
             y -= blobPos.getY();
 
@@ -289,6 +293,81 @@ namespace BlobSallad
         //    arc.setArcByCenter(0.0, 0.0, 0.25 * scaleFactor, 0.0, -180.0, 1);
         //    g2d.fill(arc);
         //}
+
+        public void drawOohFace(Canvas canvas, double scaleFactor)
+        {
+            var translateTransform = new TranslateTransform(x, y);
+
+            {
+                var point = new System.Windows.Point(0.25 * radius * scaleFactor, 0.1 * radius * scaleFactor);
+                var size = new Size(0.25 * radius * scaleFactor, 0.25 * radius * scaleFactor);
+                var arcSegment = new ArcSegment
+                {
+                    Point = point,
+                    Size = size,
+                    IsLargeArc = true,
+                    SweepDirection = SweepDirection.Counterclockwise,
+                };
+
+                // pathGeometry = {M-34.5,13.8A27.6,27.6,0,1,0,34.5,13.8}
+                var pathFigure = new PathFigure
+                {
+                    StartPoint = new System.Windows.Point(-0.25 * radius * scaleFactor, 0.1 * radius * scaleFactor)
+                };
+                pathFigure.Segments.Add(arcSegment);
+
+                var pathGeometry = new PathGeometry();
+                pathGeometry.Figures.Add(pathFigure);
+
+                var arcPath = new Path
+                {
+                    Stroke = Brushes.Black,
+                    StrokeThickness = 2.0,
+                    Data = pathGeometry,
+                    Fill = Brushes.Black,
+                    RenderTransform = translateTransform
+                };
+
+                canvas.Children.Add(arcPath);
+            }
+
+            {
+                var startPointA = new System.Windows.Point(-0.25 * radius * scaleFactor, -0.3 * radius * scaleFactor);
+                var pathFigureA = new PathFigure {StartPoint = startPointA};
+
+                var point1A = new System.Windows.Point(-0.05 * radius * scaleFactor, -0.2 * radius * scaleFactor);
+                var lineSegment1A = new LineSegment {Point = point1A};
+                pathFigureA.Segments.Add(lineSegment1A);
+
+                var point2A = new System.Windows.Point(-0.25 * radius * scaleFactor, -0.1 * radius * scaleFactor);
+                var lineSegment2A = new LineSegment {Point = point2A};
+                pathFigureA.Segments.Add(lineSegment2A);
+
+                var startPointB = new System.Windows.Point(0.25 * radius * scaleFactor, -0.3 * radius * scaleFactor);
+                var pathFigureB = new PathFigure {StartPoint = startPointB};
+
+                var point1B = new System.Windows.Point(0.05 * radius * scaleFactor, -0.2 * radius * scaleFactor);
+                var lineSegment1B = new LineSegment {Point = point1B};
+                pathFigureB.Segments.Add(lineSegment1B);
+
+                var point2B = new System.Windows.Point(0.25 * radius * scaleFactor, -0.1 * radius * scaleFactor);
+                var lineSegment2B = new LineSegment {Point = point2B};
+                pathFigureB.Segments.Add(lineSegment2B);
+
+                // Figures = {M-34.5,-41.4L-6.9,-27.6L-34.5,-13.8 M34.5,-41.4L6.9,-27.6L34.5,-13.8}
+                var pathGeometry = new PathGeometry {Figures = new PathFigureCollection {pathFigureA, pathFigureB}};
+
+                var orangePath = new Path
+                {
+                    Stroke = Brushes.Black,
+                    StrokeThickness = 2.0,
+                    Data = pathGeometry,
+                    RenderTransform = translateTransform
+                };
+
+                canvas.Children.Add(orangePath);
+            }
+        }
 
         //public void drawOohFace(Graphics graphics, double scaleFactor)
         //{
