@@ -1,10 +1,16 @@
-﻿using System;
-using ApprovalTests;
+﻿using ApprovalTests.Reporters;
+using ApprovalTests.Wpf;
 using BlobSallad;
 using NUnit.Framework;
+using System;
+using System.Threading;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace BlobSalladTests
 {
+    [UseReporter(typeof(DiffReporter), typeof(ClipboardReporter))]
+    [Apartment(ApartmentState.STA)]
     public class BlobTests
     {
         [Test]
@@ -430,30 +436,17 @@ namespace BlobSalladTests
         //    }
         //}
 
-        //[Test]
-        //public void drawOohFaceTest()
-        //{
-        //    Blob blob = new Blob(7.0, 11.0, 13.0, 5);
+        [Test]
+        public void drawOohFaceTest()
+        {
+            var panel = new Canvas {Width = 100, Height = 100};
 
-        //    BufferedImage image = new BufferedImage(100, 100, TYPE_INT_RGB);
-        //    Graphics2D graphics = image.createGraphics();
-        //    try
-        //    {
-        //        graphics.setPaint(Color.WHITE);
-        //        graphics.fillRect(0, 0, image.getWidth(), image.getHeight());
+            var blob = new Blob(50.0, 50.0, 25.0, 5);
+            blob.drawOohFace(panel, 3.0);
 
-        //        final double tx = blob.getMiddlePointMass().getXPos() * 6.0;
-        //        final double ty = (blob.getMiddlePointMass().getYPos() - 0.35 * 11.0) * 6.0;
-        //        graphics.translate(tx, ty);
-
-        //        blob.drawOohFace(graphics, 6.0);
-        //        Approvals.verify(image);
-        //    }
-        //    finally
-        //    {
-        //        graphics.dispose();
-        //    }
-        //}
+            var wpf = new ContentControl {Content = panel};
+            WpfApprovals.Verify(wpf);
+        }
 
         //[Test]
         //public void drawFaceTest()

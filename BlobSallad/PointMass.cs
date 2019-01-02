@@ -1,4 +1,9 @@
-﻿namespace BlobSallad
+﻿using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Shapes;
+
+namespace BlobSallad
 {
     public class PointMass
     {
@@ -107,18 +112,21 @@
             this.friction = friction;
         }
 
-        //public void draw(Graphics graphics, double scaleFactor)
-        //{
-        //    BasicStroke stroke = new BasicStroke(2.0F);
-        //    Graphics2D g2d = (Graphics2D)graphics;
-        //    g2d.setColor(Color.BLACK);
-        //    g2d.setStroke(stroke);
-        //    Double arc = new Double();
-        //    readonly double x = this.cur.getX() * scaleFactor;
-        //    readonly double y = this.cur.getY() * scaleFactor;
-        //    readonly double radius = 4.0; // * mass;
-        //    arc.setArcByCenter(x, y, radius, 0.0, 360.0, 1);
-        //    g2d.fill(arc);
-        //}
+        public void draw(Canvas canvas, double scaleFactor)
+        {
+            var circle = new Ellipse
+            {
+                Width = 8,
+                Height = 8,
+                Fill = Brushes.Black,
+                Stroke = Brushes.Black,
+                StrokeThickness = 2.0,
+            };
+
+            Canvas.SetLeft(circle, cur.getX() * scaleFactor);
+            Canvas.SetTop(circle, cur.getY() * scaleFactor);
+
+            canvas.Children.Add(circle);
+        }
     }
 }

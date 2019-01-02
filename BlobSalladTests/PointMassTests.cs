@@ -4,6 +4,7 @@ using BlobSallad;
 using NUnit.Framework;
 using System;
 using System.Threading;
+using System.Windows.Controls;
 using Vector = BlobSallad.Vector;
 
 namespace BlobSalladTests
@@ -37,12 +38,12 @@ namespace BlobSalladTests
         [STAThread]
         public void drawTest()
         {
-            // var model = new Board();
-            
-            //PointMass pointMass = new PointMass(11.0, 13.0, 11.0);
-            //pointMass.draw(graphics, 2.0);
+            var panel = new Canvas { Width = 100, Height = 100 };
 
-            var wpf = new MainWindow();
+            var pointMass = new PointMass(11.0, 13.0, 11.0);
+            pointMass.draw(panel, 2.0);
+
+            var wpf = new ContentControl { Content = panel };
             WpfApprovals.Verify(wpf);
         }
     }
