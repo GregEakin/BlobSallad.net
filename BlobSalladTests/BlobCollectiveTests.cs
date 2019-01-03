@@ -1,9 +1,11 @@
-﻿using ApprovalTests.Reporters;
+﻿using System;
+using ApprovalTests.Reporters;
 using ApprovalTests.Wpf;
 using BlobSallad;
 using NUnit.Framework;
 using System.Threading;
 using System.Windows.Controls;
+using Environment = BlobSallad.Environment;
 
 namespace BlobSalladTests
 {
@@ -69,7 +71,21 @@ namespace BlobSalladTests
         [Test]
         public void FindClosestTest()
         {
+            var environment = new Environment(0.2, 0.2, 2.6, 1.6);
 
+            var collective = new BlobCollective(1.0, 1.0, 4);
+            collective.Split();
+            collective.Split();
+
+            collective.Move(1.0);
+            collective.Sc(environment);
+
+            var largest = collective.FindLargest(null);
+            var smallest1 = collective.FindSmallest(null);
+            var smallest2 = collective.FindSmallest(smallest1);
+
+            var closest = collective.FindClosest(largest);
+            Assert.AreSame(smallest2, closest);
         }
 
         [Test]
