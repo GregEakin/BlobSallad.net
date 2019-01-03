@@ -1,4 +1,8 @@
-﻿namespace BlobSallad
+﻿// Found from https://blobsallad.se/
+// Originally Written by: bjoern.lindberg@gmail.com
+// Translated to C# by Greg Eakin
+
+namespace BlobSallad
 {
     public class Joint
     {

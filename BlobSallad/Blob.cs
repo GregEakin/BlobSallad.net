@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Found from https://blobsallad.se/
+// Originally Written by: bjoern.lindberg@gmail.com
+// Translated to C# by Greg Eakin
+
+using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
