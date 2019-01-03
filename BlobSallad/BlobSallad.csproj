@@ -57,7 +57,6 @@
     </ApplicationDefinition>
     <Compile Include="Blob.cs" />
     <Compile Include="BlobCollective.cs" />
-    <Compile Include="Controller.cs" />
     <Compile Include="Environment.cs" />
     <Compile Include="Joint.cs" />
     <Compile Include="PointMass.cs" />
