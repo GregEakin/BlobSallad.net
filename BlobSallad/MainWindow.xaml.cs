@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Threading;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace BlobSallad
 {
@@ -10,33 +12,70 @@ namespace BlobSallad
     /// </summary>
     public partial class MainWindow : Window
     {
+        private const double ScaleFactor = 200.0;
+        private readonly Vector _gravity = new Vector(0.0, 10.0);
+        private readonly Environment _env = new Environment(0.2, 0.2, 2.6, 1.6);
+        private readonly BlobCollective _blobColl = new BlobCollective(1.0, 1.0, 0xC0);
+        private readonly DispatcherTimer _timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(30) };
+
+        private readonly Vector _upForce = new Vector(0.0, -50.0);
+        private readonly Vector _downForce = new Vector(0.0, 50.0);
+        private readonly Vector _leftForce = new Vector(-50.0, 0.0);
+        private readonly Vector _rightForce = new Vector(50.0, 0.0);
+
         public MainWindow()
         {
             InitializeComponent();
 
-            var transformGroup = new TransformGroup();
-            var translateTransform = new TranslateTransform(100.0, 100.0);
-            transformGroup.Children.Add(translateTransform);
+            _timer.Tick += OnTimerOnTick;
+            _timer.Start();
 
-            //var blob = new Blob(100.0, 100.0, 25.0, 5);
-            //blob.DrawOohFace(MyCanvas, 10.0, transformGroup);
+            KeyDown += MainWindow_KeyDown;
+        }
 
-            var gravity = new Vector(0.0, 10.0);
+        private void OnTimerOnTick(object s, EventArgs e)
+        {
+            MyCanvas.Children.Clear();
 
-            var env = new Environment(0.2, 0.2, 2.6, 1.6);
+            _blobColl.Move(0.05);
+            _blobColl.Sc(_env);
+            _blobColl.SetForce(_gravity);
+            _blobColl.Draw(MyCanvas, ScaleFactor);
+        }
 
-            var blobColl = new BlobCollective(1.0, 1.0, 0xC0);
-
-            for (var i = 0; i < 100; i++)
+        public void MainWindow_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.Key)
             {
-                blobColl.Move(0.05);
-                blobColl.Sc(env);
-                blobColl.SetForce(gravity);
-                blobColl.Draw(MyCanvas, 200.0);
-                // Thread.Sleep(50);
+                case Key.G:
+                    var y = _gravity.Y > 0.0 ? 0.0 : 10.0;
+                    _gravity.Y = y;
+                    break;
 
-                if (i == 14)
-                    blobColl.AddForce(new Vector(500, -10.0));
+                case Key.H:
+                    _blobColl.Split();
+                    break;
+
+                case Key.J:
+                    _blobColl.Join();
+                    break;
+
+                case Key.Up:
+                    _blobColl.AddForce(_upForce);
+                    break;
+
+                case Key.Down:
+                    _blobColl.AddForce(_downForce);
+                    break;
+
+                case Key.Left:
+                    _blobColl.AddForce(_leftForce);
+                    break;
+
+                case Key.Right:
+                    _blobColl.AddForce(_rightForce);
+                    break;
+
             }
         }
     }

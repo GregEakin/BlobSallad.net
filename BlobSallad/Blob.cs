@@ -586,7 +586,7 @@ namespace BlobSallad
             var arcPath = new Path
             {
                 Stroke = new SolidColorBrush(Colors.Black),
-                StrokeThickness = 5,
+                StrokeThickness = 3,
                 Data = pthGeometry,
                 Fill = new SolidColorBrush(Colors.White)
             };
@@ -610,7 +610,6 @@ namespace BlobSallad
             var tx = MiddlePointMass.XPos * scaleFactor;
             var ty = (MiddlePointMass.YPos - 0.35 * Radius) * scaleFactor;
             var translateTransform = new TranslateTransform(tx, ty);
-            transformGroup.Children.Add(translateTransform);
 
             DrawBody(canvas, scaleFactor);
 
@@ -622,6 +621,7 @@ namespace BlobSallad
             var theta = (ori.X < 0.0) ? -ang : ang;
             var rotateTransform = new RotateTransform(theta);
             transformGroup.Children.Add(rotateTransform);
+            transformGroup.Children.Add(translateTransform);
 
             UpdateFace();
             DrawFace(canvas, scaleFactor, transformGroup);
