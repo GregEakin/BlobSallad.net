@@ -88,14 +88,14 @@ namespace BlobSallad
             var x = Pos.X * scaleFactor;
             var y = Pos.Y * scaleFactor;
             var circle = new EllipseGeometry(new Point(x, y), radius, radius);
-            var orangePath = new Path
+            var path = new Path
             {
                 Fill = Brushes.Black,
                 Stroke = Brushes.Black,
                 StrokeThickness = 2.0,
                 Data = circle,
             };
-            canvas.Children.Add(orangePath);
+            canvas.Children.Add(path);
         }
     }
 }

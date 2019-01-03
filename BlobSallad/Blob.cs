@@ -214,14 +214,14 @@ namespace BlobSallad
                 var x = -0.15 * Radius * scaleFactor;
                 var y = -0.20 * Radius * scaleFactor;
                 var circle = new EllipseGeometry(new Point(x, y), radius, radius, translateTransform);
-                var orangePath = new Path
+                var path = new Path
                 {
                     Fill = Brushes.White,
                     Stroke = Brushes.Black,
                     StrokeThickness = 1.0,
                     Data = circle,
                 };
-                canvas.Children.Add(orangePath);
+                canvas.Children.Add(path);
             }
 
             {
@@ -229,14 +229,14 @@ namespace BlobSallad
                 var x = 0.15 * Radius * scaleFactor;
                 var y = -0.20 * Radius * scaleFactor;
                 var circle = new EllipseGeometry(new Point(x, y), radius, radius, translateTransform);
-                var orangePath = new Path
+                var path = new Path
                 {
                     Fill = Brushes.White,
                     Stroke = Brushes.Black,
                     StrokeThickness = 1.0,
                     Data = circle,
                 };
-                canvas.Children.Add(orangePath);
+                canvas.Children.Add(path);
             }
 
             {
@@ -244,14 +244,14 @@ namespace BlobSallad
                 var x = -0.15 * Radius * scaleFactor;
                 var y = -0.17 * Radius * scaleFactor;
                 var circle = new EllipseGeometry(new Point(x, y), radius, radius, translateTransform);
-                var orangePath = new Path
+                var path = new Path
                 {
                     Fill = Brushes.Black,
                     Stroke = Brushes.Black,
                     StrokeThickness = 1.0,
                     Data = circle,
                 };
-                canvas.Children.Add(orangePath);
+                canvas.Children.Add(path);
             }
 
             {
@@ -259,14 +259,14 @@ namespace BlobSallad
                 var x = 0.15 * Radius * scaleFactor;
                 var y = -0.17 * Radius * scaleFactor;
                 var circle = new EllipseGeometry(new Point(x, y), radius, radius, translateTransform);
-                var orangePath = new Path
+                var path = new Path
                 {
                     Fill = Brushes.Black,
                     Stroke = Brushes.Black,
                     StrokeThickness = 1.0,
                     Data = circle,
                 };
-                canvas.Children.Add(orangePath);
+                canvas.Children.Add(path);
             }
         }
 
@@ -319,9 +319,9 @@ namespace BlobSallad
                 var lineSegment1B = new LineSegment {Point = pointB};
                 pathFigureB.Segments.Add(lineSegment1B);
 
-                var pathGeometry = new PathGeometry {Figures = new PathFigureCollection {pathFigureA, pathFigureB}};
-
-                var orangePath = new Path
+                var pathFigureCollection = new PathFigureCollection {pathFigureA, pathFigureB};
+                var pathGeometry = new PathGeometry {Figures = pathFigureCollection};
+                var path = new Path
                 {
                     Stroke = Brushes.Black,
                     StrokeThickness = 1.0,
@@ -329,7 +329,7 @@ namespace BlobSallad
                     RenderTransform = translateTransform
                 };
 
-                canvas.Children.Add(orangePath);
+                canvas.Children.Add(path);
             }
         }
 
@@ -461,8 +461,7 @@ namespace BlobSallad
 
                 // Figures = {M-34.5,-41.4L-6.9,-27.6L-34.5,-13.8 M34.5,-41.4L6.9,-27.6L34.5,-13.8}
                 var pathGeometry = new PathGeometry {Figures = new PathFigureCollection {pathFigureA, pathFigureB}};
-
-                var orangePath = new Path
+                var path = new Path
                 {
                     Stroke = Brushes.Black,
                     StrokeThickness = 2.0,
@@ -470,7 +469,7 @@ namespace BlobSallad
                     RenderTransform = translateTransform
                 };
 
-                canvas.Children.Add(orangePath);
+                canvas.Children.Add(path);
             }
         }
 
