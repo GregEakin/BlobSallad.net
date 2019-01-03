@@ -210,130 +210,112 @@ namespace BlobSallad
         public void DrawEyesOpen(Canvas canvas, double scaleFactor, TransformGroup translateTransform)
         {
             {
-                var circle = new Ellipse
+                var radius = 0.12 * Radius * scaleFactor;
+                var x = -0.15 * Radius * scaleFactor;
+                var y = -0.20 * Radius * scaleFactor;
+                var circle = new EllipseGeometry(new Point(x, y), radius, radius, translateTransform);
+                var orangePath = new Path
                 {
-                    Width = 0.24 * Radius * scaleFactor,
-                    Height = 0.24 * Radius * scaleFactor,
                     Fill = Brushes.White,
                     Stroke = Brushes.Black,
                     StrokeThickness = 1.0,
-                    RenderTransform = translateTransform,
+                    Data = circle,
                 };
-
-                Canvas.SetLeft(circle, -0.27 * Radius * scaleFactor);
-                Canvas.SetTop(circle, -0.32 * Radius * scaleFactor);
-
-                canvas.Children.Add(circle);
+                canvas.Children.Add(orangePath);
             }
 
             {
-                var circle = new Ellipse
+                var radius = 0.12 * Radius * scaleFactor;
+                var x = 0.15 * Radius * scaleFactor;
+                var y = -0.20 * Radius * scaleFactor;
+                var circle = new EllipseGeometry(new Point(x, y), radius, radius, translateTransform);
+                var orangePath = new Path
                 {
-                    Width = 0.24 * Radius * scaleFactor,
-                    Height = 0.24 * Radius * scaleFactor,
                     Fill = Brushes.White,
                     Stroke = Brushes.Black,
                     StrokeThickness = 1.0,
-                    RenderTransform = translateTransform,
+                    Data = circle,
                 };
-
-                Canvas.SetLeft(circle, 0.03 * Radius * scaleFactor);
-                Canvas.SetTop(circle, -0.32 * Radius * scaleFactor);
-
-                canvas.Children.Add(circle);
+                canvas.Children.Add(orangePath);
             }
 
             {
-                var circle = new Ellipse
+                var radius = 0.06 * Radius * scaleFactor;
+                var x = -0.15 * Radius * scaleFactor;
+                var y = -0.17 * Radius * scaleFactor;
+                var circle = new EllipseGeometry(new Point(x, y), radius, radius, translateTransform);
+                var orangePath = new Path
                 {
-                    Width = 0.12 * Radius * scaleFactor,
-                    Height = 0.12 * Radius * scaleFactor,
                     Fill = Brushes.Black,
                     Stroke = Brushes.Black,
                     StrokeThickness = 1.0,
-                    RenderTransform = translateTransform,
+                    Data = circle,
                 };
-
-                Canvas.SetLeft(circle, -0.21 * Radius * scaleFactor);
-                Canvas.SetTop(circle, -0.23 * Radius * scaleFactor);
-
-                canvas.Children.Add(circle);
+                canvas.Children.Add(orangePath);
             }
 
             {
-                var circle = new Ellipse
+                var radius = 0.06 * Radius * scaleFactor;
+                var x = 0.15 * Radius * scaleFactor;
+                var y = -0.17 * Radius * scaleFactor;
+                var circle = new EllipseGeometry(new Point(x, y), radius, radius, translateTransform);
+                var orangePath = new Path
                 {
-                    Width = 0.12 * Radius * scaleFactor,
-                    Height = 0.12 * Radius * scaleFactor,
                     Fill = Brushes.Black,
                     Stroke = Brushes.Black,
                     StrokeThickness = 1.0,
-                    RenderTransform = translateTransform,
+                    Data = circle,
                 };
-
-                Canvas.SetLeft(circle, 0.09 * Radius * scaleFactor);
-                Canvas.SetTop(circle, -0.23 * Radius * scaleFactor);
-
-                canvas.Children.Add(circle);
+                canvas.Children.Add(orangePath);
             }
         }
 
         public void DrawEyesClosed(Canvas canvas, double scaleFactor, TransformGroup translateTransform)
         {
             {
-                var x =  -0.27 * Radius * scaleFactor;
-                var y = -0.32 * Radius * scaleFactor;
-
-                var w = 0.24 * Radius * scaleFactor;
-                var h = 0.24 * Radius * scaleFactor;
-                var circle = new EllipseGeometry();
-            }
-            {
-                var circle = new Ellipse
+                var radius = 0.12 * Radius * scaleFactor;
+                var x = -0.15 * Radius * scaleFactor;
+                var y = -0.20 * Radius * scaleFactor;
+                var circle = new EllipseGeometry(new Point(x, y), radius, radius);
+                var leftEye = new Path
                 {
-                    Width = 0.24 * Radius * scaleFactor,
-                    Height = 0.24 * Radius * scaleFactor,
                     Fill = Brushes.White,
                     Stroke = Brushes.Black,
                     StrokeThickness = 1.0,
-                    RenderTransform = translateTransform,
+                    Data = circle,
+                    RenderTransform = translateTransform
                 };
-
-                Canvas.SetLeft(circle, -0.27 * Radius * scaleFactor);
-                Canvas.SetTop(circle, -0.32 * Radius * scaleFactor);
-
-                canvas.Children.Add(circle);
+                canvas.Children.Add(leftEye);
             }
 
             {
-                var circle = new Ellipse
+                var radius = 0.12 * Radius * scaleFactor;
+                var x = 0.15 * Radius * scaleFactor;
+                var y = -0.20 * Radius * scaleFactor;
+                var circle = new EllipseGeometry(new Point(x, y), radius, radius);
+                var rightEye = new Path
                 {
-                    Width = 0.24 * Radius * scaleFactor,
-                    Height = 0.24 * Radius * scaleFactor,
                     Fill = Brushes.White,
                     Stroke = Brushes.Black,
                     StrokeThickness = 1.0,
-                    RenderTransform = translateTransform,
+                    Data = circle,
+                    RenderTransform = translateTransform
                 };
-
-                Canvas.SetLeft(circle, 0.03 * Radius * scaleFactor);
-                Canvas.SetTop(circle, -0.32 * Radius * scaleFactor);
-
-                canvas.Children.Add(circle);
+                canvas.Children.Add(rightEye);
             }
 
             {
-                var startPointA = new Point(-0.25 * Radius * scaleFactor, -0.2 * Radius * scaleFactor);
+                var startPointA = new Point(-0.25 * Radius * scaleFactor, -0.20 * Radius * scaleFactor);
                 var pathFigureA = new PathFigure {StartPoint = startPointA};
 
-                var pointA = new Point(-0.05 * Radius * scaleFactor, -0.2 * Radius * scaleFactor);
+                var pointA = new Point(-0.05 * Radius * scaleFactor, -0.20 * Radius * scaleFactor);
                 var lineSegment1A = new LineSegment {Point = pointA};
                 pathFigureA.Segments.Add(lineSegment1A);
 
-                var startPointB = new Point(0.25 * Radius * scaleFactor, -0.2 * Radius * scaleFactor);
+                var startPointB = new Point(0.25 * Radius * scaleFactor, -0.20 * Radius * scaleFactor);
                 var pathFigureB = new PathFigure {StartPoint = startPointB};
 
-                var pointB = new Point(0.05 * Radius * scaleFactor, -0.2 * Radius * scaleFactor);
+                var pointB = new Point(0.05 * Radius * scaleFactor, -0.20 * Radius * scaleFactor);
                 var lineSegment1B = new LineSegment {Point = pointB};
                 pathFigureB.Segments.Add(lineSegment1B);
 

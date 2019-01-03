@@ -2,6 +2,7 @@
 // Originally Written by: bjoern.lindberg@gmail.com
 // Translated to C# by Greg Eakin
 
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -83,19 +84,18 @@ namespace BlobSallad
 
         public void Draw(Canvas canvas, double scaleFactor)
         {
-            var circle = new Ellipse
+            var radius = 4;
+            var x = Pos.X * scaleFactor;
+            var y = Pos.Y * scaleFactor;
+            var circle = new EllipseGeometry(new Point(x, y), radius, radius);
+            var orangePath = new Path
             {
-                Width = 8,
-                Height = 8,
                 Fill = Brushes.Black,
                 Stroke = Brushes.Black,
                 StrokeThickness = 2.0,
+                Data = circle,
             };
-
-            Canvas.SetLeft(circle, (Pos.X - 4) * scaleFactor);
-            Canvas.SetTop(circle, (Pos.Y - 4) * scaleFactor);
-
-            canvas.Children.Add(circle);
+            canvas.Children.Add(orangePath);
         }
     }
 }
