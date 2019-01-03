@@ -60,7 +60,6 @@
     <Compile Include="Controller.cs" />
     <Compile Include="Environment.cs" />
     <Compile Include="Joint.cs" />
-    <Compile Include="Point.cs" />
     <Compile Include="PointMass.cs" />
     <Compile Include="Stick.cs" />
     <Compile Include="Vector.cs" />

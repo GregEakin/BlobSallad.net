@@ -32,8 +32,8 @@ namespace BlobSallad
         private readonly List<Joint> _joints = new List<Joint>();
         private readonly Random _random = new Random();
 
-        //private readonly Color highlight = new Color(255, 204, 204);
-        //private readonly Color normal = Color.WHITE;
+        private readonly Color _highlight = Colors.Pink;    // 255, 204, 204
+        private readonly Color _normal = Colors.White;
         private Face _drawFaceStyle = Face.Smile;
         private Eye _drawEyeStyle = Eye.Open;
 
@@ -41,7 +41,6 @@ namespace BlobSallad
         {
             return (x % m + m) % m;
         }
-
 
         public Blob(double x, double y, double radius, int numPointMasses)
         {
@@ -282,6 +281,14 @@ namespace BlobSallad
         public void DrawEyesClosed(Canvas canvas, double scaleFactor, TransformGroup translateTransform)
         {
             {
+                var x =  -0.27 * Radius * scaleFactor;
+                var y = -0.32 * Radius * scaleFactor;
+
+                var w = 0.24 * Radius * scaleFactor;
+                var h = 0.24 * Radius * scaleFactor;
+                var circle = new EllipseGeometry();
+            }
+            {
                 var circle = new Ellipse
                 {
                     Width = 0.24 * Radius * scaleFactor,
@@ -316,17 +323,17 @@ namespace BlobSallad
             }
 
             {
-                var startPointA = new System.Windows.Point(-0.25 * Radius * scaleFactor, -0.2 * Radius * scaleFactor);
+                var startPointA = new Point(-0.25 * Radius * scaleFactor, -0.2 * Radius * scaleFactor);
                 var pathFigureA = new PathFigure {StartPoint = startPointA};
 
-                var pointA = new System.Windows.Point(-0.05 * Radius * scaleFactor, -0.2 * Radius * scaleFactor);
+                var pointA = new Point(-0.05 * Radius * scaleFactor, -0.2 * Radius * scaleFactor);
                 var lineSegment1A = new LineSegment {Point = pointA};
                 pathFigureA.Segments.Add(lineSegment1A);
 
-                var startPointB = new System.Windows.Point(0.25 * Radius * scaleFactor, -0.2 * Radius * scaleFactor);
+                var startPointB = new Point(0.25 * Radius * scaleFactor, -0.2 * Radius * scaleFactor);
                 var pathFigureB = new PathFigure {StartPoint = startPointB};
 
-                var pointB = new System.Windows.Point(0.05 * Radius * scaleFactor, -0.2 * Radius * scaleFactor);
+                var pointB = new Point(0.05 * Radius * scaleFactor, -0.2 * Radius * scaleFactor);
                 var lineSegment1B = new LineSegment {Point = pointB};
                 pathFigureB.Segments.Add(lineSegment1B);
 
@@ -346,7 +353,7 @@ namespace BlobSallad
 
         public void DrawSmile(Canvas canvas, double scaleFactor, TransformGroup translateTransform)
         {
-            var point = new System.Windows.Point(0.25 * Radius * scaleFactor, 0.1 * Radius * scaleFactor);
+            var point = new Point(0.25 * Radius * scaleFactor, 0.1 * Radius * scaleFactor);
             var size = new Size(0.25 * Radius * scaleFactor, 0.25 * Radius * scaleFactor);
             var arcSegment = new ArcSegment
             {
@@ -359,7 +366,7 @@ namespace BlobSallad
             // pathGeometry = {M-34.5,13.8A27.6,27.6,0,1,0,34.5,13.8}
             var pathFigure = new PathFigure
             {
-                StartPoint = new System.Windows.Point(-0.25 * Radius * scaleFactor, 0.1 * Radius * scaleFactor)
+                StartPoint = new Point(-0.25 * Radius * scaleFactor, 0.1 * Radius * scaleFactor)
             };
             pathFigure.Segments.Add(arcSegment);
 
@@ -380,7 +387,7 @@ namespace BlobSallad
 
         public void DrawOpenMouth(Canvas canvas, double scaleFactor, TransformGroup translateTransform)
         {
-            var point = new System.Windows.Point(0.25 * Radius * scaleFactor, 0.1 * Radius * scaleFactor);
+            var point = new Point(0.25 * Radius * scaleFactor, 0.1 * Radius * scaleFactor);
             var size = new Size(0.25 * Radius * scaleFactor, 0.25 * Radius * scaleFactor);
             var arcSegment = new ArcSegment
             {
@@ -393,7 +400,7 @@ namespace BlobSallad
             // pathGeometry = {M-34.5,13.8A27.6,27.6,0,1,0,34.5,13.8}
             var pathFigure = new PathFigure
             {
-                StartPoint = new System.Windows.Point(-0.25 * Radius * scaleFactor, 0.1 * Radius * scaleFactor)
+                StartPoint = new Point(-0.25 * Radius * scaleFactor, 0.1 * Radius * scaleFactor)
             };
             pathFigure.Segments.Add(arcSegment);
 
@@ -415,7 +422,7 @@ namespace BlobSallad
         public void DrawOohFace(Canvas canvas, double scaleFactor, TransformGroup translateTransform)
         {
             {
-                var point = new System.Windows.Point(0.25 * Radius * scaleFactor, 0.1 * Radius * scaleFactor);
+                var point = new Point(0.25 * Radius * scaleFactor, 0.1 * Radius * scaleFactor);
                 var size = new Size(0.25 * Radius * scaleFactor, 0.25 * Radius * scaleFactor);
                 var arcSegment = new ArcSegment
                 {
@@ -428,7 +435,7 @@ namespace BlobSallad
                 // pathGeometry = {M-34.5,13.8A27.6,27.6,0,1,0,34.5,13.8}
                 var pathFigure = new PathFigure
                 {
-                    StartPoint = new System.Windows.Point(-0.25 * Radius * scaleFactor, 0.1 * Radius * scaleFactor)
+                    StartPoint = new Point(-0.25 * Radius * scaleFactor, 0.1 * Radius * scaleFactor)
                 };
                 pathFigure.Segments.Add(arcSegment);
 
@@ -448,25 +455,25 @@ namespace BlobSallad
             }
 
             {
-                var startPointA = new System.Windows.Point(-0.25 * Radius * scaleFactor, -0.3 * Radius * scaleFactor);
+                var startPointA = new Point(-0.25 * Radius * scaleFactor, -0.3 * Radius * scaleFactor);
                 var pathFigureA = new PathFigure {StartPoint = startPointA};
 
-                var point1A = new System.Windows.Point(-0.05 * Radius * scaleFactor, -0.2 * Radius * scaleFactor);
+                var point1A = new Point(-0.05 * Radius * scaleFactor, -0.2 * Radius * scaleFactor);
                 var lineSegment1A = new LineSegment {Point = point1A};
                 pathFigureA.Segments.Add(lineSegment1A);
 
-                var point2A = new System.Windows.Point(-0.25 * Radius * scaleFactor, -0.1 * Radius * scaleFactor);
+                var point2A = new Point(-0.25 * Radius * scaleFactor, -0.1 * Radius * scaleFactor);
                 var lineSegment2A = new LineSegment {Point = point2A};
                 pathFigureA.Segments.Add(lineSegment2A);
 
-                var startPointB = new System.Windows.Point(0.25 * Radius * scaleFactor, -0.3 * Radius * scaleFactor);
+                var startPointB = new Point(0.25 * Radius * scaleFactor, -0.3 * Radius * scaleFactor);
                 var pathFigureB = new PathFigure {StartPoint = startPointB};
 
-                var point1B = new System.Windows.Point(0.05 * Radius * scaleFactor, -0.2 * Radius * scaleFactor);
+                var point1B = new Point(0.05 * Radius * scaleFactor, -0.2 * Radius * scaleFactor);
                 var lineSegment1B = new LineSegment {Point = point1B};
                 pathFigureB.Segments.Add(lineSegment1B);
 
-                var point2B = new System.Windows.Point(0.25 * Radius * scaleFactor, -0.1 * Radius * scaleFactor);
+                var point2B = new Point(0.25 * Radius * scaleFactor, -0.1 * Radius * scaleFactor);
                 var lineSegment2B = new LineSegment {Point = point2B};
                 pathFigureB.Segments.Add(lineSegment2B);
 
@@ -568,9 +575,9 @@ namespace BlobSallad
                 ty *= scaleFactor;
 
                 //        generalPath.curveTo(px, py, tx, ty, tx, ty);
-                pbzSeg.Points.Add(new System.Windows.Point(px, py));
-                pbzSeg.Points.Add(new System.Windows.Point(tx, ty));
-                pbzSeg.Points.Add(new System.Windows.Point(tx, ty));
+                pbzSeg.Points.Add(new Point(px, py));
+                pbzSeg.Points.Add(new Point(tx, ty));
+                pbzSeg.Points.Add(new Point(tx, ty));
             }
 
             var myPathSegmentCollection = new PathSegmentCollection {pbzSeg};
@@ -579,7 +586,7 @@ namespace BlobSallad
             var startY = PointMasses[0].YPos * scaleFactor;
             var pthFigure = new PathFigure
             {
-                StartPoint = new System.Windows.Point(startX, startY),
+                StartPoint = new Point(startX, startY),
                 Segments = myPathSegmentCollection
             };
 
@@ -587,12 +594,14 @@ namespace BlobSallad
 
             var pthGeometry = new PathGeometry {Figures = pthFigureCollection};
 
+            var color = Selected ? _highlight : _normal;
+
             var arcPath = new Path
             {
                 Stroke = new SolidColorBrush(Colors.Black),
                 StrokeThickness = 3,
                 Data = pthGeometry,
-                Fill = new SolidColorBrush(Colors.White)
+                Fill = new SolidColorBrush(color)
             };
 
             canvas.Children.Add(arcPath);

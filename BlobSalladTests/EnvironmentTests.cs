@@ -18,10 +18,9 @@ namespace BlobSalladTests
         [Test]
         public void WidthTest()
         {
-            var environment1 = new Environment(37.0, 31.0, 19.0, 17.0);
-            var environment = environment1.SetWidth(23.0);
+            var environment = new Environment(37.0, 31.0, 19.0, 17.0);
+            environment.Width = 23.0;
 
-            Assert.AreNotSame(environment, environment1);
             Assert.AreEqual(37.0, environment.Left);
             Assert.AreEqual(60.0, environment.Right);
             Assert.AreEqual(31.0, environment.Top);
@@ -31,10 +30,9 @@ namespace BlobSalladTests
         [Test]
         public void HeightTest()
         {
-            var environment1 = new Environment(37.0, 31.0, 19.0, 17.0);
-            var environment = environment1.SetHeight(23.0);
+            var environment = new Environment(37.0, 31.0, 19.0, 17.0);
+            environment.Height = 23.0;
 
-            Assert.AreNotSame(environment, environment1);
             Assert.AreEqual(37.0, environment.Left);
             Assert.AreEqual(56.0, environment.Right);
             Assert.AreEqual(31.0, environment.Top);

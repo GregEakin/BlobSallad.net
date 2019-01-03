@@ -4,12 +4,15 @@
 
 using System;
 using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace BlobSallad
 {
     public class BlobCollective
     {
+        private readonly Random _random = new Random();
+
         private readonly List<Blob> _blobs = new List<Blob>();
 
         public BlobCollective(double x, double y, int maxNum)
@@ -126,13 +129,13 @@ namespace BlobSallad
             --NumActive;
         }
 
-        public Point SelectBlob(double x, double y)
+        public Point? SelectBlob(double x, double y)
         {
             if (SelectedBlob != null)
                 return null;
 
-            var minDist = Double.MaxValue;
-            Point selectOffset = null;
+            var minDist = double.MaxValue;
+            Point? selectOffset = null;
 
             foreach (var blob in _blobs)
             {
@@ -190,21 +193,22 @@ namespace BlobSallad
             }
         }
 
-        public void SetForce(Vector force)
+        public Vector Force
         {
-            foreach (var blob in _blobs)
+            set
             {
-                if (blob == null)
-                    continue;
+                foreach (var blob in _blobs)
+                {
+                    if (blob == null)
+                        continue;
 
-                var force1 = blob == SelectedBlob
-                    ? new Vector(0.0, 0.0)
-                    : force;
-                blob.Force = force1;
+                    var force1 = blob == SelectedBlob
+                        ? new Vector(0.0, 0.0)
+                        : value;
+                    blob.Force = force1;
+                }
             }
         }
-
-        private readonly Random _random = new Random();
 
         public void AddForce(Vector force)
         {

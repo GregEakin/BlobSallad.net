@@ -18,20 +18,20 @@ namespace BlobSallad
 
         public double Left { get; }
 
-        public double Right { get; }
+        public double Right { get; set; }
 
         public double Top { get; }
 
-        public double Bottom { get; }
+        public double Bottom { get; set; }
 
-        public Environment SetWidth(double w)
+        public double Width
         {
-            return new Environment(Left, Top, w, Bottom - Top);
+            set => Right = Left + value;
         }
 
-        public Environment SetHeight(double h)
+        public double Height
         {
-            return new Environment(Left, Top, Right - Left, h);
+            set => Bottom = Top + value;
         }
 
         public bool Collision(Vector curPos, Vector prePos)

@@ -2,6 +2,7 @@
 // Originally Written by: bjoern.lindberg@gmail.com
 // Translated to C# by Greg Eakin
 
+using System.Windows;
 using System.Windows.Controls;
 
 namespace BlobSallad
@@ -13,9 +14,8 @@ namespace BlobSallad
         private readonly Vector _gravity = new Vector(0.0, 10.0);
         private volatile bool _stopped = false;
         private Environment _env = new Environment(0.2, 0.2, 2.6, 1.6);
-        private Point _savedMouseCoords = null;
-
-        private Point _selectOffset = null;
+        private Point? _savedMouseCoords = null;
+        private Point? _selectOffset = null;
         // private Timer timer;
 
         private void ToggleGravity()
@@ -39,14 +39,14 @@ namespace BlobSallad
         {
             if (_savedMouseCoords != null && _selectOffset != null)
             {
-                var x = _savedMouseCoords.X - _selectOffset.X;
-                var y = _savedMouseCoords.Y - _selectOffset.Y;
+                var x = _savedMouseCoords.Value.X - _selectOffset.Value.X;
+                var y = _savedMouseCoords.Value.Y - _selectOffset.Value.Y;
                 _blobColl.SelectedBlobMoveTo(x, y);
             }
 
             _blobColl.Move(0.05);
             _blobColl.Sc(_env);
-            _blobColl.SetForce(_gravity);
+            _blobColl.Force = _gravity;
         }
 
         public void PaintComponent(Canvas canvas)

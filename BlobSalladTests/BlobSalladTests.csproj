@@ -87,7 +87,6 @@
     <Compile Include="EnvironmentTests.cs" />
     <Compile Include="JointTests.cs" />
     <Compile Include="PointMassTests.cs" />
-    <Compile Include="PointTests.cs" />
     <Compile Include="StickTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VectorTests.cs" />
