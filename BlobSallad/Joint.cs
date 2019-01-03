@@ -20,9 +20,8 @@ namespace BlobSallad
 
             var delta = new Vector(_pointMassBPos);
             delta.Sub(_pointMassAPos);
-            var length = delta.Length();
-            ShortConst = length * shortConst;
-            LongConst = length * longConst;
+            ShortConst = delta.Length * shortConst;
+            LongConst = delta.Length * longConst;
             _scSquared = ShortConst * ShortConst;
             _lcSquared = LongConst * LongConst;
         }

@@ -57,10 +57,7 @@ namespace BlobSallad
             return X * that.X + Y * that.Y;
         }
 
-        public double Length()
-        {
-            return Math.Sqrt(X * X + Y * Y);
-        }
+        public double Length => Math.Sqrt(X * X + Y * Y);
 
         public void Scale(double scaleFactor)
         {

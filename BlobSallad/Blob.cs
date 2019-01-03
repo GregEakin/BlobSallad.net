@@ -620,7 +620,7 @@ namespace BlobSallad
             var up = new Vector(0.0, -1.0);
             var ori = new Vector(_pointMasses[0].Pos);
             ori.Sub(MiddlePointMass.Pos);
-            var ang = Math.Acos(ori.DotProd(up) / ori.Length());
+            var ang = Math.Acos(ori.DotProd(up) / ori.Length);
             var radians = (ori.X < 0.0) ? -ang : ang;
             var theta = (180.0 / Math.PI) * radians;
             var rotateTransform = new RotateTransform(theta); //, MiddlePointMass.XPos, MiddlePointMass.YPos);

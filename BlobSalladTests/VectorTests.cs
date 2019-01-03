@@ -72,7 +72,7 @@ namespace BlobSalladTests
         public void LengthTest()
         {
             var vector = new Vector(71.0, 67.0);
-            var length = vector.Length();
+            var length = vector.Length;
             Assert.AreEqual(97.621, length, 0.01);
         }
 
