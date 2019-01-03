@@ -41,8 +41,8 @@ namespace BlobSalladTests
 
             var collective = new BlobCollective(1.0, 1.0, 4);
             collective.Split();
-            // collective.join();
-            // Assert.AreEqual(2, collective.NumActive);
+            collective.Join();
+            Assert.AreEqual(1, collective.NumActive);
             collective.Draw(canvas, 100.0);
 
             var wpf = new ContentControl { Content = canvas };

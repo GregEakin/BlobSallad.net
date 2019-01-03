@@ -21,7 +21,6 @@ namespace BlobSalladTests
 
             var wpf = new ContentControl { Content = canvas };
             WpfApprovals.Verify(wpf);
-
         }
     }
 }
