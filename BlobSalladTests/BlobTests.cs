@@ -19,8 +19,8 @@ namespace BlobSalladTests
         public void CtorTest()
         {
             var blob = new Blob(71.0, 67.0, 11.0, 5);
-            Assert.AreEqual(71.0, blob.XPos);
-            Assert.AreEqual(67.0, blob.YPos);
+            Assert.AreEqual(71.0, blob.XMiddle);
+            Assert.AreEqual(67.0, blob.YMiddle);
             Assert.AreEqual(11.0, blob.Radius);
 
             var pointMas = blob.MiddlePointMass;
@@ -133,7 +133,7 @@ namespace BlobSalladTests
                 var mass = i < 2 ? 4.0 : 1.0;
                 Assert.AreEqual(mass, pointMas.Mass);
 
-                var theta = (double) i * 2.0 * Math.PI / (double) 5;
+                var theta = i * 2.0 * Math.PI / 5;
                 var cx = Math.Cos(theta) * 11.0 + 71.0;
                 var cy = Math.Sin(theta) * 11.0 + 67.0;
                 Assert.AreEqual(cx, pointMas.XPos);
@@ -144,12 +144,27 @@ namespace BlobSalladTests
         [Test]
         public void AddBlob2Test()
         {
-            var blob1 = new Blob(17.0, 19.0, 11.0, 5);
-            var blob2 = new Blob(59.0, 61.0, 13.0, 5);
+            var blob1 = new Blob(17.0, 19.0, 11.0, 0);
+            var blob2 = new Blob(59.0, 61.0, 13.0, 0);
             blob1.AddBlob(blob2);
-            var joint = blob1.Joints[10];
+
+            Assert.AreEqual(0, blob2.Joints.Length);
+            Assert.AreEqual(1, blob1.Joints.Length);
+            var joint = blob1.Joints[0];
             Assert.AreEqual(22.800, joint.ShortConst, 0.01);
             Assert.AreEqual(0.0, joint.LongConst, 0.01);
+        }
+
+        [Test]
+        public void RemoveBlob2Test()
+        {
+            var blob1 = new Blob(17.0, 19.0, 11.0, 0);
+            var blob2 = new Blob(59.0, 61.0, 13.0, 0);
+            blob1.AddBlob(blob2);
+            blob1.RemoveBlob(blob2);
+
+            Assert.AreEqual(0, blob2.Joints.Length);
+            Assert.AreEqual(0, blob1.Joints.Length);
         }
 
         [Test]

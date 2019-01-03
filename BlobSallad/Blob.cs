@@ -31,9 +31,9 @@ namespace BlobSallad
         private readonly List<PointMass> _pointMasses = new List<PointMass>();
         private readonly List<Joint> _joints = new List<Joint>();
         private readonly Random _random = new Random();
-
         private readonly Color _highlight = Colors.Pink;    // 255, 204, 204
         private readonly Color _normal = Colors.White;
+
         private Face _drawFaceStyle = Face.Smile;
         private Eye _drawEyeStyle = Eye.Open;
 
@@ -48,7 +48,7 @@ namespace BlobSallad
                 throw new ArgumentException("Can't have negative offsets for X and Y.");
             if (radius <= 0.0)
                 throw new ArgumentException("Can't a a radius <= zero.");
-            if (numPointMasses < 2)
+            if (numPointMasses < 0)
                 throw new ArgumentException("Not enough point masses.");
 
             X = x;
@@ -57,7 +57,7 @@ namespace BlobSallad
 
             for (var i = 0; i < numPointMasses; ++i)
             {
-                var theta = (double) i * 2.0 * Math.PI / (double) numPointMasses;
+                var theta = i * 2.0 * Math.PI / numPointMasses;
                 var cx = Math.Cos(theta) * radius + x;
                 var cy = Math.Sin(theta) * radius + y;
                 var mass = i < 2 ? 4.0 : 1.0;
@@ -76,8 +76,8 @@ namespace BlobSallad
                 _sticks.Add(stick);
             }
 
-            var low = 0.95;
-            var high = 1.05;
+            const double low = 0.95;
+            const double high = 1.05;
             for (var i = 0; i < numPointMasses; ++i)
             {
                 var pointMassA = _pointMasses[i];
@@ -88,6 +88,11 @@ namespace BlobSallad
                 var joint2 = new Joint(pointMassA, MiddlePointMass, high * 0.9, low * 1.1);
                 _joints.Add(joint2);
             }
+        }
+
+        public void Dispose()
+        {
+            _joints.Clear();
         }
 
         public double X { get; set; }
@@ -112,9 +117,24 @@ namespace BlobSallad
             _joints.Add(joint);
         }
 
-        public double XPos => MiddlePointMass.XPos;
+        public void RemoveBlob(Blob blob)
+        {
+            foreach (var joint in _joints)
+            {
+                if (joint == null)
+                    continue;
+                
+                if (joint.PointMassB != blob.MiddlePointMass)
+                    continue;
 
-        public double YPos => MiddlePointMass.YPos;
+                _joints.Remove(joint);
+                break;
+            }
+        }
+
+        public double XMiddle => MiddlePointMass.XPos;
+
+        public double YMiddle => MiddlePointMass.YPos;
 
         public void Scale(double scaleFactor)
         {

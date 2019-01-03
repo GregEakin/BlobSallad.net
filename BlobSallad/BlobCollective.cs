@@ -11,6 +11,9 @@ namespace BlobSallad
 {
     public class BlobCollective
     {
+        private const int BlobPointMasses = 8;
+        private const double BlobInitialRadius = 0.4;
+
         private readonly Random _random = new Random();
 
         private readonly List<Blob> _blobs = new List<Blob>();
@@ -18,7 +21,7 @@ namespace BlobSallad
         public BlobCollective(double x, double y, int maxNum)
         {
             MaxNum = maxNum;
-            _blobs.Add(new Blob(x, y, 0.4, 8));
+            _blobs.Add(new Blob(x, y, BlobInitialRadius, BlobPointMasses));
         }
 
         public int MaxNum { get; }
@@ -50,8 +53,11 @@ namespace BlobSallad
                 }
             }
 
+            if (motherBlob == null)
+                return;
+
             motherBlob.Scale(0.75);
-            var newBlob = new Blob(motherBlob.XPos, motherBlob.YPos, motherBlob.Radius, 8);
+            var newBlob = new Blob(motherBlob.XMiddle, motherBlob.YMiddle, motherBlob.Radius, BlobPointMasses);
 
             foreach (var blob in _blobs)
             {
@@ -119,13 +125,17 @@ namespace BlobSallad
             if (NumActive <= 1)
                 return;
 
-            var blob1Index = FindSmallest(-1);
-            var blob2Index = FindClosest(blob1Index);
-            var r1 = _blobs[blob1Index].Radius;
-            var r2 = _blobs[blob2Index].Radius;
+            var smallest = FindSmallest(-1);
+            var blobSmallest = _blobs[smallest];
+            var closest = FindClosest(smallest);
+            var blobClosest = _blobs[closest];
+            var r1 = blobSmallest.Radius;
+            var r2 = blobClosest.Radius;
             var r3 = Math.Sqrt(r1 * r1 + r2 * r2);
-            _blobs[blob1Index] = null;
-            _blobs[blob2Index].Scale(0.945 * r3 / r2);
+            blobClosest.Scale(0.945 * r3 / r2);
+            blobClosest.RemoveBlob(blobSmallest);
+            blobSmallest.Dispose();
+            _blobs[smallest] = null;
             --NumActive;
         }
 
@@ -180,17 +190,13 @@ namespace BlobSallad
         public void Move(double dt)
         {
             foreach (var blob in _blobs)
-            {
                 blob?.Move(dt);
-            }
         }
 
         public void Sc(Environment env)
         {
             foreach (var blob in _blobs)
-            {
                 blob?.Sc(env);
-            }
         }
 
         public Vector Force
@@ -202,10 +208,10 @@ namespace BlobSallad
                     if (blob == null)
                         continue;
 
-                    var force1 = blob == SelectedBlob
+                    var force = blob == SelectedBlob
                         ? new Vector(0.0, 0.0)
                         : value;
-                    blob.Force = force1;
+                    blob.Force = force;
                 }
             }
         }
@@ -219,8 +225,8 @@ namespace BlobSallad
 
                 var x = force.X * (_random.NextDouble() * 0.75 + 0.25);
                 var y = force.Y * (_random.NextDouble() * 0.75 + 0.25);
-                var tmpForce = new Vector(x, y);
-                blob.AddForce(tmpForce);
+                var newForce = new Vector(x, y);
+                blob.AddForce(newForce);
             }
         }
 
