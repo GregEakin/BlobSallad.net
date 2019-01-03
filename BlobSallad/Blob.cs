@@ -611,22 +611,21 @@ namespace BlobSallad
         {
             var transformGroup = new TransformGroup();
 
+            var up = new Vector(0.0, -1.0);
+            var ori = new Vector(_pointMasses[0].Pos);
+            ori.Sub(MiddlePointMass.Pos);
+            var ang = Math.Acos(ori.DotProd(up) / ori.Length());
+            var radians = (ori.X < 0.0) ? -ang : ang;
+            var theta = (180.0 / Math.PI) * radians;
+            var rotateTransform = new RotateTransform(theta); //, MiddlePointMass.XPos, MiddlePointMass.YPos);
+            transformGroup.Children.Add(rotateTransform);
+
             var tx = MiddlePointMass.XPos * scaleFactor;
             var ty = (MiddlePointMass.YPos - 0.35 * Radius) * scaleFactor;
             var translateTransform = new TranslateTransform(tx, ty);
-
-            DrawBody(canvas, scaleFactor);
-
-            var up = new Vector(0.0, -1.0);
-            var ori = new Vector(0.0, 0.0);
-            ori.Set(_pointMasses[0].Pos);
-            ori.Sub(MiddlePointMass.Pos);
-            var ang = Math.Acos(ori.DotProd(up) / ori.Length());
-            var theta = (ori.X < 0.0) ? -ang : ang;
-            var rotateTransform = new RotateTransform(theta);
-            transformGroup.Children.Add(rotateTransform);
             transformGroup.Children.Add(translateTransform);
 
+            DrawBody(canvas, scaleFactor);
             UpdateFace();
             DrawFace(canvas, scaleFactor, transformGroup);
         }
