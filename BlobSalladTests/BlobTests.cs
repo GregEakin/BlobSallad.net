@@ -146,7 +146,7 @@ namespace BlobSalladTests
         {
             var blob1 = new Blob(17.0, 19.0, 11.0, 0);
             var blob2 = new Blob(59.0, 61.0, 13.0, 0);
-            blob1.AddBlob(blob2);
+            blob1.LinkBlob(blob2);
 
             Assert.AreEqual(0, blob2.Joints.Length);
             Assert.AreEqual(1, blob1.Joints.Length);
@@ -160,8 +160,8 @@ namespace BlobSalladTests
         {
             var blob1 = new Blob(17.0, 19.0, 11.0, 0);
             var blob2 = new Blob(59.0, 61.0, 13.0, 0);
-            blob1.AddBlob(blob2);
-            blob1.RemoveBlob(blob2);
+            blob1.LinkBlob(blob2);
+            blob1.UnLinkBlob(blob2);
 
             Assert.AreEqual(0, blob2.Joints.Length);
             Assert.AreEqual(0, blob1.Joints.Length);
@@ -174,7 +174,7 @@ namespace BlobSalladTests
 
             var blob1 = new Blob(17.0, 19.0, 11.0, 5);
             var blob2 = new Blob(59.0, 61.0, 13.0, 5);
-            blob1.AddBlob(blob2);
+            blob1.LinkBlob(blob2);
 
             var middlePointMass = blob1.MiddlePointMass;
             DrawDot(canvas, Brushes.Blue, middlePointMass.Mass, middlePointMass.XPos, middlePointMass.YPos);

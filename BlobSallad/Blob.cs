@@ -31,7 +31,7 @@ namespace BlobSallad
         private readonly List<PointMass> _pointMasses = new List<PointMass>();
         private readonly List<Joint> _joints = new List<Joint>();
         private readonly Random _random = new Random();
-        private readonly Color _highlight = Colors.Pink;    // 255, 204, 204
+        private readonly Color _highlight = Colors.Pink; // 255, 204, 204
         private readonly Color _normal = Colors.White;
 
         private Face _drawFaceStyle = Face.Smile;
@@ -99,9 +99,9 @@ namespace BlobSallad
 
         public double Y { get; set; }
 
-        public PointMass[] PointMasses => _pointMasses.ToArray();
-
         public Stick[] Sticks => _sticks.ToArray();
+
+        public PointMass[] PointMasses => _pointMasses.ToArray();
 
         public Joint[] Joints => _joints.ToArray();
 
@@ -109,7 +109,13 @@ namespace BlobSallad
 
         public double Radius { get; private set; }
 
-        public void AddBlob(Blob blob)
+        public bool Selected { get; set; }
+
+        public double XMiddle => MiddlePointMass.XPos;
+
+        public double YMiddle => MiddlePointMass.YPos;
+
+        public void LinkBlob(Blob blob)
         {
             var dist = Radius + blob.Radius;
             var joint = new Joint(MiddlePointMass, blob.MiddlePointMass, 0.0, 0.0);
@@ -117,13 +123,13 @@ namespace BlobSallad
             _joints.Add(joint);
         }
 
-        public void RemoveBlob(Blob blob)
+        public void UnLinkBlob(Blob blob)
         {
             foreach (var joint in _joints)
             {
                 if (joint == null)
                     continue;
-                
+
                 if (joint.PointMassB != blob.MiddlePointMass)
                     continue;
 
@@ -131,10 +137,6 @@ namespace BlobSallad
                 break;
             }
         }
-
-        public double XMiddle => MiddlePointMass.XPos;
-
-        public double YMiddle => MiddlePointMass.YPos;
 
         public void Scale(double scaleFactor)
         {
@@ -192,11 +194,11 @@ namespace BlobSallad
                 pointMass.AddForce(force);
 
             MiddlePointMass.AddForce(force);
-            var pointMass1 = _pointMasses[0];
-            pointMass1.AddForce(force);
-            pointMass1.AddForce(force);
-            pointMass1.AddForce(force);
-            pointMass1.AddForce(force);
+            var pointMass0 = _pointMasses[0];
+            pointMass0.AddForce(force);
+            pointMass0.AddForce(force);
+            pointMass0.AddForce(force);
+            pointMass0.AddForce(force);
         }
 
         public void MoveTo(double x, double y)
@@ -216,8 +218,6 @@ namespace BlobSallad
             blobPos.AddX(x);
             blobPos.AddY(y);
         }
-
-        public bool Selected { get; set; }
 
         public void DrawEars(Canvas canvas, double scaleFactor)
         {

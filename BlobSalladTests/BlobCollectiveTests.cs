@@ -35,6 +35,44 @@ namespace BlobSalladTests
         }
 
         [Test]
+        public void FindLargestTest()
+        {
+            var collective = new BlobCollective(1.0, 1.0, 4);
+            collective.Split();
+            collective.Split();
+
+            var motherBlob = collective.FindLargest(null);
+            Assert.AreEqual(0.300, motherBlob.Radius, 0.01);
+        }
+
+        [Test]
+        public void FindSmallestTest()
+        {
+            var collective = new BlobCollective(1.0, 1.0, 4);
+            collective.Split();
+            collective.Split();
+
+            var largest = collective.FindLargest(null);
+
+            // Find one of the two smallest blobs.
+            var smallest1 = collective.FindSmallest(null);
+            Assert.AreNotSame(largest, smallest1);
+            Assert.AreEqual(0.225, smallest1.Radius, 0.01);
+
+            // Find the other smallest blob.
+            var smallest2 = collective.FindSmallest(smallest1);
+            Assert.AreNotSame(largest, smallest2);
+            Assert.AreNotSame(smallest1, smallest2);
+            Assert.AreEqual(0.225, smallest2.Radius, 0.01);
+        }
+
+        [Test]
+        public void FindClosestTest()
+        {
+
+        }
+
+        [Test]
         public void JoinTest()
         {
             var canvas = new Canvas { Width = 200, Height = 200 };
