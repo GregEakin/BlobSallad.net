@@ -26,7 +26,7 @@ namespace BlobSallad
 
         public int MaxNum { get; }
 
-        public int NumActive { get; private set; } = 1;
+        public int NumActive => _blobs.Count;
 
         public Blob SelectedBlob { get; private set; }
 
@@ -49,8 +49,6 @@ namespace BlobSallad
             }
 
             _blobs.Add(newBlob);
-
-            ++NumActive;
         }
 
         public void Join()
@@ -73,7 +71,6 @@ namespace BlobSallad
 
             _blobs.Remove(smallest);
             smallest.Dispose();
-            --NumActive;
         }
 
         public Blob FindLargest(Blob exclude)
