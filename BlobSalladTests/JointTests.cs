@@ -12,8 +12,8 @@ namespace BlobSalladTests
         [Test]
         public void CtorTest()
         {
-            Assert.AreEqual(36.498, _joint.GetShortConst(), 0.01);
-            Assert.AreEqual(40.340, _joint.GetLongConst(), 0.01);
+            Assert.AreEqual(36.498, _joint.ShortConst, 0.01);
+            Assert.AreEqual(40.340, _joint.LongConst, 0.01);
         }
 
         [Test]
@@ -21,8 +21,8 @@ namespace BlobSalladTests
         {
             _joint.SetDist(38.5, 36.4);
 
-            Assert.AreEqual(38.5, _joint.GetShortConst(), 0.01);
-            Assert.AreEqual(36.4, _joint.GetLongConst(), 0.01);
+            Assert.AreEqual(38.5, _joint.ShortConst, 0.01);
+            Assert.AreEqual(36.4, _joint.LongConst, 0.01);
 
         }
 
@@ -31,8 +31,8 @@ namespace BlobSalladTests
         {
             _joint.Scale(10.0);
 
-            Assert.AreEqual(364.978, _joint.GetShortConst(), 0.01);
-            Assert.AreEqual(403.397, _joint.GetLongConst(), 0.01);
+            Assert.AreEqual(364.978, _joint.ShortConst, 0.01);
+            Assert.AreEqual(403.397, _joint.LongConst, 0.01);
         }
 
         [Test]

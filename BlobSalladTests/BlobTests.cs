@@ -69,8 +69,8 @@ namespace BlobSalladTests
             var joints = blob.Joints;
             foreach (var joint in joints)
             {
-                var pointMassA = joint.GetPointMassA();
-                var pointMassB = joint.GetPointMassB();
+                var pointMassA = joint.PointMassA;
+                var pointMassB = joint.PointMassB;
                 DrawDot(canvas, Brushes.Red, pointMassA.Mass, pointMassA.XPos, pointMassA.YPos);
                 DrawLine(canvas, Brushes.Black, 
                         pointMassA.XPos, pointMassA.YPos,
@@ -128,7 +128,7 @@ namespace BlobSalladTests
             var blob = new Blob(71.0, 67.0, 11.0, 5);
             for (var i = 0; i < 5; i++)
             {
-                var pointMas = blob.GetPointMass(i);
+                var pointMas = blob[i];
 
                 var mass = i < 2 ? 4.0 : 1.0;
                 Assert.AreEqual(mass, pointMas.Mass);
@@ -148,8 +148,8 @@ namespace BlobSalladTests
             var blob2 = new Blob(59.0, 61.0, 13.0, 5);
             blob1.AddBlob(blob2);
             var joint = blob1.Joints[10];
-            Assert.AreEqual(22.800, joint.GetShortConst(), 0.01);
-            Assert.AreEqual(0.0, joint.GetLongConst(), 0.01);
+            Assert.AreEqual(22.800, joint.ShortConst, 0.01);
+            Assert.AreEqual(0.0, joint.LongConst, 0.01);
         }
 
         [Test]
@@ -169,8 +169,8 @@ namespace BlobSalladTests
             var joints = blob1.Joints;
             foreach (var joint in joints)
             {
-                var pointMassA = joint.GetPointMassA();
-                var pointMassB = joint.GetPointMassB();
+                var pointMassA = joint.PointMassA;
+                var pointMassB = joint.PointMassB;
                 DrawDot(canvas, Brushes.Red, 2.0, pointMassA.XPos, pointMassA.YPos);
                 DrawLine(canvas, Brushes.Black, 
                         pointMassA.XPos, pointMassA.YPos,

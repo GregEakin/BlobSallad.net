@@ -16,8 +16,8 @@ namespace BlobSalladTests
         {
             var collective = new BlobCollective(71.0, 67.0, 4);
 
-            Assert.AreEqual(4, collective.GetMaxNum());
-            Assert.AreEqual(1, collective.GetNumActive());
+            Assert.AreEqual(4, collective.MaxNum);
+            Assert.AreEqual(1, collective.NumActive);
         }
 
         [Test]
@@ -27,7 +27,7 @@ namespace BlobSalladTests
 
             var collective = new BlobCollective(1.0, 1.0, 4);
             collective.Split();
-            Assert.AreEqual(2, collective.GetNumActive());
+            Assert.AreEqual(2, collective.NumActive);
             collective.Draw(canvas, 100.0);
 
             var wpf = new ContentControl { Content = canvas };
@@ -42,7 +42,7 @@ namespace BlobSalladTests
             var collective = new BlobCollective(1.0, 1.0, 4);
             collective.Split();
             // collective.join();
-            // Assert.AreEqual(2, collective.getNumActive());
+            // Assert.AreEqual(2, collective.NumActive);
             collective.Draw(canvas, 100.0);
 
             var wpf = new ContentControl { Content = canvas };
@@ -54,7 +54,7 @@ namespace BlobSalladTests
         {
             var collective = new BlobCollective(1.0, 1.0, 4);
             collective.SelectBlob(2.0, 2.0);
-            Assert.IsNull(collective.GetSelectedBlob());
+            Assert.IsNull(collective.SelectedBlob);
         }
 
         [Test]
@@ -62,8 +62,8 @@ namespace BlobSalladTests
         {
             var collective = new BlobCollective(1.0, 1.0, 4);
             collective.SelectBlob(1.0, 1.1);
-            Assert.NotNull(collective.GetSelectedBlob());
-            Assert.True(collective.GetSelectedBlob().Selected);
+            Assert.NotNull(collective.SelectedBlob);
+            Assert.True(collective.SelectedBlob.Selected);
         }
 
         [Test]

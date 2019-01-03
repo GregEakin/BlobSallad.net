@@ -525,10 +525,13 @@ namespace BlobSallad
             }
         }
 
-        public PointMass GetPointMass(int index)
+        public PointMass this[int index]
         {
-            index %= _pointMasses.Count;
-            return _pointMasses[index];
+            get
+            {
+                index %= _pointMasses.Count;
+                return _pointMasses[index];
+            }
         }
 
         public void DrawBody(Canvas canvas, double scaleFactor)

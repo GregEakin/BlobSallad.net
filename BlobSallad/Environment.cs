@@ -4,74 +4,57 @@ namespace BlobSallad
 {
     public class Environment
     {
-        private readonly double _left;
-        private readonly double _right;
-        private readonly double _top;
-        private readonly double _bottom;
-
         public Environment(double x, double y, double w, double h)
         {
-            _left = x;
-            _right = x + w;
-            _top = y;
-            _bottom = y + h;
+            Left = x;
+            Right = x + w;
+            Top = y;
+            Bottom = y + h;
         }
 
-        public double GetLeft()
-        {
-            return _left;
-        }
+        public double Left { get; }
 
-        public double GetRight()
-        {
-            return _right;
-        }
+        public double Right { get; }
 
-        public double GetTop()
-        {
-            return _top;
-        }
+        public double Top { get; }
 
-        public double GetBottom()
-        {
-            return _bottom;
-        }
+        public double Bottom { get; }
 
         public Environment SetWidth(double w)
         {
-            return new Environment(_left, _top, w, _bottom - _top);
+            return new Environment(Left, Top, w, Bottom - Top);
         }
 
         public Environment SetHeight(double h)
         {
-            return new Environment(_left, _top, _right - _left, h);
+            return new Environment(Left, Top, Right - Left, h);
         }
 
         public bool Collision(Vector curPos, Vector prePos)
         {
             var x = curPos.X;
-            if (x < _left)
+            if (x < Left)
             {
-                curPos.X = _left;
+                curPos.X = Left;
                 return true;
             }
 
-            if (x > _right)
+            if (x > Right)
             {
-                curPos.X = _right;
+                curPos.X = Right;
                 return true;
             }
 
             var y = curPos.Y;
-            if (y < _top)
+            if (y < Top)
             {
-                curPos.Y = _top;
+                curPos.Y = Top;
                 return true;
             }
 
-            if (y > _bottom)
+            if (y > Bottom)
             {
-                curPos.Y = _bottom;
+                curPos.Y = Bottom;
                 return true;
             }
 

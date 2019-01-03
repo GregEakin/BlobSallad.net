@@ -1,9 +1,14 @@
-﻿using ApprovalTests;
+﻿using System.Threading;
+using System.Windows.Controls;
+using ApprovalTests.Reporters;
+using ApprovalTests.Wpf;
 using BlobSallad;
 using NUnit.Framework;
 
 namespace BlobSalladTests
 {
+    [UseReporter(typeof(DiffReporter), typeof(ClipboardReporter))]
+    [Apartment(ApartmentState.STA)]
     public class StickTests
     {
         [Test]
@@ -12,10 +17,10 @@ namespace BlobSalladTests
             var massA = new PointMass(13.0, 31.0, 5.0);
             var massB = new PointMass(17.0, 35.0, 7.0);
             var stick = new Stick(massA, massB);
-            Assert.AreSame(massA, stick.GetPointMassA());
-            Assert.AreSame(massB, stick.GetPointMassB());
-            Assert.AreEqual(5.656, stick.GetLength(), 0.01);
-            Assert.AreEqual(32.0, stick.GetLengthSquared(), 0.01);
+            Assert.AreSame(massA, stick.PointMassA);
+            Assert.AreSame(massB, stick.PointMassB);
+            Assert.AreEqual(5.656, stick.Length, 0.01);
+            Assert.AreEqual(32.0, stick.LengthSquared, 0.01);
         }
 
         [Test]
@@ -34,8 +39,8 @@ namespace BlobSalladTests
             var massB = new PointMass(17.0, 35.0, 7.0);
             var stick = new Stick(massA, massB);
             stick.Scale(2.0);
-            Assert.AreEqual(11.313, stick.GetLength(), 0.01);
-            Assert.AreEqual(128.0, stick.GetLengthSquared(), 0.01);
+            Assert.AreEqual(11.313, stick.Length, 0.01);
+            Assert.AreEqual(128.0, stick.LengthSquared, 0.01);
         }
 
         [Test]
@@ -45,45 +50,37 @@ namespace BlobSalladTests
             var massB = new PointMass(17.0, 35.0, 7.0);
             var stick = new Stick(massA, massB);
 
-            Assert.AreEqual(5.657, stick.GetLength(), 0.01);
-            Assert.AreEqual(32.000, stick.GetLengthSquared(), 0.01);
+            Assert.AreEqual(5.657, stick.Length, 0.01);
+            Assert.AreEqual(32.000, stick.LengthSquared, 0.01);
         }
 
         [Test]
         public void ScTest()
         {
-            //PointMass massA = new PointMass(13.0, 17.0, 5.0);
-            //PointMass massB = new PointMass(53.0, 59.0, 7.0);
-            //Stick stick = new Stick(massA, massB);
-            //stick.sc(null);
-            //
-            //Assert.AreEqual(13.0, stick.getPointMassA().getXPos(), 0.01);
-            //Assert.AreEqual(17.0, stick.getPointMassA().getYPos(), 0.01);
-            //Assert.AreEqual(53.0, stick.getPointMassB().getXPos(), 0.01);
-            //Assert.AreEqual(59.0, stick.getPointMassB().getYPos(), 0.01);
+            var massA = new PointMass(13.0, 17.0, 5.0);
+            var massB = new PointMass(43.0, 41.0, 7.0);
+            var stick = new Stick(massA, massB);
+            stick.Sc(null);
+
+            Assert.AreEqual(13.0, stick.PointMassA.XPos, 0.01);
+            Assert.AreEqual(17.0, stick.PointMassA.YPos, 0.01);
+            Assert.AreEqual(43.0, stick.PointMassB.XPos, 0.01);
+            Assert.AreEqual(41.0, stick.PointMassB.YPos, 0.01);
         }
 
-        //    [Test]
-        //public void drawTest()
-        //    {
-        //        PointMass massA = new PointMass(13.0, 19.0, 5.0);
-        //        PointMass massB = new PointMass(11.0, 17.0, 7.0);
-        //        Stick stick = new Stick(massA, massB);
+        [Test]
+        public void DrawTest()
+        {
+            var canvas = new Canvas { Width = 100, Height = 100 };
 
-        //        BufferedImage image = new BufferedImage(50, 50, TYPE_INT_RGB);
-        //        Graphics2D graphics = image.createGraphics();
-        //        try
-        //        {
-        //            graphics.setPaint(Color.WHITE);
-        //            graphics.fillRect(0, 0, image.getWidth(), image.getHeight());
+            var massA = new PointMass(13.0, 17.0, 5.0);
+            var massB = new PointMass(43.0, 41.0, 7.0);
+            var stick = new Stick(massA, massB);
 
-        //            stick.draw(graphics, 2.0);
-        //            Approvals.verify(image);
-        //        }
-        //        finally
-        //        {
-        //            graphics.dispose();
-        //        }
-        //    }
+
+            stick.Draw(canvas, 2.0);
+            var wpf = new ContentControl { Content = canvas };
+            WpfApprovals.Verify(wpf);
         }
     }
+}

@@ -9,10 +9,10 @@ namespace BlobSalladTests
         public void CtorTest()
         {
             var environment = new Environment(37.0, 31.0, 19.0, 17.0);
-            Assert.AreEqual(37.0, environment.GetLeft());
-            Assert.AreEqual(56.0, environment.GetRight());
-            Assert.AreEqual(31.0, environment.GetTop());
-            Assert.AreEqual(48.0, environment.GetBottom());
+            Assert.AreEqual(37.0, environment.Left);
+            Assert.AreEqual(56.0, environment.Right);
+            Assert.AreEqual(31.0, environment.Top);
+            Assert.AreEqual(48.0, environment.Bottom);
         }
 
         [Test]
@@ -22,10 +22,10 @@ namespace BlobSalladTests
             var environment = environment1.SetWidth(23.0);
 
             Assert.AreNotSame(environment, environment1);
-            Assert.AreEqual(37.0, environment.GetLeft());
-            Assert.AreEqual(60.0, environment.GetRight());
-            Assert.AreEqual(31.0, environment.GetTop());
-            Assert.AreEqual(48.0, environment.GetBottom());
+            Assert.AreEqual(37.0, environment.Left);
+            Assert.AreEqual(60.0, environment.Right);
+            Assert.AreEqual(31.0, environment.Top);
+            Assert.AreEqual(48.0, environment.Bottom);
         }
 
         [Test]
@@ -35,10 +35,10 @@ namespace BlobSalladTests
             var environment = environment1.SetHeight(23.0);
 
             Assert.AreNotSame(environment, environment1);
-            Assert.AreEqual(37.0, environment.GetLeft());
-            Assert.AreEqual(56.0, environment.GetRight());
-            Assert.AreEqual(31.0, environment.GetTop());
-            Assert.AreEqual(54.0, environment.GetBottom());
+            Assert.AreEqual(37.0, environment.Left);
+            Assert.AreEqual(56.0, environment.Right);
+            Assert.AreEqual(31.0, environment.Top);
+            Assert.AreEqual(54.0, environment.Bottom);
         }
 
         [Test]
