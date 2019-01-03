@@ -161,7 +161,7 @@ namespace BlobSallad
             {
                 foreach (var pointMass in _pointMasses)
                 {
-                    var collision = env.Collision(pointMass.Pos, pointMass.PrevPos);
+                    var collision = env.Collision(pointMass.Pos, pointMass.Prev);
                     var friction = collision ? 0.75 : 0.01;
                     pointMass.Friction = friction;
                 }
