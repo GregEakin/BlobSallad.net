@@ -167,14 +167,10 @@ namespace BlobSallad
                 }
 
                 foreach (var stick in _sticks)
-                {
                     stick.Sc(env);
-                }
 
                 foreach (var joint in _joints)
-                {
                     joint.Sc();
-                }
             }
         }
 

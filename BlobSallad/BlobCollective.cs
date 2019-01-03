@@ -133,7 +133,16 @@ namespace BlobSallad
             var r2 = blobClosest.Radius;
             var r3 = Math.Sqrt(r1 * r1 + r2 * r2);
             blobClosest.Scale(0.945 * r3 / r2);
-            blobClosest.RemoveBlob(blobSmallest);
+
+            foreach (var blob in _blobs)
+            {
+                if (blob == blobSmallest)
+                    continue;
+
+                blob?.RemoveBlob(blobSmallest);
+            }
+
+
             blobSmallest.Dispose();
             _blobs[smallest] = null;
             --NumActive;
