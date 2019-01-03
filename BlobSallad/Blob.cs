@@ -25,7 +25,6 @@ namespace BlobSallad
 
         private readonly List<Stick> _sticks = new List<Stick>();
         private readonly List<PointMass> _pointMasses = new List<PointMass>();
-
         private readonly List<Joint> _joints = new List<Joint>();
         private readonly Random _random = new Random();
 
@@ -33,6 +32,12 @@ namespace BlobSallad
         //private readonly Color normal = Color.WHITE;
         private Face _drawFaceStyle = Face.Smile;
         private Eye _drawEyeStyle = Eye.Open;
+
+        public static int Mod(int x, int m)
+        {
+            return (x % m + m) % m;
+        }
+
 
         public Blob(double x, double y, double radius, int numPointMasses)
         {
@@ -62,7 +67,7 @@ namespace BlobSallad
             for (var i = 0; i < numPointMasses; ++i)
             {
                 var pointMassA = _pointMasses[i];
-                var index = (i + 1) % numPointMasses;
+                var index = Mod(i + 1, numPointMasses);
                 var pointMassB = _pointMasses[index];
                 var stick = new Stick(pointMassA, pointMassB);
                 _sticks.Add(stick);
@@ -73,7 +78,7 @@ namespace BlobSallad
             for (var i = 0; i < numPointMasses; ++i)
             {
                 var pointMassA = _pointMasses[i];
-                var index = (i + numPointMasses / 2 + 1) % numPointMasses;
+                var index = Mod(i + numPointMasses / 2 + 1, numPointMasses);
                 var pointMassB = _pointMasses[index];
                 var joint1 = new Joint(pointMassA, pointMassB, low, high);
                 _joints.Add(joint1);
@@ -199,7 +204,7 @@ namespace BlobSallad
         {
         }
 
-        public void DrawEyesOpen(Canvas canvas, double scaleFactor, TranslateTransform translateTransform)
+        public void DrawEyesOpen(Canvas canvas, double scaleFactor, TransformGroup translateTransform)
         {
             {
                 var circle = new Ellipse
@@ -270,7 +275,7 @@ namespace BlobSallad
             }
         }
 
-        public void DrawEyesClosed(Canvas canvas, double scaleFactor, TranslateTransform translateTransform)
+        public void DrawEyesClosed(Canvas canvas, double scaleFactor, TransformGroup translateTransform)
         {
             {
                 var circle = new Ellipse
@@ -335,7 +340,7 @@ namespace BlobSallad
             }
         }
 
-        public void DrawSmile(Canvas canvas, double scaleFactor, TranslateTransform translateTransform)
+        public void DrawSmile(Canvas canvas, double scaleFactor, TransformGroup translateTransform)
         {
             var point = new System.Windows.Point(0.25 * Radius * scaleFactor, 0.1 * Radius * scaleFactor);
             var size = new Size(0.25 * Radius * scaleFactor, 0.25 * Radius * scaleFactor);
@@ -369,7 +374,7 @@ namespace BlobSallad
             canvas.Children.Add(arcPath);
         }
 
-        public void DrawOpenMouth(Canvas canvas, double scaleFactor, TranslateTransform translateTransform)
+        public void DrawOpenMouth(Canvas canvas, double scaleFactor, TransformGroup translateTransform)
         {
             var point = new System.Windows.Point(0.25 * Radius * scaleFactor, 0.1 * Radius * scaleFactor);
             var size = new Size(0.25 * Radius * scaleFactor, 0.25 * Radius * scaleFactor);
@@ -403,7 +408,7 @@ namespace BlobSallad
             canvas.Children.Add(arcPath);
         }
 
-        public void DrawOohFace(Canvas canvas, double scaleFactor, TranslateTransform translateTransform)
+        public void DrawOohFace(Canvas canvas, double scaleFactor, TransformGroup translateTransform)
         {
             {
                 var point = new System.Windows.Point(0.25 * Radius * scaleFactor, 0.1 * Radius * scaleFactor);
@@ -497,7 +502,7 @@ namespace BlobSallad
             }
         }
 
-        public void DrawFace(Canvas canvas, double scaleFactor, TranslateTransform translateTransform)
+        public void DrawFace(Canvas canvas, double scaleFactor, TransformGroup translateTransform)
         {
             if (MiddlePointMass.Velocity > 0.004)
             {
@@ -529,49 +534,64 @@ namespace BlobSallad
         {
             get
             {
-                index %= _pointMasses.Count;
+                index = Mod(index, _pointMasses.Count);
                 return _pointMasses[index];
             }
         }
 
         public void DrawBody(Canvas canvas, double scaleFactor)
         {
-            //    GeneralPath generalPath = new GeneralPath();
-            //    generalPath.moveTo(this.pointMasses.get(0).getXPos() * scaleFactor, this.pointMasses.get(0).getYPos() * scaleFactor);
+            var pbzSeg = new PolyBezierSegment();
+            for (var i = 0; i < PointMasses.Length; ++i)
+            {
+                var prevPointMass = PointMasses[Mod(i - 1, PointMasses.Length)];
+                var currentPointMass = PointMasses[Mod(i, PointMasses.Length)];
+                var nextPointMass = PointMasses[Mod(i + 1, PointMasses.Length)];
+                var nextNextPointMass = PointMasses[Mod(i + 2, PointMasses.Length)];
+                var tx = nextPointMass.XPos;
+                var ty = nextPointMass.YPos;
+                var cx = currentPointMass.XPos;
+                var cy = currentPointMass.YPos;
+                var px = cx * 0.5 + tx * 0.5;
+                var py = cy * 0.5 + ty * 0.5;
+                var nx = cx - prevPointMass.XPos + tx - nextNextPointMass.XPos;
+                var ny = cy - prevPointMass.YPos + ty - nextNextPointMass.YPos;
+                px += nx * 0.16;
+                py += ny * 0.16;
+                px *= scaleFactor;
+                py *= scaleFactor;
+                tx *= scaleFactor;
+                ty *= scaleFactor;
 
-            //    for (int i = 0; i < this.pointMasses.size(); ++i)
-            //    {
-            //        PointMass prevPointMass = this.getPointMass(i - 1);
-            //        PointMass currentPointMass = this.pointMasses.get(i);
-            //        PointMass nextPointMass = this.getPointMass(i + 1);
-            //        PointMass nextNextPointMass = this.getPointMass(i + 2);
-            //        double tx = nextPointMass.getXPos();
-            //        double ty = nextPointMass.getYPos();
-            //        double cx = currentPointMass.getXPos();
-            //        double cy = currentPointMass.getYPos();
-            //        double px = cx * 0.5 + tx * 0.5;
-            //        double py = cy * 0.5 + ty * 0.5;
-            //        double nx = cx - prevPointMass.getXPos() + tx - nextNextPointMass.getXPos();
-            //        double ny = cy - prevPointMass.getYPos() + ty - nextNextPointMass.getYPos();
-            //        px += nx * 0.16;
-            //        py += ny * 0.16;
-            //        px *= scaleFactor;
-            //        py *= scaleFactor;
-            //        tx *= scaleFactor;
-            //        ty *= scaleFactor;
-            //        generalPath.curveTo(px, py, tx, ty, tx, ty);
-            //    }
+                //        generalPath.curveTo(px, py, tx, ty, tx, ty);
+                pbzSeg.Points.Add(new System.Windows.Point(px, py));
+                pbzSeg.Points.Add(new System.Windows.Point(tx, ty));
+                pbzSeg.Points.Add(new System.Windows.Point(tx, ty));
+            }
 
-            //    generalPath.closePath();
-            //    BasicStroke stroke = new BasicStroke(5.0F);
-            //    Color color = this.selected ? highlight : normal;
+            var myPathSegmentCollection = new PathSegmentCollection {pbzSeg};
 
-            //    Graphics2D g2d = (Graphics2D)graphics;
-            //    g2d.setColor(Color.BLACK);
-            //    g2d.setStroke(stroke);
-            //    g2d.draw(generalPath);
-            //    g2d.setColor(color);
-            //    g2d.fill(generalPath);
+            var startX = PointMasses[0].XPos * scaleFactor;
+            var startY = PointMasses[0].YPos * scaleFactor;
+            var pthFigure = new PathFigure
+            {
+                StartPoint = new System.Windows.Point(startX, startY),
+                Segments = myPathSegmentCollection
+            };
+
+            var pthFigureCollection = new PathFigureCollection {pthFigure};
+
+            var pthGeometry = new PathGeometry {Figures = pthFigureCollection};
+
+            var arcPath = new Path
+            {
+                Stroke = new SolidColorBrush(Colors.Black),
+                StrokeThickness = 5,
+                Data = pthGeometry,
+                Fill = new SolidColorBrush(Colors.White)
+            };
+
+            canvas.Children.Add(arcPath);
         }
 
         public void DrawSimpleBody(Canvas canvas, double scaleFactor)
@@ -585,22 +605,26 @@ namespace BlobSallad
 
         public void Draw(Canvas canvas, double scaleFactor)
         {
-            DrawBody(canvas, scaleFactor);
-            //    graphics.setColor(Color.WHITE);
-            //    AffineTransform savedTransform = g2.getTransform();
+            var transformGroup = new TransformGroup();
+
             var tx = MiddlePointMass.XPos * scaleFactor;
             var ty = (MiddlePointMass.YPos - 0.35 * Radius) * scaleFactor;
             var translateTransform = new TranslateTransform(tx, ty);
+            transformGroup.Children.Add(translateTransform);
+
+            DrawBody(canvas, scaleFactor);
 
             var up = new Vector(0.0, -1.0);
             var ori = new Vector(0.0, 0.0);
             ori.Set(_pointMasses[0].Pos);
             ori.Sub(MiddlePointMass.Pos);
             var ang = Math.Acos(ori.DotProd(up) / ori.Length());
-            //    g2.rotate(ori.getX() < 0.0 ? -ang : ang);
+            var theta = (ori.X < 0.0) ? -ang : ang;
+            var rotateTransform = new RotateTransform(theta);
+            transformGroup.Children.Add(rotateTransform);
+
             UpdateFace();
-            DrawFace(canvas, scaleFactor, translateTransform);
-            //    g2.setTransform(savedTransform);
+            DrawFace(canvas, scaleFactor, transformGroup);
         }
     }
 }

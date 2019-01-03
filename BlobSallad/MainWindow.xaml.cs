@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Media;
 
 namespace BlobSallad
@@ -12,9 +13,12 @@ namespace BlobSallad
         {
             InitializeComponent();
 
+            var transformGroup = new TransformGroup();
             var translateTransform = new TranslateTransform(100.0, 100.0);
+            transformGroup.Children.Add(translateTransform);
+
             var blob = new Blob(100.0, 100.0, 25.0, 5);
-            blob.DrawOohFace(MyCanvas, 10.0, translateTransform);
+            blob.DrawOohFace(MyCanvas, 10.0, transformGroup);
         }
     }
 }
