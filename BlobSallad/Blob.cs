@@ -31,13 +31,8 @@ namespace BlobSallad
 
         //private readonly Color highlight = new Color(255, 204, 204);
         //private readonly Color normal = Color.WHITE;
-        private PointMass _middlePointMass;
-        private double _x;
-        private double _y;
-        private double _radius;
         private Face _drawFaceStyle = Face.Smile;
         private Eye _drawEyeStyle = Eye.Open;
-        private bool _selected;
 
         public Blob(double x, double y, double radius, int numPointMasses)
         {
@@ -48,9 +43,9 @@ namespace BlobSallad
             if (numPointMasses < 2)
                 throw new ArgumentException("Not enough point masses.");
 
-            _x = x;
-            _y = y;
-            _radius = radius;
+            X = x;
+            Y = y;
+            Radius = radius;
 
             for (var i = 0; i < numPointMasses; ++i)
             {
@@ -62,7 +57,7 @@ namespace BlobSallad
                 _pointMasses.Add(pointMass);
             }
 
-            _middlePointMass = new PointMass(x, y, 1.0);
+            MiddlePointMass = new PointMass(x, y, 1.0);
 
             for (var i = 0; i < numPointMasses; ++i)
             {
@@ -82,53 +77,36 @@ namespace BlobSallad
                 var pointMassB = _pointMasses[index];
                 var joint1 = new Joint(pointMassA, pointMassB, low, high);
                 _joints.Add(joint1);
-                var joint2 = new Joint(pointMassA, _middlePointMass, high * 0.9, low * 1.1);
+                var joint2 = new Joint(pointMassA, MiddlePointMass, high * 0.9, low * 1.1);
                 _joints.Add(joint2);
             }
         }
 
-        public PointMass[] GetPointMasses()
-        {
-            return _pointMasses.ToArray();
-        }
+        public double X { get; set; }
 
-        public Stick[] GetSticks()
-        {
-            return _sticks.ToArray();
-        }
+        public double Y { get; set; }
 
-        public Joint[] GetJoints()
-        {
-            return _joints.ToArray();
-        }
+        public PointMass[] PointMasses => _pointMasses.ToArray();
 
-        public PointMass GetMiddlePointMass()
-        {
-            return _middlePointMass;
-        }
+        public Stick[] Sticks => _sticks.ToArray();
 
-        public double GetRadius()
-        {
-            return _radius;
-        }
+        public Joint[] Joints => _joints.ToArray();
+
+        public PointMass MiddlePointMass { get; }
+
+        public double Radius { get; private set; }
 
         public void AddBlob(Blob blob)
         {
-            var dist = _radius + blob.GetRadius();
-            var joint = new Joint(_middlePointMass, blob.GetMiddlePointMass(), 0.0, 0.0);
+            var dist = Radius + blob.Radius;
+            var joint = new Joint(MiddlePointMass, blob.MiddlePointMass, 0.0, 0.0);
             joint.SetDist(dist * 0.95, 0.0);
             _joints.Add(joint);
         }
 
-        public double GetXPos()
-        {
-            return _middlePointMass.GetXPos();
-        }
+        public double XPos => MiddlePointMass.XPos;
 
-        public double GetYPos()
-        {
-            return _middlePointMass.GetYPos();
-        }
+        public double YPos => MiddlePointMass.YPos;
 
         public void Scale(double scaleFactor)
         {
@@ -138,7 +116,7 @@ namespace BlobSallad
             foreach (var stick in _sticks)
                 stick.Scale(scaleFactor);
 
-            _radius *= scaleFactor;
+            Radius *= scaleFactor;
         }
 
         public void Move(double dt)
@@ -146,7 +124,7 @@ namespace BlobSallad
             foreach (var pointMass in _pointMasses)
                 pointMass.Move(dt);
 
-            _middlePointMass.Move(dt);
+            MiddlePointMass.Move(dt);
         }
 
         public void Sc(Environment env)
@@ -155,9 +133,9 @@ namespace BlobSallad
             {
                 foreach (var pointMass in _pointMasses)
                 {
-                    var collision = env.Collision(pointMass.GetPos(), pointMass.GetPrevPos());
+                    var collision = env.Collision(pointMass.Pos, pointMass.PrevPos);
                     var friction = collision ? 0.75 : 0.01;
-                    pointMass.SetFriction(friction);
+                    pointMass.Friction = friction;
                 }
 
                 foreach (var stick in _sticks)
@@ -172,12 +150,16 @@ namespace BlobSallad
             }
         }
 
-        public void SetForce(Vector force)
+        public Vector Force
         {
-            foreach (var pointMass in _pointMasses)
-                pointMass.SetForce(force);
+            get => MiddlePointMass.Force;
+            set
+            {
+                foreach (var pointMass in _pointMasses)
+                    pointMass.Force = value;
 
-            _middlePointMass.SetForce(force);
+                MiddlePointMass.Force = value;
+            }
         }
 
         public void AddForce(Vector force)
@@ -185,7 +167,7 @@ namespace BlobSallad
             foreach (var pointMass in _pointMasses)
                 pointMass.AddForce(force);
 
-            _middlePointMass.AddForce(force);
+            MiddlePointMass.AddForce(force);
             var pointMass1 = _pointMasses[0];
             pointMass1.AddForce(force);
             pointMass1.AddForce(force);
@@ -195,31 +177,23 @@ namespace BlobSallad
 
         public void MoveTo(double x, double y)
         {
-            var blobPos = _middlePointMass.GetPos();
-            x -= blobPos.GetX();
-            y -= blobPos.GetY();
+            var blobPos = MiddlePointMass.Pos;
+            x -= blobPos.X;
+            y -= blobPos.Y;
 
             foreach (var pointMass in _pointMasses)
             {
-                blobPos = pointMass.GetPos();
+                blobPos = pointMass.Pos;
                 blobPos.AddX(x);
                 blobPos.AddY(y);
             }
 
-            blobPos = _middlePointMass.GetPos();
+            blobPos = MiddlePointMass.Pos;
             blobPos.AddX(x);
             blobPos.AddY(y);
         }
 
-        public bool GetSelected()
-        {
-            return _selected;
-        }
-
-        public void SetSelected(bool selected)
-        {
-            _selected = selected;
-        }
+        public bool Selected { get; set; }
 
         public void DrawEars(Canvas canvas, double scaleFactor)
         {
@@ -230,16 +204,16 @@ namespace BlobSallad
             {
                 var circle = new Ellipse
                 {
-                    Width = 0.24 * _radius * scaleFactor,
-                    Height = 0.24 * _radius * scaleFactor,
+                    Width = 0.24 * Radius * scaleFactor,
+                    Height = 0.24 * Radius * scaleFactor,
                     Fill = Brushes.White,
                     Stroke = Brushes.Black,
                     StrokeThickness = 1.0,
                     RenderTransform = translateTransform,
                 };
 
-                Canvas.SetLeft(circle, -0.27 * _radius * scaleFactor);
-                Canvas.SetTop(circle, -0.32 * _radius * scaleFactor);
+                Canvas.SetLeft(circle, -0.27 * Radius * scaleFactor);
+                Canvas.SetTop(circle, -0.32 * Radius * scaleFactor);
 
                 canvas.Children.Add(circle);
             }
@@ -247,16 +221,16 @@ namespace BlobSallad
             {
                 var circle = new Ellipse
                 {
-                    Width = 0.24 * _radius * scaleFactor,
-                    Height = 0.24 * _radius * scaleFactor,
+                    Width = 0.24 * Radius * scaleFactor,
+                    Height = 0.24 * Radius * scaleFactor,
                     Fill = Brushes.White,
                     Stroke = Brushes.Black,
                     StrokeThickness = 1.0,
                     RenderTransform = translateTransform,
                 };
 
-                Canvas.SetLeft(circle, 0.03 * _radius * scaleFactor);
-                Canvas.SetTop(circle, -0.32 * _radius * scaleFactor);
+                Canvas.SetLeft(circle, 0.03 * Radius * scaleFactor);
+                Canvas.SetTop(circle, -0.32 * Radius * scaleFactor);
 
                 canvas.Children.Add(circle);
             }
@@ -264,16 +238,16 @@ namespace BlobSallad
             {
                 var circle = new Ellipse
                 {
-                    Width = 0.12 * _radius * scaleFactor,
-                    Height = 0.12 * _radius * scaleFactor,
+                    Width = 0.12 * Radius * scaleFactor,
+                    Height = 0.12 * Radius * scaleFactor,
                     Fill = Brushes.Black,
                     Stroke = Brushes.Black,
                     StrokeThickness = 1.0,
                     RenderTransform = translateTransform,
                 };
 
-                Canvas.SetLeft(circle, -0.21 * _radius * scaleFactor);
-                Canvas.SetTop(circle, -0.23 * _radius * scaleFactor);
+                Canvas.SetLeft(circle, -0.21 * Radius * scaleFactor);
+                Canvas.SetTop(circle, -0.23 * Radius * scaleFactor);
 
                 canvas.Children.Add(circle);
             }
@@ -281,16 +255,16 @@ namespace BlobSallad
             {
                 var circle = new Ellipse
                 {
-                    Width = 0.12 * _radius * scaleFactor,
-                    Height = 0.12 * _radius * scaleFactor,
+                    Width = 0.12 * Radius * scaleFactor,
+                    Height = 0.12 * Radius * scaleFactor,
                     Fill = Brushes.Black,
                     Stroke = Brushes.Black,
                     StrokeThickness = 1.0,
                     RenderTransform = translateTransform,
                 };
 
-                Canvas.SetLeft(circle, 0.09 * _radius * scaleFactor);
-                Canvas.SetTop(circle, -0.23 * _radius * scaleFactor);
+                Canvas.SetLeft(circle, 0.09 * Radius * scaleFactor);
+                Canvas.SetTop(circle, -0.23 * Radius * scaleFactor);
 
                 canvas.Children.Add(circle);
             }
@@ -301,16 +275,16 @@ namespace BlobSallad
             {
                 var circle = new Ellipse
                 {
-                    Width = 0.24 * _radius * scaleFactor,
-                    Height = 0.24 * _radius * scaleFactor,
+                    Width = 0.24 * Radius * scaleFactor,
+                    Height = 0.24 * Radius * scaleFactor,
                     Fill = Brushes.White,
                     Stroke = Brushes.Black,
                     StrokeThickness = 1.0,
                     RenderTransform = translateTransform,
                 };
 
-                Canvas.SetLeft(circle, -0.27 * _radius * scaleFactor);
-                Canvas.SetTop(circle, -0.32 * _radius * scaleFactor);
+                Canvas.SetLeft(circle, -0.27 * Radius * scaleFactor);
+                Canvas.SetTop(circle, -0.32 * Radius * scaleFactor);
 
                 canvas.Children.Add(circle);
             }
@@ -318,32 +292,32 @@ namespace BlobSallad
             {
                 var circle = new Ellipse
                 {
-                    Width = 0.24 * _radius * scaleFactor,
-                    Height = 0.24 * _radius * scaleFactor,
+                    Width = 0.24 * Radius * scaleFactor,
+                    Height = 0.24 * Radius * scaleFactor,
                     Fill = Brushes.White,
                     Stroke = Brushes.Black,
                     StrokeThickness = 1.0,
                     RenderTransform = translateTransform,
                 };
 
-                Canvas.SetLeft(circle, 0.03 * _radius * scaleFactor);
-                Canvas.SetTop(circle, -0.32 * _radius * scaleFactor);
+                Canvas.SetLeft(circle, 0.03 * Radius * scaleFactor);
+                Canvas.SetTop(circle, -0.32 * Radius * scaleFactor);
 
                 canvas.Children.Add(circle);
             }
 
             {
-                var startPointA = new System.Windows.Point(-0.25 * _radius * scaleFactor, -0.2 * _radius * scaleFactor);
+                var startPointA = new System.Windows.Point(-0.25 * Radius * scaleFactor, -0.2 * Radius * scaleFactor);
                 var pathFigureA = new PathFigure {StartPoint = startPointA};
 
-                var pointA = new System.Windows.Point(-0.05 * _radius * scaleFactor, -0.2 * _radius * scaleFactor);
+                var pointA = new System.Windows.Point(-0.05 * Radius * scaleFactor, -0.2 * Radius * scaleFactor);
                 var lineSegment1A = new LineSegment {Point = pointA};
                 pathFigureA.Segments.Add(lineSegment1A);
 
-                var startPointB = new System.Windows.Point(0.25 * _radius * scaleFactor, -0.2 * _radius * scaleFactor);
+                var startPointB = new System.Windows.Point(0.25 * Radius * scaleFactor, -0.2 * Radius * scaleFactor);
                 var pathFigureB = new PathFigure {StartPoint = startPointB};
 
-                var pointB = new System.Windows.Point(0.05 * _radius * scaleFactor, -0.2 * _radius * scaleFactor);
+                var pointB = new System.Windows.Point(0.05 * Radius * scaleFactor, -0.2 * Radius * scaleFactor);
                 var lineSegment1B = new LineSegment {Point = pointB};
                 pathFigureB.Segments.Add(lineSegment1B);
 
@@ -363,8 +337,8 @@ namespace BlobSallad
 
         public void DrawSmile(Canvas canvas, double scaleFactor, TranslateTransform translateTransform)
         {
-            var point = new System.Windows.Point(0.25 * _radius * scaleFactor, 0.1 * _radius * scaleFactor);
-            var size = new Size(0.25 * _radius * scaleFactor, 0.25 * _radius * scaleFactor);
+            var point = new System.Windows.Point(0.25 * Radius * scaleFactor, 0.1 * Radius * scaleFactor);
+            var size = new Size(0.25 * Radius * scaleFactor, 0.25 * Radius * scaleFactor);
             var arcSegment = new ArcSegment
             {
                 Point = point,
@@ -376,7 +350,7 @@ namespace BlobSallad
             // pathGeometry = {M-34.5,13.8A27.6,27.6,0,1,0,34.5,13.8}
             var pathFigure = new PathFigure
             {
-                StartPoint = new System.Windows.Point(-0.25 * _radius * scaleFactor, 0.1 * _radius * scaleFactor)
+                StartPoint = new System.Windows.Point(-0.25 * Radius * scaleFactor, 0.1 * Radius * scaleFactor)
             };
             pathFigure.Segments.Add(arcSegment);
 
@@ -397,8 +371,8 @@ namespace BlobSallad
 
         public void DrawOpenMouth(Canvas canvas, double scaleFactor, TranslateTransform translateTransform)
         {
-            var point = new System.Windows.Point(0.25 * _radius * scaleFactor, 0.1 * _radius * scaleFactor);
-            var size = new Size(0.25 * _radius * scaleFactor, 0.25 * _radius * scaleFactor);
+            var point = new System.Windows.Point(0.25 * Radius * scaleFactor, 0.1 * Radius * scaleFactor);
+            var size = new Size(0.25 * Radius * scaleFactor, 0.25 * Radius * scaleFactor);
             var arcSegment = new ArcSegment
             {
                 Point = point,
@@ -410,7 +384,7 @@ namespace BlobSallad
             // pathGeometry = {M-34.5,13.8A27.6,27.6,0,1,0,34.5,13.8}
             var pathFigure = new PathFigure
             {
-                StartPoint = new System.Windows.Point(-0.25 * _radius * scaleFactor, 0.1 * _radius * scaleFactor)
+                StartPoint = new System.Windows.Point(-0.25 * Radius * scaleFactor, 0.1 * Radius * scaleFactor)
             };
             pathFigure.Segments.Add(arcSegment);
 
@@ -432,8 +406,8 @@ namespace BlobSallad
         public void DrawOohFace(Canvas canvas, double scaleFactor, TranslateTransform translateTransform)
         {
             {
-                var point = new System.Windows.Point(0.25 * _radius * scaleFactor, 0.1 * _radius * scaleFactor);
-                var size = new Size(0.25 * _radius * scaleFactor, 0.25 * _radius * scaleFactor);
+                var point = new System.Windows.Point(0.25 * Radius * scaleFactor, 0.1 * Radius * scaleFactor);
+                var size = new Size(0.25 * Radius * scaleFactor, 0.25 * Radius * scaleFactor);
                 var arcSegment = new ArcSegment
                 {
                     Point = point,
@@ -445,7 +419,7 @@ namespace BlobSallad
                 // pathGeometry = {M-34.5,13.8A27.6,27.6,0,1,0,34.5,13.8}
                 var pathFigure = new PathFigure
                 {
-                    StartPoint = new System.Windows.Point(-0.25 * _radius * scaleFactor, 0.1 * _radius * scaleFactor)
+                    StartPoint = new System.Windows.Point(-0.25 * Radius * scaleFactor, 0.1 * Radius * scaleFactor)
                 };
                 pathFigure.Segments.Add(arcSegment);
 
@@ -465,25 +439,25 @@ namespace BlobSallad
             }
 
             {
-                var startPointA = new System.Windows.Point(-0.25 * _radius * scaleFactor, -0.3 * _radius * scaleFactor);
+                var startPointA = new System.Windows.Point(-0.25 * Radius * scaleFactor, -0.3 * Radius * scaleFactor);
                 var pathFigureA = new PathFigure {StartPoint = startPointA};
 
-                var point1A = new System.Windows.Point(-0.05 * _radius * scaleFactor, -0.2 * _radius * scaleFactor);
+                var point1A = new System.Windows.Point(-0.05 * Radius * scaleFactor, -0.2 * Radius * scaleFactor);
                 var lineSegment1A = new LineSegment {Point = point1A};
                 pathFigureA.Segments.Add(lineSegment1A);
 
-                var point2A = new System.Windows.Point(-0.25 * _radius * scaleFactor, -0.1 * _radius * scaleFactor);
+                var point2A = new System.Windows.Point(-0.25 * Radius * scaleFactor, -0.1 * Radius * scaleFactor);
                 var lineSegment2A = new LineSegment {Point = point2A};
                 pathFigureA.Segments.Add(lineSegment2A);
 
-                var startPointB = new System.Windows.Point(0.25 * _radius * scaleFactor, -0.3 * _radius * scaleFactor);
+                var startPointB = new System.Windows.Point(0.25 * Radius * scaleFactor, -0.3 * Radius * scaleFactor);
                 var pathFigureB = new PathFigure {StartPoint = startPointB};
 
-                var point1B = new System.Windows.Point(0.05 * _radius * scaleFactor, -0.2 * _radius * scaleFactor);
+                var point1B = new System.Windows.Point(0.05 * Radius * scaleFactor, -0.2 * Radius * scaleFactor);
                 var lineSegment1B = new LineSegment {Point = point1B};
                 pathFigureB.Segments.Add(lineSegment1B);
 
-                var point2B = new System.Windows.Point(0.25 * _radius * scaleFactor, -0.1 * _radius * scaleFactor);
+                var point2B = new System.Windows.Point(0.25 * Radius * scaleFactor, -0.1 * Radius * scaleFactor);
                 var lineSegment2B = new LineSegment {Point = point2B};
                 pathFigureB.Segments.Add(lineSegment2B);
 
@@ -525,7 +499,7 @@ namespace BlobSallad
 
         public void DrawFace(Canvas canvas, double scaleFactor, TranslateTransform translateTransform)
         {
-            if (_middlePointMass.GetVelocity() > 0.004)
+            if (MiddlePointMass.Velocity > 0.004)
             {
                 DrawOohFace(canvas, scaleFactor, translateTransform);
             }
@@ -611,14 +585,14 @@ namespace BlobSallad
             DrawBody(canvas, scaleFactor);
             //    graphics.setColor(Color.WHITE);
             //    AffineTransform savedTransform = g2.getTransform();
-            var tx = _middlePointMass.GetXPos() * scaleFactor;
-            var ty = (_middlePointMass.GetYPos() - 0.35 * _radius) * scaleFactor;
+            var tx = MiddlePointMass.XPos * scaleFactor;
+            var ty = (MiddlePointMass.YPos - 0.35 * Radius) * scaleFactor;
             var translateTransform = new TranslateTransform(tx, ty);
 
             var up = new Vector(0.0, -1.0);
             var ori = new Vector(0.0, 0.0);
-            ori.Set(_pointMasses[0].GetPos());
-            ori.Sub(_middlePointMass.GetPos());
+            ori.Set(_pointMasses[0].Pos);
+            ori.Sub(MiddlePointMass.Pos);
             var ang = Math.Acos(ori.DotProd(up) / ori.Length());
             //    g2.rotate(ori.getX() < 0.0 ? -ang : ang);
             UpdateFace();

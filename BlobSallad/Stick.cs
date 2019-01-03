@@ -32,8 +32,8 @@ namespace BlobSallad
 
         public static double PointMassDist(PointMass pointMassA, PointMass pointMassB)
         {
-            var aXbX = pointMassA.GetXPos() - pointMassB.GetXPos();
-            var aYbY = pointMassA.GetYPos() - pointMassB.GetYPos();
+            var aXbX = pointMassA.XPos - pointMassB.XPos;
+            var aYbY = pointMassA.YPos - pointMassB.YPos;
             return Math.Sqrt(aXbX * aXbX + aYbY * aYbY);
         }
 
@@ -55,8 +55,8 @@ namespace BlobSallad
 
         public void Sc(Environment env)
         {
-            var pointMassAPos = _pointMassA.GetPos();
-            var pointMassBPos = _pointMassB.GetPos();
+            var pointMassAPos = _pointMassA.Pos;
+            var pointMassBPos = _pointMassB.Pos;
 
             var delta = new Vector(pointMassBPos);
             delta.Sub(pointMassAPos);
@@ -69,8 +69,8 @@ namespace BlobSallad
 
         public void SetForce(Vector force)
         {
-            _pointMassA.SetForce(force);
-            _pointMassB.SetForce(force);
+            _pointMassA.Force = force;
+            _pointMassB.Force = force;
         }
 
         public void AddForce(Vector force)
@@ -90,13 +90,13 @@ namespace BlobSallad
             _pointMassA.Draw(canvas, scaleFactor);
             _pointMassB.Draw(canvas, scaleFactor);
 
-            var x1 = _pointMassA.GetXPos() * scaleFactor;
-            var y1 = _pointMassA.GetYPos() * scaleFactor;
+            var x1 = _pointMassA.XPos * scaleFactor;
+            var y1 = _pointMassA.YPos * scaleFactor;
             var startPoint = new System.Windows.Point(x1, y1);
             var pathFigure = new PathFigure {StartPoint = startPoint};
 
-            var x2 = _pointMassB.GetXPos() * scaleFactor;
-            var y2 = _pointMassB.GetYPos() * scaleFactor;
+            var x2 = _pointMassB.XPos * scaleFactor;
+            var y2 = _pointMassB.YPos * scaleFactor;
             var point = new System.Windows.Point(x2, y2);
             var lineSegment1A = new LineSegment {Point = point};
             pathFigure.Segments.Add(lineSegment1A);

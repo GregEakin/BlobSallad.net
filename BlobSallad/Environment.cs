@@ -49,29 +49,29 @@ namespace BlobSallad
 
         public bool Collision(Vector curPos, Vector prePos)
         {
-            var x = curPos.GetX();
+            var x = curPos.X;
             if (x < _left)
             {
-                curPos.SetX(_left);
+                curPos.X = _left;
                 return true;
             }
 
             if (x > _right)
             {
-                curPos.SetX(_right);
+                curPos.X = _right;
                 return true;
             }
 
-            var y = curPos.GetY();
+            var y = curPos.Y;
             if (y < _top)
             {
-                curPos.SetY(_top);
+                curPos.Y = _top;
                 return true;
             }
 
             if (y > _bottom)
             {
-                curPos.SetY(_bottom);
+                curPos.Y = _bottom;
                 return true;
             }
 

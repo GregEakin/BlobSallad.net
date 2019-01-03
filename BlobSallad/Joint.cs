@@ -15,8 +15,8 @@
         {
             _pointMassA = pointMassA;
             _pointMassB = pointMassB;
-            _pointMassAPos = pointMassA.GetPos();
-            _pointMassBPos = pointMassB.GetPos();
+            _pointMassAPos = pointMassA.Pos;
+            _pointMassBPos = pointMassB.Pos;
 
             var delta = new Vector(_pointMassBPos);
             delta.Sub(_pointMassAPos);

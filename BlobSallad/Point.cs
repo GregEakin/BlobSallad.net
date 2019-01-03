@@ -2,23 +2,14 @@
 {
     public class Point
     {
-        private readonly double _x;
-        private readonly double _y;
-
         public Point(double x, double y)
         {
-            _x = x;
-            _y = y;
+            X = x;
+            Y = y;
         }
 
-        public double GetX()
-        {
-            return _x;
-        }
+        public double X { get; set; }
 
-        public double GetY()
-        {
-            return _y;
-        }
+        public double Y { get; set; }
     }
 }

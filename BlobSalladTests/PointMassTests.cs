@@ -17,7 +17,7 @@ namespace BlobSalladTests
         public void CtorTest()
         {
             var pointMass = new PointMass(31.0, 23.0, 11.0);
-            Assert.AreEqual(11.0, pointMass.GetMass());
+            Assert.AreEqual(11.0, pointMass.Mass);
         }
 
         [Test]
@@ -25,13 +25,13 @@ namespace BlobSalladTests
         {
             var pointMass = new PointMass(31.0, 23.0, 11.0);
             var force = new Vector(7, 13);
-            pointMass.SetForce(force);
+            pointMass.Force = force;
 
             pointMass.Move(3.0);
-            Assert.AreEqual(31.0, pointMass.GetXPrevPos(), 0.01);
-            Assert.AreEqual(23.0, pointMass.GetYPrevPos(), 0.01);
-            Assert.AreEqual(36.727, pointMass.GetXPos(), 0.01);
-            Assert.AreEqual(33.636, pointMass.GetYPos(), 0.01);
+            Assert.AreEqual(31.0, pointMass.XPrevPos, 0.01);
+            Assert.AreEqual(23.0, pointMass.YPrevPos, 0.01);
+            Assert.AreEqual(36.727, pointMass.XPos, 0.01);
+            Assert.AreEqual(33.636, pointMass.YPos, 0.01);
         }
 
         [Test]

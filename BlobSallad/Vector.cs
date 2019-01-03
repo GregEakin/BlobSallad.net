@@ -4,89 +4,69 @@ namespace BlobSallad
 {
     public class Vector
     {
-        private double _x;
-        private double _y;
-
         public Vector(double x, double y)
         {
-            _x = x;
-            _y = y;
+            X = x;
+            Y = y;
         }
 
         public Vector(Vector that)
         {
-            _x = that._x;
-            _y = that._y;
+            X = that.X;
+            Y = that.Y;
         }
+
+        public double X { get; set; }
+
+        public double Y { get; set; }
 
         public void AddX(double x)
         {
-            _x += x;
+            X += x;
         }
 
         public void AddY(double y)
         {
-            _y += y;
+            Y += y;
         }
 
         public void Set(Vector that)
         {
-            _x = that._x;
-            _y = that._y;
+            X = that.X;
+            Y = that.Y;
         }
 
         public void Add(Vector that)
         {
-            _x += that._x;
-            _y += that._y;
+            X += that.X;
+            Y += that.Y;
         }
 
         public void Sub(Vector that)
         {
-            _x -= that._x;
-            _y -= that._y;
+            X -= that.X;
+            Y -= that.Y;
         }
 
         public double DotProd(Vector that)
         {
-            return _x * that._x + _y * that._y;
+            return X * that.X + Y * that.Y;
         }
 
         public double Length()
         {
-            return Math.Sqrt(_x * _x + _y * _y);
+            return Math.Sqrt(X * X + Y * Y);
         }
 
         public void Scale(double scaleFactor)
         {
-            _x *= scaleFactor;
-            _y *= scaleFactor;
+            X *= scaleFactor;
+            Y *= scaleFactor;
         }
 
         public override string ToString()
         {
-            // return String.format("(X: %d, Y: %d)");
-            return "(X: " + _x + ", Y: " + _y + ")";
-        }
-
-        public double GetX()
-        {
-            return _x;
-        }
-
-        public void SetX(double x)
-        {
-            _x = x;
-        }
-
-        public double GetY()
-        {
-            return _y;
-        }
-
-        public void SetY(double y)
-        {
-            _y = y;
+            return $"(X: {X}, Y: {Y})";
         }
     }
 }

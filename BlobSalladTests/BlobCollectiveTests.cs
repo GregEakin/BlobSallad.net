@@ -63,7 +63,7 @@ namespace BlobSalladTests
             var collective = new BlobCollective(1.0, 1.0, 4);
             collective.SelectBlob(1.0, 1.1);
             Assert.NotNull(collective.GetSelectedBlob());
-            Assert.True(collective.GetSelectedBlob().GetSelected());
+            Assert.True(collective.GetSelectedBlob().Selected);
         }
 
         [Test]

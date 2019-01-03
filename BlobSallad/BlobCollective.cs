@@ -48,15 +48,15 @@ namespace BlobSallad
                 {
                     emptySlot = i;
                 }
-                else if (blob.GetRadius() > maxRadius)
+                else if (blob.Radius > maxRadius)
                 {
-                    maxRadius = blob.GetRadius();
+                    maxRadius = blob.Radius;
                     motherBlob = blob;
                 }
             }
 
             motherBlob.Scale(0.75);
-            var newBlob = new Blob(motherBlob.GetXPos(), motherBlob.GetYPos(), motherBlob.GetRadius(), 8);
+            var newBlob = new Blob(motherBlob.XPos, motherBlob.YPos, motherBlob.Radius, 8);
 
             foreach (var blob in _blobs)
             {
@@ -83,11 +83,11 @@ namespace BlobSallad
             for (var i = 0; i < _blobs.Count; ++i)
             {
                 var blob = _blobs[i];
-                if (i == exclude || blob == null || blob.GetRadius() >= minRadius)
+                if (i == exclude || blob == null || blob.Radius >= minRadius)
                     continue;
 
                 minIndex = i;
-                minRadius = blob.GetRadius();
+                minRadius = blob.Radius;
             }
 
             return minIndex;
@@ -97,7 +97,7 @@ namespace BlobSallad
         {
             var minDist = 1000.0;
             var foundIndex = 0;
-            var myPointMass = _blobs[exclude].GetMiddlePointMass();
+            var myPointMass = _blobs[exclude].MiddlePointMass;
 
             for (var i = 0; i < _blobs.Count; ++i)
             {
@@ -105,9 +105,9 @@ namespace BlobSallad
                 if (i == exclude || blob == null)
                     continue;
 
-                var otherPointMass = blob.GetMiddlePointMass();
-                var aXbX = myPointMass.GetXPos() - otherPointMass.GetXPos();
-                var aYbY = myPointMass.GetYPos() - otherPointMass.GetYPos();
+                var otherPointMass = blob.MiddlePointMass;
+                var aXbX = myPointMass.XPos - otherPointMass.XPos;
+                var aYbY = myPointMass.YPos - otherPointMass.YPos;
                 var dist = aXbX * aXbX + aYbY * aYbY;
                 if (dist >= minDist)
                     continue;
@@ -126,8 +126,8 @@ namespace BlobSallad
 
             var blob1Index = FindSmallest(-1);
             var blob2Index = FindClosest(blob1Index);
-            var r1 = _blobs[blob1Index].GetRadius();
-            var r2 = _blobs[blob2Index].GetRadius();
+            var r1 = _blobs[blob1Index].Radius;
+            var r2 = _blobs[blob2Index].Radius;
             var r3 = Math.Sqrt(r1 * r1 + r2 * r2);
             _blobs[blob1Index] = null;
             _blobs[blob2Index].Scale(0.945 * r3 / r2);
@@ -147,15 +147,15 @@ namespace BlobSallad
                 if (blob == null)
                     continue;
 
-                var otherPointMass = blob.GetMiddlePointMass();
-                var aXbX = x - otherPointMass.GetXPos();
-                var aYbY = y - otherPointMass.GetYPos();
+                var otherPointMass = blob.MiddlePointMass;
+                var aXbX = x - otherPointMass.XPos;
+                var aYbY = y - otherPointMass.YPos;
                 var dist = aXbX * aXbX + aYbY * aYbY;
                 if (dist >= minDist)
                     continue;
 
                 minDist = dist;
-                if (dist >= blob.GetRadius() / 2.0)
+                if (dist >= blob.Radius / 2.0)
                     continue;
 
                 _selectedBlob = blob;
@@ -163,7 +163,7 @@ namespace BlobSallad
             }
 
             if (_selectedBlob != null)
-                _selectedBlob.SetSelected(true);
+                _selectedBlob.Selected = true;
 
             return selectOffset;
         }
@@ -173,7 +173,7 @@ namespace BlobSallad
             if (_selectedBlob == null)
                 return;
 
-            _selectedBlob.SetSelected(false);
+            _selectedBlob.Selected = false;
             _selectedBlob = null;
         }
 
@@ -217,7 +217,7 @@ namespace BlobSallad
                 var force1 = blob == _selectedBlob
                     ? new Vector(0.0, 0.0)
                     : force;
-                blob.SetForce(force1);
+                blob.Force = force1;
             }
         }
 
@@ -230,9 +230,9 @@ namespace BlobSallad
                 if (blob == null || blob == _selectedBlob)
                     continue;
 
-                var tmpForce = new Vector(0.0, 0.0);
-                tmpForce.SetX(force.GetX() * (_random.NextDouble() * 0.75 + 0.25));
-                tmpForce.SetY(force.GetY() * (_random.NextDouble() * 0.75 + 0.25));
+                var x = force.X * (_random.NextDouble() * 0.75 + 0.25);
+                var y = force.Y * (_random.NextDouble() * 0.75 + 0.25);
+                var tmpForce = new Vector(x, y);
                 blob.AddForce(tmpForce);
             }
         }
@@ -241,10 +241,7 @@ namespace BlobSallad
         {
             foreach (var blob in _blobs)
             {
-                if (blob == null)
-                    continue;
-
-                blob.Draw(canvas, scaleFactor);
+                blob?.Draw(canvas, scaleFactor);
             }
         }
     }

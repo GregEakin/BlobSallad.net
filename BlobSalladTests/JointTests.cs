@@ -41,10 +41,10 @@ namespace BlobSalladTests
             _joint.SetDist(38.5, 36.4);
             _joint.Sc();
 
-            Assert.AreEqual(40.968, _pointMassA.GetXPos(), 0.01);
-            Assert.AreEqual(42.975, _pointMassA.GetYPos(), 0.01);
-            Assert.AreEqual(71.032, _pointMassB.GetXPos(), 0.01);
-            Assert.AreEqual(67.025, _pointMassB.GetYPos(), 0.01);
+            Assert.AreEqual(40.968, _pointMassA.XPos, 0.01);
+            Assert.AreEqual(42.975, _pointMassA.YPos, 0.01);
+            Assert.AreEqual(71.032, _pointMassB.XPos, 0.01);
+            Assert.AreEqual(67.025, _pointMassB.YPos, 0.01);
         }
 
         [Test]
@@ -53,10 +53,10 @@ namespace BlobSalladTests
             _joint.SetDist(36.498, 36.4);
             _joint.Sc();
 
-            Assert.AreEqual(41.809, _pointMassA.GetXPos(), 0.01);
-            Assert.AreEqual(43.647, _pointMassA.GetYPos(), 0.01);
-            Assert.AreEqual(70.191, _pointMassB.GetXPos(), 0.01);
-            Assert.AreEqual(66.353, _pointMassB.GetYPos(), 0.01);
+            Assert.AreEqual(41.809, _pointMassA.XPos, 0.01);
+            Assert.AreEqual(43.647, _pointMassA.YPos, 0.01);
+            Assert.AreEqual(70.191, _pointMassB.XPos, 0.01);
+            Assert.AreEqual(66.353, _pointMassB.YPos, 0.01);
         }
 
         [SetUp]

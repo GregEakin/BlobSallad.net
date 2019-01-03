@@ -16,8 +16,8 @@ namespace BlobSallad
 
         private void ToggleGravity()
         {
-            var y = _gravity.GetY() > 0.0 ? 0.0 : 10.0;
-            _gravity.SetY(y);
+            var y = _gravity.Y > 0.0 ? 0.0 : 10.0;
+            _gravity.Y = y;
         }
 
         public void Stop()
@@ -35,8 +35,8 @@ namespace BlobSallad
         {
             if (_savedMouseCoords != null && _selectOffset != null)
             {
-                var x = _savedMouseCoords.GetX() - _selectOffset.GetX();
-                var y = _savedMouseCoords.GetY() - _selectOffset.GetY();
+                var x = _savedMouseCoords.X - _selectOffset.X;
+                var y = _savedMouseCoords.Y - _selectOffset.Y;
                 _blobColl.SelectedBlobMoveTo(x, y);
             }
 

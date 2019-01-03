@@ -57,7 +57,7 @@ namespace BlobSalladTests
             var curPos = new Vector(36.0, 39.0);
             var collision = environment.Collision(curPos, curPos);
             Assert.True(collision);
-            Assert.AreEqual(37.0, curPos.GetX());
+            Assert.AreEqual(37.0, curPos.X);
         }
 
         [Test]
@@ -67,7 +67,7 @@ namespace BlobSalladTests
             var curPos = new Vector(57.0, 39.0);
             var collision = environment.Collision(curPos, curPos);
             Assert.True(collision);
-            Assert.AreEqual(56.0, curPos.GetX());
+            Assert.AreEqual(56.0, curPos.X);
         }
 
         [Test]
@@ -77,7 +77,7 @@ namespace BlobSalladTests
             var curPos = new Vector(47.0, 49.0);
             var collision = environment.Collision(curPos, curPos);
             Assert.True(collision);
-            Assert.AreEqual(48.0, curPos.GetY());
+            Assert.AreEqual(48.0, curPos.Y);
         }
 
         [Test]
@@ -87,7 +87,7 @@ namespace BlobSalladTests
             var curPos = new Vector(47.0, 30.0);
             var collision = environment.Collision(curPos, curPos);
             Assert.True(collision);
-            Assert.AreEqual(31.0, curPos.GetY());
+            Assert.AreEqual(31.0, curPos.Y);
         }
     }
 }
