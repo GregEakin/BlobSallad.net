@@ -4,7 +4,30 @@ The GUI drawing code is verified with [ApprovalTests.Net](https://github.com/app
 
 ## From the website:
 [![Blob Sallad](Blob.PNG)](https://blobsallad.se/)
-Original version by: [Bjoern Lindberg](bjoern.lindberg@gmail.com)
+
+Original version by: [Bjoern Lindberg](mailto:bjoern.lindberg@gmail.com)
+
+## Sample code
+Here's a test that verifies the Ooh Face [OohFace](BlobSalladTests/BlobTests.DrawOohFaceTest.Microsoft_Windows_10_Pro.approved.png)
+Creates a canvas, identifies the translate tranformation, executes the test code, and verifies the results.
+```C#
+[Test]
+public void DrawOohFaceTest()
+{
+    var canvas = new Canvas {Width = 100, Height = 100};
+
+    var translateTransform = new TranslateTransform(50.0, 50.0);
+    var transformGroup = new TransformGroup();
+    transformGroup.Children.Add(translateTransform);
+
+    var blob = new Blob(50.0, 50.0, 25.0, 5);
+    blob.DrawOohFace(canvas, 3.0, transformGroup);
+
+    var wpf = new ContentControl {Content = canvas};
+    WpfApprovals.Verify(wpf);
+}
+
+```
 
 ## Links:
 - [Community Edition of Visual Studio (Free)](https://www.visualstudio.com/vs/community/)
