@@ -571,7 +571,7 @@ namespace BlobSallad
                 tx *= scaleFactor;
                 ty *= scaleFactor;
 
-                //        generalPath.curveTo(px, py, tx, ty, tx, ty);
+                // generalPath.curveTo(px, py, tx, ty, tx, ty);
                 pbzSeg.Points.Add(new Point(px, py));
                 pbzSeg.Points.Add(new Point(tx, ty));
                 pbzSeg.Points.Add(new Point(tx, ty));
@@ -623,7 +623,7 @@ namespace BlobSallad
             var ang = Math.Acos(ori.DotProd(up) / ori.Length);
             var radians = (ori.X < 0.0) ? -ang : ang;
             var theta = (180.0 / Math.PI) * radians;
-            var rotateTransform = new RotateTransform(theta); //, MiddlePointMass.XPos, MiddlePointMass.YPos);
+            var rotateTransform = new RotateTransform(theta);
             transformGroup.Children.Add(rotateTransform);
 
             var tx = MiddlePointMass.XPos * scaleFactor;

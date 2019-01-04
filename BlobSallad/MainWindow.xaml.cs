@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -12,7 +13,7 @@ namespace BlobSallad
     {
         private const double ScaleFactor = 200.0;
         private readonly Vector _gravity = new Vector(0.0, 10.0);
-        private readonly Environment _env = new Environment(0.2, 0.2, 2.6, 1.6);
+        private readonly Environment _env = new Environment(0.2, 0.2, 3.6, 1.85);
         private readonly BlobCollective _blobColl = new BlobCollective(1.0, 1.0, 0xC0);
         private readonly DispatcherTimer _timer = new DispatcherTimer {Interval = TimeSpan.FromMilliseconds(30)};
 
