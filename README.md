@@ -8,8 +8,9 @@ The GUI drawing code is verified with [ApprovalTests.Net](https://github.com/app
 Original version by: [Bjoern Lindberg](mailto:bjoern.lindberg@gmail.com)
 
 ## Sample code
-Here's a test that verifies the Ooh Face [OohFace](BlobSalladTests/BlobTests.DrawOohFaceTest.Microsoft_Windows_10_Pro.approved.png)
-Creates a canvas, identifies the translate tranformation, executes the test code, and verifies the results.
+Here's a test that verifies the [OohFace](BlobSalladTests/BlobTests.DrawOohFaceTest.Microsoft_Windows_10_Pro.approved.png).
+It creates a canvas, sets up the translate tranformation, executes the test code, and verifies the results.
+If this code produces the same image, as the one saved, the test will pass.
 ```C#
 [Test]
 public void DrawOohFaceTest()
@@ -26,14 +27,12 @@ public void DrawOohFaceTest()
     var wpf = new ContentControl {Content = canvas};
     WpfApprovals.Verify(wpf);
 }
-
 ```
 
 ## Links:
-- [Community Edition of Visual Studio (Free)](https://www.visualstudio.com/vs/community/)
+- [Community Edition of Visual Studio](https://www.visualstudio.com/vs/community/)
 - [Approval Tests](http://approvaltests.com/)
-- [Git Extensions (Free)](http://gitextensions.github.io/)
-- [ReSharper, Extensions for .NET Developers](https://www.jetbrains.com/resharper/)
+- [Git Extensions](http://gitextensions.github.io/)
 
 ## Author
 :fire: [Greg Eakin](https://www.linkedin.com/in/gregeakin)
