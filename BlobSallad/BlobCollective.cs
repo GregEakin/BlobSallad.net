@@ -40,8 +40,7 @@ namespace BlobSallad
                 return;
 
             motherBlob.Scale(0.75);
-            var newBlob = new Blob(motherBlob.XMiddle, motherBlob.YMiddle, motherBlob.Radius, BlobPointMasses);
-
+            var newBlob = new Blob(motherBlob);
             foreach (var blob in _blobs)
             {
                 blob.LinkBlob(newBlob);
@@ -58,25 +57,20 @@ namespace BlobSallad
 
             var smallest = FindSmallest(null);
             var closest = FindClosest(smallest);
-            var distance = Math.Sqrt(smallest.Radius * smallest.Radius + closest.Radius * closest.Radius);
-            closest.Scale(0.945 * distance / closest.Radius);
-
-            foreach (var blob in _blobs)
-            {
-                if (blob == smallest)
-                    continue;
-
-                blob.UnLinkBlob(smallest);
-            }
+            var length = Math.Sqrt(smallest.Radius * smallest.Radius + closest.Radius * closest.Radius);
+            closest.Scale(0.945 * length / closest.Radius);
 
             _blobs.Remove(smallest);
+            foreach (var blob in _blobs)
+                blob.UnLinkBlob(smallest);
+
             smallest.Dispose();
         }
 
         public Blob FindLargest(Blob exclude)
         {
             var maxRadius = double.MinValue;
-            Blob motherBlob = null;
+            Blob largest = null;
 
             foreach (var blob in _blobs)
             {
@@ -87,10 +81,10 @@ namespace BlobSallad
                     continue;
 
                 maxRadius = blob.Radius;
-                motherBlob = blob;
+                largest = blob;
             }
 
-            return motherBlob;
+            return largest;
         }
 
         public Blob FindSmallest(Blob exclude)
@@ -113,28 +107,28 @@ namespace BlobSallad
             return smallest;
         }
 
-        public Blob FindClosest(Blob exclude)
+        public Blob FindClosest(Blob neighbor)
         {
-            var excludeMiddlePointMass = exclude.MiddlePointMass;
-            var minDist = double.MaxValue;
-            Blob findClosest = null;
+            var neighborMiddlePointMass = neighbor.MiddlePointMass;
+            var minDistance = double.MaxValue;
+            Blob closest = null;
             foreach (var blob in _blobs)
             {
-                if (blob == exclude)
+                if (blob == neighbor)
                     continue;
 
                 var blobMiddlePointMass = blob.MiddlePointMass;
-                var aXbX = excludeMiddlePointMass.XPos - blobMiddlePointMass.XPos;
-                var aYbY = excludeMiddlePointMass.YPos - blobMiddlePointMass.YPos;
-                var dist = aXbX * aXbX + aYbY * aYbY;
-                if (dist >= minDist)
+                var aXbX = neighborMiddlePointMass.XPos - blobMiddlePointMass.XPos;
+                var aYbY = neighborMiddlePointMass.YPos - blobMiddlePointMass.YPos;
+                var distance = aXbX * aXbX + aYbY * aYbY;
+                if (distance >= minDistance)
                     continue;
 
-                minDist = dist;
-                findClosest = blob;
+                minDistance = distance;
+                closest = blob;
             }
 
-            return findClosest;
+            return closest;
         }
 
         public Point? SelectBlob(double x, double y)

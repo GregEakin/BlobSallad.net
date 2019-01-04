@@ -85,6 +85,11 @@ namespace BlobSallad
             }
         }
 
+        public Blob(Blob motherBlob)
+            : this(motherBlob.XMiddle, motherBlob.XMiddle, motherBlob.Radius, motherBlob._pointMasses.Count)
+        {
+        }
+
         public void Dispose()
         {
             _joints.Clear();
@@ -128,9 +133,6 @@ namespace BlobSallad
         {
             foreach (var joint in _joints)
             {
-                if (joint == null)
-                    continue;
-
                 if (joint.PointMassB != blob.MiddlePointMass)
                     continue;
 
