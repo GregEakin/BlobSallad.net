@@ -37,12 +37,6 @@ namespace BlobSallad
         private Face _drawFaceStyle = Face.Smile;
         private Eye _drawEyeStyle = Eye.Open;
 
-        public int PointMassIndex(int x)
-        {
-            var m = _pointMasses.Count;
-            return (x % m + m) % m;
-        }
-
         public Blob(double x, double y, double radius, int numPointMasses)
         {
             if (x < 0.0 || y < 0.0)
@@ -115,6 +109,12 @@ namespace BlobSallad
         public double XMiddle => MiddlePointMass.XPos;
 
         public double YMiddle => MiddlePointMass.YPos;
+
+        public int PointMassIndex(int x)
+        {
+            var m = _pointMasses.Count;
+            return (x % m + m) % m;
+        }
 
         public void LinkBlob(Blob blob)
         {
