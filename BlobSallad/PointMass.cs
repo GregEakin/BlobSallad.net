@@ -25,8 +25,8 @@ namespace BlobSallad
         public double YPos => Pos.Y;
 
         public Vector Prev { get; }
-        public double XPrevPos => Prev.X;
-        public double YPrevPos => Prev.Y;
+        public double XPrev => Prev.X;
+        public double YPrev => Prev.Y;
 
         public double Mass { get; set; }
         public double Velocity

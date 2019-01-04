@@ -28,8 +28,8 @@ namespace BlobSalladTests
             pointMass.Force = force;
 
             pointMass.Move(3.0);
-            Assert.AreEqual(31.0, pointMass.XPrevPos, 0.01);
-            Assert.AreEqual(23.0, pointMass.YPrevPos, 0.01);
+            Assert.AreEqual(31.0, pointMass.XPrev, 0.01);
+            Assert.AreEqual(23.0, pointMass.YPrev, 0.01);
             Assert.AreEqual(36.727, pointMass.XPos, 0.01);
             Assert.AreEqual(33.636, pointMass.YPos, 0.01);
         }
