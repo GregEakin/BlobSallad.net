@@ -64,19 +64,19 @@ namespace BlobSallad
 
         public void Move(double dt)
         {
-            var dtdt = dt * dt;
+            var dt2 = dt * dt;
 
             var ax = Force.X / Mass;
             var cx = Pos.X;
             var px = Prev.X;
-            var tx = (2.0 - Friction) * cx - (1.0 - Friction) * px + ax * dtdt;
+            var tx = (2.0 - Friction) * cx - (1.0 - Friction) * px + ax * dt2;
             Prev.X = cx;
             Pos.X = tx;
 
             var ay = Force.Y / Mass;
             var cy = Pos.Y;
             var py = Prev.Y;
-            var ty = (2.0 - Friction) * cy - (1.0 - Friction) * py + ay * dtdt;
+            var ty = (2.0 - Friction) * cy - (1.0 - Friction) * py + ay * dt2;
             Prev.Y = cy;
             Pos.Y = ty;
         }
