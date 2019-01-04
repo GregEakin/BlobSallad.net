@@ -37,8 +37,9 @@ namespace BlobSallad
         private Face _drawFaceStyle = Face.Smile;
         private Eye _drawEyeStyle = Eye.Open;
 
-        public static int Mod(int x, int m)
+        public int PointMassIndex(int x)
         {
+            var m = _pointMasses.Count;
             return (x % m + m) % m;
         }
 
@@ -70,7 +71,7 @@ namespace BlobSallad
             for (var i = 0; i < numPointMasses; ++i)
             {
                 var pointMassA = _pointMasses[i];
-                var index = Mod(i + 1, numPointMasses);
+                var index = PointMassIndex(i + 1);
                 var pointMassB = _pointMasses[index];
                 var stick = new Stick(pointMassA, pointMassB);
                 _sticks.Add(stick);
@@ -81,7 +82,7 @@ namespace BlobSallad
             for (var i = 0; i < numPointMasses; ++i)
             {
                 var pointMassA = _pointMasses[i];
-                var index = Mod(i + numPointMasses / 2 + 1, numPointMasses);
+                var index = PointMassIndex(i + numPointMasses / 2 + 1);
                 var pointMassB = _pointMasses[index];
                 var joint1 = new Joint(pointMassA, pointMassB, low, high);
                 _joints.Add(joint1);
@@ -542,7 +543,7 @@ namespace BlobSallad
         {
             get
             {
-                index = Mod(index, _pointMasses.Count);
+                index = PointMassIndex(index);
                 return _pointMasses[index];
             }
         }
@@ -552,10 +553,10 @@ namespace BlobSallad
             var pbzSeg = new PolyBezierSegment();
             for (var i = 0; i < PointMasses.Length; ++i)
             {
-                var prevPointMass = PointMasses[Mod(i - 1, PointMasses.Length)];
-                var currentPointMass = PointMasses[Mod(i, PointMasses.Length)];
-                var nextPointMass = PointMasses[Mod(i + 1, PointMasses.Length)];
-                var nextNextPointMass = PointMasses[Mod(i + 2, PointMasses.Length)];
+                var prevPointMass = PointMasses[PointMassIndex(i - 1)];
+                var currentPointMass = PointMasses[PointMassIndex(i)];
+                var nextPointMass = PointMasses[PointMassIndex(i + 1)];
+                var nextNextPointMass = PointMasses[PointMassIndex(i + 2)];
                 var tx = nextPointMass.XPos;
                 var ty = nextPointMass.YPos;
                 var cx = currentPointMass.XPos;
