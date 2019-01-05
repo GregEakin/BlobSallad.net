@@ -9,6 +9,17 @@ namespace BlobSallad
         private double _slSquared;
         private double _llSquared;
 
+        public Joint(PointMass pointMassA, PointMass pointMassB, double shortLimit)
+        {
+            PointMassA = pointMassA;
+            PointMassB = pointMassB;
+
+            ShortLimit = shortLimit;
+            LongLimit = double.PositiveInfinity;
+            _slSquared = ShortLimit * ShortLimit;
+            _llSquared = LongLimit * LongLimit;
+        }
+
         public Joint(PointMass pointMassA, PointMass pointMassB, double shortLimit, double longLimit)
         {
             PointMassA = pointMassA;
@@ -28,14 +39,6 @@ namespace BlobSallad
         public double LongLimit { get; private set; }
 
         public double ShortLimit { get; private set; }
-
-        public void SetLimit(double shortLimit, double longLimit)
-        {
-            ShortLimit = shortLimit;
-            LongLimit = longLimit;
-            _slSquared = ShortLimit * ShortLimit;
-            _llSquared = LongLimit * LongLimit;
-        }
 
         public void Scale(double scaleFactor)
         {

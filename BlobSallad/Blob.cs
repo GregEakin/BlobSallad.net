@@ -124,8 +124,7 @@ namespace BlobSallad
         public void LinkBlob(Blob blob)
         {
             var dist = Radius + blob.Radius;
-            var joint = new Joint(MiddlePointMass, blob.MiddlePointMass, 0.0, 0.0);
-            joint.SetLimit(dist * 0.95, double.PositiveInfinity);
+            var joint = new Joint(MiddlePointMass, blob.MiddlePointMass, dist * 0.95);
             _joints.Add(joint);
         }
 
