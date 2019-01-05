@@ -109,7 +109,6 @@ namespace BlobSallad
 
         public Blob FindClosest(Blob neighbor)
         {
-            var neighborMiddlePointMass = neighbor.MiddlePointMass;
             var minDistance = double.MaxValue;
             Blob closest = null;
             foreach (var blob in _blobs)
@@ -117,9 +116,8 @@ namespace BlobSallad
                 if (blob == neighbor)
                     continue;
 
-                var blobMiddlePointMass = blob.MiddlePointMass;
-                var aXbX = neighborMiddlePointMass.XPos - blobMiddlePointMass.XPos;
-                var aYbY = neighborMiddlePointMass.YPos - blobMiddlePointMass.YPos;
+                var aXbX = neighbor.XMiddle - blob.XMiddle;
+                var aYbY = neighbor.YMiddle - blob.YMiddle;
                 var distance = aXbX * aXbX + aYbY * aYbY;
                 if (distance >= minDistance)
                     continue;
@@ -141,9 +139,8 @@ namespace BlobSallad
 
             foreach (var blob in _blobs)
             {
-                var otherPointMass = blob.MiddlePointMass;
-                var aXbX = x - otherPointMass.XPos;
-                var aYbY = y - otherPointMass.YPos;
+                var aXbX = x - blob.XMiddle;
+                var aYbY = y - blob.YMiddle;
                 var dist = aXbX * aXbX + aYbY * aYbY;
                 if (dist >= minDist)
                     continue;

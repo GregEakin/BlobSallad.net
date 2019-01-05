@@ -30,6 +30,7 @@ namespace BlobSallad
         private readonly List<Stick> _sticks = new List<Stick>();
         private readonly List<PointMass> _pointMasses = new List<PointMass>();
         private readonly List<Joint> _joints = new List<Joint>();
+        private readonly PointMass _middlePointMass;
         private readonly Random _random = new Random();
         private readonly Color _highlight = Colors.Pink; // 255, 204, 204
         private readonly Color _normal = Colors.White;
@@ -60,7 +61,7 @@ namespace BlobSallad
                 _pointMasses.Add(pointMass);
             }
 
-            MiddlePointMass = new PointMass(x, y, 1.0);
+            _middlePointMass = new PointMass(x, y, 1.0);
 
             for (var i = 0; i < numPointMasses; ++i)
             {
@@ -80,7 +81,7 @@ namespace BlobSallad
                 var pointMassB = _pointMasses[index];
                 var joint1 = new Joint(pointMassA, pointMassB, low, high);
                 _joints.Add(joint1);
-                var joint2 = new Joint(pointMassA, MiddlePointMass, high * 0.9, low * 1.1);
+                var joint2 = new Joint(pointMassA, _middlePointMass, high * 0.9, low * 1.1);
                 _joints.Add(joint2);
             }
         }
@@ -105,15 +106,15 @@ namespace BlobSallad
 
         public Joint[] Joints => _joints.ToArray();
 
-        public PointMass MiddlePointMass { get; }
-
         public double Radius { get; private set; }
 
         public bool Selected { get; set; }
 
-        public double XMiddle => MiddlePointMass.XPos;
+        public double XMiddle => _middlePointMass.XPos;
 
-        public double YMiddle => MiddlePointMass.YPos;
+        public double YMiddle => _middlePointMass.YPos;
+
+        public double Mass => _middlePointMass.Mass;
 
         public int PointMassIndex(int x)
         {
@@ -124,7 +125,7 @@ namespace BlobSallad
         public void LinkBlob(Blob blob)
         {
             var dist = Radius + blob.Radius;
-            var joint = new Joint(MiddlePointMass, blob.MiddlePointMass, dist * 0.95);
+            var joint = new Joint(_middlePointMass, blob._middlePointMass, dist * 0.95);
             _joints.Add(joint);
         }
 
@@ -132,7 +133,7 @@ namespace BlobSallad
         {
             foreach (var joint in _joints)
             {
-                if (joint.PointMassB != blob.MiddlePointMass)
+                if (joint.PointMassB != blob._middlePointMass)
                     continue;
 
                 _joints.Remove(joint);
@@ -156,7 +157,7 @@ namespace BlobSallad
             foreach (var pointMass in _pointMasses)
                 pointMass.Move(dt);
 
-            MiddlePointMass.Move(dt);
+            _middlePointMass.Move(dt);
         }
 
         public void Sc(Environment env)
@@ -180,13 +181,13 @@ namespace BlobSallad
 
         public Vector Force
         {
-            get => MiddlePointMass.Force;
+            get => _middlePointMass.Force;
             set
             {
                 foreach (var pointMass in _pointMasses)
                     pointMass.Force = value;
 
-                MiddlePointMass.Force = value;
+                _middlePointMass.Force = value;
             }
         }
 
@@ -195,7 +196,7 @@ namespace BlobSallad
             foreach (var pointMass in _pointMasses)
                 pointMass.AddForce(force);
 
-            MiddlePointMass.AddForce(force);
+            _middlePointMass.AddForce(force);
             var pointMass0 = _pointMasses[0];
             pointMass0.AddForce(force);
             pointMass0.AddForce(force);
@@ -205,7 +206,7 @@ namespace BlobSallad
 
         public void MoveTo(double x, double y)
         {
-            var blobPos = MiddlePointMass.Pos;
+            var blobPos = _middlePointMass.Pos;
             x -= blobPos.X;
             y -= blobPos.Y;
 
@@ -216,7 +217,7 @@ namespace BlobSallad
                 blobPos.AddY(y);
             }
 
-            blobPos = MiddlePointMass.Pos;
+            blobPos = _middlePointMass.Pos;
             blobPos.AddX(x);
             blobPos.AddY(y);
         }
@@ -514,7 +515,7 @@ namespace BlobSallad
 
         public void DrawFace(Canvas canvas, double scaleFactor, TransformGroup translateTransform)
         {
-            if (MiddlePointMass.Velocity > 0.004)
+            if (_middlePointMass.Velocity > 0.004)
             {
                 DrawOohFace(canvas, scaleFactor, translateTransform);
             }
@@ -620,15 +621,15 @@ namespace BlobSallad
             var transformGroup = new TransformGroup();
 
             var up = new Vector(0.0, -1.0);
-            var ori = _pointMasses[0].Pos - MiddlePointMass.Pos;
+            var ori = _pointMasses[0].Pos - _middlePointMass.Pos;
             var ang = Math.Acos(ori.DotProd(up) / ori.Length);
             var radians = (ori.X < 0.0) ? -ang : ang;
             var theta = (180.0 / Math.PI) * radians;
             var rotateTransform = new RotateTransform(theta);
             transformGroup.Children.Add(rotateTransform);
 
-            var tx = MiddlePointMass.XPos * scaleFactor;
-            var ty = (MiddlePointMass.YPos - 0.35 * Radius) * scaleFactor;
+            var tx = _middlePointMass.XPos * scaleFactor;
+            var ty = (_middlePointMass.YPos - 0.35 * Radius) * scaleFactor;
             var translateTransform = new TranslateTransform(tx, ty);
             transformGroup.Children.Add(translateTransform);
 
