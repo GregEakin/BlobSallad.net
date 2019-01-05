@@ -72,8 +72,7 @@ namespace BlobSallad
 
         public static Vector operator -(Vector a, Vector b)
         {
-            var delta = new Vector(a);
-            delta.Sub(b);
+            var delta = new Vector(a.X -b.X, a.Y - b.Y);
             return delta;
         }
     }
