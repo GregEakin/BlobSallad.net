@@ -15,8 +15,10 @@ namespace BlobSallad
         {
             PointMassA = pointMassA;
             PointMassB = pointMassB;
-            Length = PointMassDist(pointMassA, pointMassB);
-            LengthSquared = Length * Length;
+            var aXbX = pointMassA.XPos - pointMassB.XPos;
+            var aYbY = pointMassA.YPos - pointMassB.YPos;
+            LengthSquared = aXbX * aXbX + aYbY * aYbY;
+            Length = Math.Sqrt(LengthSquared);
         }
 
         public double Length { get; private set; }
@@ -26,13 +28,6 @@ namespace BlobSallad
         public PointMass PointMassA { get; }
 
         public PointMass PointMassB { get; }
-
-        public static double PointMassDist(PointMass pointMassA, PointMass pointMassB)
-        {
-            var aXbX = pointMassA.XPos - pointMassB.XPos;
-            var aYbY = pointMassA.YPos - pointMassB.YPos;
-            return Math.Sqrt(aXbX * aXbX + aYbY * aYbY);
-        }
 
         public void Scale(double scaleFactor)
         {

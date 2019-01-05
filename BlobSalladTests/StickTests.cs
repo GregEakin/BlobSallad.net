@@ -24,15 +24,6 @@ namespace BlobSalladTests
         }
 
         [Test]
-        public void PointMassDistTest()
-        {
-            var massA = new PointMass(13.0, 31.0, 5.0);
-            var massB = new PointMass(17.0, 35.0, 7.0);
-            var dist = Stick.PointMassDist(massA, massB);
-            Assert.AreEqual(5.656, dist, 0.01);
-        }
-
-        [Test]
         public void ScaleTest()
         {
             var massA = new PointMass(13.0, 31.0, 5.0);
