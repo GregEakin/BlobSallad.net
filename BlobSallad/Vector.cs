@@ -70,16 +70,11 @@ namespace BlobSallad
             return $"(X: {X}, Y: {Y})";
         }
 
-        public static Vector Delta(Vector a, Vector b)
-        {
-            var delta = new Vector(b);
-            delta.Sub(a);
-            return delta;
-        }
-
         public static Vector operator -(Vector a, Vector b)
         {
-            return new Vector(0, 0);
+            var delta = new Vector(a);
+            delta.Sub(b);
+            return delta;
         }
     }
 }

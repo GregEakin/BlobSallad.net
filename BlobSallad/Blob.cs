@@ -621,9 +621,7 @@ namespace BlobSallad
             var transformGroup = new TransformGroup();
 
             var up = new Vector(0.0, -1.0);
-            var ori = new Vector(_pointMasses[0].Pos);
-            ori.Sub(MiddlePointMass.Pos);
-            // var ori = Vector.Delta(MiddlePointMass.Pos, _pointMasses[0].Pos);
+            var ori = _pointMasses[0].Pos - MiddlePointMass.Pos;
             var ang = Math.Acos(ori.DotProd(up) / ori.Length);
             var radians = (ori.X < 0.0) ? -ang : ang;
             var theta = (180.0 / Math.PI) * radians;

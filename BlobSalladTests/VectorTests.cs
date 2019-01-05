@@ -60,6 +60,16 @@ namespace BlobSalladTests
         }
 
         [Test]
+        public void OperatorSubtractTest()
+        {
+            var vector = new Vector(71.0, 67.0);
+            var setter = new Vector(13.0, 11.0);
+            var b = vector - setter;
+            Assert.AreEqual(58.0, b.X);
+            Assert.AreEqual(56.0, b.Y);
+        }
+
+        [Test]
         public void DotTest()
         {
             var vector = new Vector(71.0, 67.0);

@@ -18,9 +18,7 @@ namespace BlobSallad
             _pointMassAPos = pointMassA.Pos;
             _pointMassBPos = pointMassB.Pos;
 
-            var delta = new Vector(_pointMassBPos);
-            delta.Sub(_pointMassAPos);
-            // var delta = Vector.Delta(_pointMassAPos, _pointMassBPos);
+            var delta = _pointMassBPos - _pointMassAPos;
             ShortLimit = delta.Length * shortLimit;
             LongLimit = delta.Length * longLimit;
             _slSquared = ShortLimit * ShortLimit;
@@ -53,9 +51,7 @@ namespace BlobSallad
 
         public void Sc()
         {
-            var delta = new Vector(_pointMassBPos);
-            delta.Sub(_pointMassAPos);
-            // var delta = Vector.Delta(_pointMassAPos, _pointMassBPos);
+            var delta = _pointMassBPos - _pointMassAPos;
             var dp = delta.DotProd(delta);
             if (dp < _slSquared)
             {

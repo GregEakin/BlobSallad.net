@@ -42,17 +42,12 @@ namespace BlobSallad
 
         public void Sc(Environment env)
         {
-            var pointMassAPos = PointMassA.Pos;
-            var pointMassBPos = PointMassB.Pos;
-
-            var delta = new Vector(pointMassBPos);
-            delta.Sub(pointMassAPos);
-            // var delta = Vector.Delta(pointMassAPos, pointMassBPos);
+            var delta = PointMassB.Pos - PointMassA.Pos;
             var dotProd = delta.DotProd(delta);
             var scaleFactor = LengthSquared / (dotProd + LengthSquared) - 0.5;
             delta.Scale(scaleFactor);
-            pointMassAPos.Sub(delta);
-            pointMassBPos.Add(delta);
+            PointMassA.Pos.Sub(delta);
+            PointMassB.Pos.Add(delta);
         }
 
         public void SetForce(Vector force)
