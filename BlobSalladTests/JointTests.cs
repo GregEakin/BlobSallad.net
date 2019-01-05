@@ -12,17 +12,17 @@ namespace BlobSalladTests
         [Test]
         public void CtorTest()
         {
-            Assert.AreEqual(36.498, _joint.ShortConst, 0.01);
-            Assert.AreEqual(40.340, _joint.LongConst, 0.01);
+            Assert.AreEqual(36.498, _joint.ShortLimit, 0.01);
+            Assert.AreEqual(40.340, _joint.LongLimit, 0.01);
         }
 
         [Test]
         public void SetDistTest()
         {
-            _joint.SetDist(38.5, 36.4);
+            _joint.SetLimit(38.5, 36.4);
 
-            Assert.AreEqual(38.5, _joint.ShortConst, 0.01);
-            Assert.AreEqual(36.4, _joint.LongConst, 0.01);
+            Assert.AreEqual(38.5, _joint.ShortLimit, 0.01);
+            Assert.AreEqual(36.4, _joint.LongLimit, 0.01);
 
         }
 
@@ -31,14 +31,14 @@ namespace BlobSalladTests
         {
             _joint.Scale(10.0);
 
-            Assert.AreEqual(364.978, _joint.ShortConst, 0.01);
-            Assert.AreEqual(403.397, _joint.LongConst, 0.01);
+            Assert.AreEqual(364.978, _joint.ShortLimit, 0.01);
+            Assert.AreEqual(403.397, _joint.LongLimit, 0.01);
         }
 
         [Test]
         public void ScShortTest()
         {
-            _joint.SetDist(38.5, 36.4);
+            _joint.SetLimit(38.5, 36.4);
             _joint.Sc();
 
             Assert.AreEqual(40.968, _pointMassA.XPos, 0.01);
@@ -50,7 +50,7 @@ namespace BlobSalladTests
         [Test]
         public void ScLongTest()
         {
-            _joint.SetDist(36.498, 36.4);
+            _joint.SetLimit(36.498, 36.4);
             _joint.Sc();
 
             Assert.AreEqual(41.809, _pointMassA.XPos, 0.01);

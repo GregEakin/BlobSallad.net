@@ -47,6 +47,7 @@ namespace BlobSallad
 
             var delta = new Vector(pointMassBPos);
             delta.Sub(pointMassAPos);
+            // var delta = Vector.Delta(pointMassAPos, pointMassBPos);
             var dotProd = delta.DotProd(delta);
             var scaleFactor = LengthSquared / (dotProd + LengthSquared) - 0.5;
             delta.Scale(scaleFactor);

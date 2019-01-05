@@ -8,10 +8,10 @@ namespace BlobSallad
     {
         private readonly Vector _pointMassAPos;
         private readonly Vector _pointMassBPos;
-        private double _scSquared;
-        private double _lcSquared;
+        private double _slSquared;
+        private double _llSquared;
 
-        public Joint(PointMass pointMassA, PointMass pointMassB, double shortConst, double longConst)
+        public Joint(PointMass pointMassA, PointMass pointMassB, double shortLimit, double longLimit)
         {
             PointMassA = pointMassA;
             PointMassB = pointMassB;
@@ -20,51 +20,53 @@ namespace BlobSallad
 
             var delta = new Vector(_pointMassBPos);
             delta.Sub(_pointMassAPos);
-            ShortConst = delta.Length * shortConst;
-            LongConst = delta.Length * longConst;
-            _scSquared = ShortConst * ShortConst;
-            _lcSquared = LongConst * LongConst;
+            // var delta = Vector.Delta(_pointMassAPos, _pointMassBPos);
+            ShortLimit = delta.Length * shortLimit;
+            LongLimit = delta.Length * longLimit;
+            _slSquared = ShortLimit * ShortLimit;
+            _llSquared = LongLimit * LongLimit;
         }
 
         public PointMass PointMassA { get; }
 
         public PointMass PointMassB { get; }
 
-        public double LongConst { get; private set; }
+        public double LongLimit { get; private set; }
 
-        public double ShortConst { get; private set; }
+        public double ShortLimit { get; private set; }
 
-        public void SetDist(double shortConst, double longConst)
+        public void SetLimit(double shortLimit, double longLimit)
         {
-            ShortConst = shortConst;
-            LongConst = longConst;
-            _scSquared = ShortConst * ShortConst;
-            _lcSquared = LongConst * LongConst;
+            ShortLimit = shortLimit;
+            LongLimit = longLimit;
+            _slSquared = ShortLimit * ShortLimit;
+            _llSquared = LongLimit * LongLimit;
         }
 
         public void Scale(double scaleFactor)
         {
-            ShortConst *= scaleFactor;
-            LongConst *= scaleFactor;
-            _scSquared = ShortConst * ShortConst;
-            _lcSquared = LongConst * LongConst;
+            ShortLimit *= scaleFactor;
+            LongLimit *= scaleFactor;
+            _slSquared = ShortLimit * ShortLimit;
+            _llSquared = LongLimit * LongLimit;
         }
 
         public void Sc()
         {
             var delta = new Vector(_pointMassBPos);
             delta.Sub(_pointMassAPos);
+            // var delta = Vector.Delta(_pointMassAPos, _pointMassBPos);
             var dp = delta.DotProd(delta);
-            if (ShortConst != 0.0 && dp < _scSquared)
+            if (dp < _slSquared)
             {
-                var scaleFactor = _scSquared / (dp + _scSquared) - 0.5;
+                var scaleFactor = _slSquared / (dp + _slSquared) - 0.5;
                 delta.Scale(scaleFactor);
                 _pointMassAPos.Sub(delta);
                 _pointMassBPos.Add(delta);
             }
-            else if (LongConst != 0.0 && dp > _lcSquared)
+            else if (dp > _llSquared)
             {
-                var scaleFactor = _lcSquared / (dp + _lcSquared) - 0.5;
+                var scaleFactor = _llSquared / (dp + _llSquared) - 0.5;
                 delta.Scale(scaleFactor);
                 _pointMassAPos.Sub(delta);
                 _pointMassBPos.Add(delta);

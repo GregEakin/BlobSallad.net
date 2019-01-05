@@ -151,8 +151,8 @@ namespace BlobSalladTests
             Assert.AreEqual(0, blob2.Joints.Length);
             Assert.AreEqual(1, blob1.Joints.Length);
             var joint = blob1.Joints[0];
-            Assert.AreEqual(22.800, joint.ShortConst, 0.01);
-            Assert.AreEqual(0.0, joint.LongConst, 0.01);
+            Assert.AreEqual(22.800, joint.ShortLimit, 0.01);
+            Assert.IsTrue(double.IsInfinity(joint.LongLimit));
         }
 
         [Test]

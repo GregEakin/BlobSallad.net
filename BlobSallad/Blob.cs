@@ -86,7 +86,7 @@ namespace BlobSallad
         }
 
         public Blob(Blob motherBlob)
-            : this(motherBlob.XMiddle, motherBlob.XMiddle, motherBlob.Radius, motherBlob._pointMasses.Count)
+            : this(motherBlob.XMiddle, motherBlob.YMiddle, motherBlob.Radius, motherBlob._pointMasses.Count)
         {
         }
 
@@ -125,7 +125,7 @@ namespace BlobSallad
         {
             var dist = Radius + blob.Radius;
             var joint = new Joint(MiddlePointMass, blob.MiddlePointMass, 0.0, 0.0);
-            joint.SetDist(dist * 0.95, 0.0);
+            joint.SetLimit(dist * 0.95, double.PositiveInfinity);
             _joints.Add(joint);
         }
 
@@ -623,6 +623,7 @@ namespace BlobSallad
             var up = new Vector(0.0, -1.0);
             var ori = new Vector(_pointMasses[0].Pos);
             ori.Sub(MiddlePointMass.Pos);
+            // var ori = Vector.Delta(MiddlePointMass.Pos, _pointMasses[0].Pos);
             var ang = Math.Acos(ori.DotProd(up) / ori.Length);
             var radians = (ori.X < 0.0) ? -ang : ang;
             var theta = (180.0 / Math.PI) * radians;
