@@ -6,8 +6,6 @@ namespace BlobSallad
 {
     public class Joint
     {
-        private readonly Vector _pointMassAPos;
-        private readonly Vector _pointMassBPos;
         private double _slSquared;
         private double _llSquared;
 
@@ -15,10 +13,8 @@ namespace BlobSallad
         {
             PointMassA = pointMassA;
             PointMassB = pointMassB;
-            _pointMassAPos = pointMassA.Pos;
-            _pointMassBPos = pointMassB.Pos;
 
-            var delta = _pointMassBPos - _pointMassAPos;
+            var delta = PointMassB.Pos - PointMassA.Pos;
             ShortLimit = delta.Length * shortLimit;
             LongLimit = delta.Length * longLimit;
             _slSquared = ShortLimit * ShortLimit;
@@ -51,21 +47,21 @@ namespace BlobSallad
 
         public void Sc()
         {
-            var delta = _pointMassBPos - _pointMassAPos;
+            var delta = PointMassB.Pos - PointMassA.Pos;
             var dp = delta.DotProd(delta);
             if (dp < _slSquared)
             {
                 var scaleFactor = _slSquared / (dp + _slSquared) - 0.5;
                 delta.Scale(scaleFactor);
-                _pointMassAPos.Sub(delta);
-                _pointMassBPos.Add(delta);
+                PointMassA.Pos.Sub(delta);
+                PointMassB.Pos.Add(delta);
             }
             else if (dp > _llSquared)
             {
                 var scaleFactor = _llSquared / (dp + _llSquared) - 0.5;
                 delta.Scale(scaleFactor);
-                _pointMassAPos.Sub(delta);
-                _pointMassBPos.Add(delta);
+                PointMassA.Pos.Sub(delta);
+                PointMassB.Pos.Add(delta);
             }
         }
     }
