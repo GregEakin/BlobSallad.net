@@ -20,14 +20,14 @@ namespace BlobSallad
             _llSquared = LongLimit * LongLimit;
         }
 
-        public Joint(PointMass pointMassA, PointMass pointMassB, double shortLimit, double longLimit)
+        public Joint(PointMass pointMassA, PointMass pointMassB, double shortFactor, double longFactor)
         {
             PointMassA = pointMassA;
             PointMassB = pointMassB;
 
             var delta = PointMassB.Pos - PointMassA.Pos;
-            ShortLimit = delta.Length * shortLimit;
-            LongLimit = delta.Length * longLimit;
+            ShortLimit = delta.Length * shortFactor;
+            LongLimit = delta.Length * longFactor;
             _slSquared = ShortLimit * ShortLimit;
             _llSquared = LongLimit * LongLimit;
         }
