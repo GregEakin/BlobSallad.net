@@ -5,12 +5,12 @@ namespace BlobSalladTests
 {
     public class CollisionTests
     {
-        private Collision _joint;
+        private Collision _collision;
         private PointMass _pointMassA;
         private PointMass _pointMassB;
 
         [Test]
-        public void CtorCollisionJointTest()
+        public void CtorCollisionTest()
         {
             var cxA = 41.0;
             var cyA = 43.0;
@@ -24,10 +24,10 @@ namespace BlobSalladTests
 
             // sum of the two radii
             var dist = 17;
-            _joint = new Collision(_pointMassA, _pointMassB, dist);
+            _collision = new Collision(_pointMassA, _pointMassB, dist);
 
-            Assert.AreEqual(17.000, _joint.ShortLimit, 0.01);
-            Assert.AreEqual(double.PositiveInfinity, _joint.LongLimit, 0.01);
+            Assert.AreEqual(17.000, _collision.ShortLimit, 0.01);
+            Assert.AreEqual(double.PositiveInfinity, _collision.LongLimit, 0.01);
         }
     }
 }

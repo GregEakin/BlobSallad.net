@@ -31,7 +31,7 @@ namespace BlobSalladTests
             var canvas = new Canvas { Width = 100, Height = 100 };
 
             var blob = new Blob(41.0, 43.0, 23.0, 5);
-            var pointMasses = blob.PointMasses;
+            var pointMasses = blob.Points;
             foreach (var pointMass in pointMasses)
                 DrawDot(canvas, Brushes.Black, pointMass.Mass, pointMass.XPos, pointMass.YPos);
 
@@ -46,8 +46,8 @@ namespace BlobSalladTests
 
             var blob = new Blob(41.0, 43.0, 23.0, 5);
             var sticks = blob.Skins;
-            foreach (var stick in sticks)
-                stick.Draw(canvas, 1.0);
+            foreach (var skin in sticks)
+                skin.Draw(canvas, 1.0);
 
             var wpf = new ContentControl { Content = canvas };
             WpfApprovals.Verify(wpf);
@@ -61,13 +61,12 @@ namespace BlobSalladTests
             var blob = new Blob(41.0, 43.0, 23.0, 5);
             DrawDot(canvas, Brushes.Blue, blob.Mass, blob.XMiddle, blob.YMiddle);
 
-            var joints = blob.Bones;
-            foreach (var joint in joints)
+            foreach (var bone in blob.Bones)
             {
-                DrawDot(canvas, Brushes.Red, joint.PointMassA.Mass, joint.PointMassA.XPos, joint.PointMassA.YPos);
+                DrawDot(canvas, Brushes.Red, bone.PointMassA.Mass, bone.PointMassA.XPos, bone.PointMassA.YPos);
                 DrawLine(canvas, Brushes.Black, 
-                        joint.PointMassA.XPos, joint.PointMassA.YPos,
-                        joint.PointMassB.XPos, joint.PointMassB.YPos);
+                        bone.PointMassA.XPos, bone.PointMassA.YPos,
+                        bone.PointMassB.XPos, bone.PointMassB.YPos);
             }
 
             var wpf = new ContentControl { Content = canvas };

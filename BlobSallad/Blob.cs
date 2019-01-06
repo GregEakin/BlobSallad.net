@@ -27,8 +27,8 @@ namespace BlobSallad
             Ooh
         }
 
-        private readonly PointMass _middlePointMass;
-        private readonly List<PointMass> _pointMasses = new List<PointMass>();
+        private readonly PointMass _middle;
+        private readonly List<PointMass> _points = new List<PointMass>();
         private readonly List<Skin> _skins = new List<Skin>();
         private readonly List<Bones> _bones = new List<Bones>();
         private readonly List<Collision> _collisions = new List<Collision>();
@@ -39,73 +39,68 @@ namespace BlobSallad
         private Face _drawFaceStyle = Face.Smile;
         private Eye _drawEyeStyle = Eye.Open;
 
-        public Blob(double x, double y, double radius, int numPointMasses)
+        public Blob(double x, double y, double radius, int numPoints)
         {
             if (x < 0.0 || y < 0.0)
                 throw new ArgumentException("Can't have negative offsets for X and Y.");
             if (radius <= 0.0)
                 throw new ArgumentException("Can't a a radius <= zero.");
-            if (numPointMasses < 0)
-                throw new ArgumentException("Not enough point masses.");
+            if (numPoints < 0)
+                throw new ArgumentException("Not enough points.");
 
             X = x;
             Y = y;
             Radius = radius;
 
-            for (var i = 0; i < numPointMasses; ++i)
+            for (var i = 0; i < numPoints; ++i)
             {
-                var theta = i * 2.0 * Math.PI / numPointMasses;
+                var theta = i * 2.0 * Math.PI / numPoints;
                 var cx = Math.Cos(theta) * radius + x;
                 var cy = Math.Sin(theta) * radius + y;
                 var mass = i < 2 ? 4.0 : 1.0;
                 var pointMass = new PointMass(cx, cy, mass);
-                _pointMasses.Add(pointMass);
+                _points.Add(pointMass);
             }
 
-            _middlePointMass = new PointMass(x, y, 1.0);
+            _middle = new PointMass(x, y, 1.0);
 
-            for (var i = 0; i < numPointMasses; ++i)
+            for (var i = 0; i < numPoints; ++i)
             {
-                var pointMassA = _pointMasses[i];
+                var pointMassA = _points[i];
                 var index = PointMassIndex(i + 1);
-                var pointMassB = _pointMasses[index];
-                var stick = new Skin(pointMassA, pointMassB);
-                _skins.Add(stick);
+                var pointMassB = _points[index];
+                var skin = new Skin(pointMassA, pointMassB);
+                _skins.Add(skin);
             }
 
-            for (var i = 0; i < numPointMasses; ++i)
+            for (var i = 0; i < numPoints; ++i)
             {
                 const double crossShort = 0.95;
                 const double crossLong = 1.05;
                 const double middleShort = crossLong * 0.9;
                 const double middleLong = crossShort * 1.1;
-                var pointMassA = _pointMasses[i];
+                var pointMassA = _points[i];
 
-                var index = PointMassIndex(i + numPointMasses / 2 + 1);
-                var pointMassB = _pointMasses[index];
-                var joint1 = new Bones(pointMassA, pointMassB, crossShort, crossLong);
-                _bones.Add(joint1);
+                var index = PointMassIndex(i + numPoints / 2 + 1);
+                var pointMassB = _points[index];
+                var bone1 = new Bones(pointMassA, pointMassB, crossShort, crossLong);
+                _bones.Add(bone1);
 
-                var joint2 = new Bones(pointMassA, _middlePointMass, middleShort, middleLong);
-                _bones.Add(joint2);
+                var bone2 = new Bones(pointMassA, _middle, middleShort, middleLong);
+                _bones.Add(bone2);
             }
         }
 
         public Blob(Blob motherBlob)
-            : this(motherBlob.XMiddle, motherBlob.YMiddle, motherBlob.Radius, motherBlob._pointMasses.Count)
+            : this(motherBlob.XMiddle, motherBlob.YMiddle, motherBlob.Radius, motherBlob._points.Count)
         {
-        }
-
-        public void Dispose()
-        {
-            _collisions.Clear();
         }
 
         public double X { get; set; }
 
         public double Y { get; set; }
 
-        public PointMass[] PointMasses => _pointMasses.ToArray();
+        public PointMass[] Points => _points.ToArray();
 
         public Skin[] Skins => _skins.ToArray();
 
@@ -117,22 +112,22 @@ namespace BlobSallad
 
         public bool Selected { get; set; }
 
-        public double XMiddle => _middlePointMass.XPos;
+        public double XMiddle => _middle.XPos;
 
-        public double YMiddle => _middlePointMass.YPos;
+        public double YMiddle => _middle.YPos;
 
-        public double Mass => _middlePointMass.Mass;
+        public double Mass => _middle.Mass;
 
         public int PointMassIndex(int x)
         {
-            var m = _pointMasses.Count;
+            var m = _points.Count;
             return (x % m + m) % m;
         }
 
         public void LinkBlob(Blob blob)
         {
             var dist = Radius + blob.Radius;
-            var collision = new Collision(_middlePointMass, blob._middlePointMass, dist * 0.95);
+            var collision = new Collision(_middle, blob._middle, dist * 0.95);
             _collisions.Add(collision);
         }
 
@@ -140,7 +135,7 @@ namespace BlobSallad
         {
             foreach (var collision in _collisions)
             {
-                if (collision.PointMassB != blob._middlePointMass)
+                if (collision.PointMassB != blob._middle)
                     continue;
 
                 _collisions.Remove(collision);
@@ -150,11 +145,11 @@ namespace BlobSallad
 
         public void Scale(double scaleFactor)
         {
-            foreach (var stick in _skins)
-                stick.Scale(scaleFactor);
+            foreach (var skin in _skins)
+                skin.Scale(scaleFactor);
 
-            foreach (var joint in _bones)
-                joint.Scale(scaleFactor);
+            foreach (var bone in _bones)
+                bone.Scale(scaleFactor);
 
             foreach (var collision in _collisions)
                 collision.Scale(scaleFactor);
@@ -164,28 +159,28 @@ namespace BlobSallad
 
         public void Move(double dt)
         {
-            foreach (var pointMass in _pointMasses)
+            foreach (var pointMass in _points)
                 pointMass.Move(dt);
 
-            _middlePointMass.Move(dt);
+            _middle.Move(dt);
         }
 
         public void Sc(Environment env)
         {
             for (var j = 0; j < 4; ++j)
             {
-                foreach (var pointMass in _pointMasses)
+                foreach (var pointMass in _points)
                 {
                     var collision = env.Collision(pointMass.Pos, pointMass.Prev);
                     var friction = collision ? 0.75 : 0.01;
                     pointMass.Friction = friction;
                 }
 
-                foreach (var stick in _skins)
-                    stick.Sc(env);
+                foreach (var skin in _skins)
+                    skin.Sc(env);
 
-                foreach (var joint in _bones)
-                    joint.Sc(env);
+                foreach (var bone in _bones)
+                    bone.Sc(env);
 
                 foreach (var collision in _collisions)
                     collision.Sc(env);
@@ -194,23 +189,23 @@ namespace BlobSallad
 
         public Vector Force
         {
-            get => _middlePointMass.Force;
+            get => _middle.Force;
             set
             {
-                foreach (var pointMass in _pointMasses)
+                foreach (var pointMass in _points)
                     pointMass.Force = value;
 
-                _middlePointMass.Force = value;
+                _middle.Force = value;
             }
         }
 
         public void AddForce(Vector force)
         {
-            foreach (var pointMass in _pointMasses)
+            foreach (var pointMass in _points)
                 pointMass.AddForce(force);
 
-            _middlePointMass.AddForce(force);
-            var pointMass0 = _pointMasses[0];
+            _middle.AddForce(force);
+            var pointMass0 = _points[0];
             pointMass0.AddForce(force);
             pointMass0.AddForce(force);
             pointMass0.AddForce(force);
@@ -219,18 +214,18 @@ namespace BlobSallad
 
         public void MoveTo(double x, double y)
         {
-            var blobPos = _middlePointMass.Pos;
+            var blobPos = _middle.Pos;
             x -= blobPos.X;
             y -= blobPos.Y;
 
-            foreach (var pointMass in _pointMasses)
+            foreach (var pointMass in _points)
             {
                 blobPos = pointMass.Pos;
                 blobPos.AddX(x);
                 blobPos.AddY(y);
             }
 
-            blobPos = _middlePointMass.Pos;
+            blobPos = _middle.Pos;
             blobPos.AddX(x);
             blobPos.AddY(y);
         }
@@ -528,7 +523,7 @@ namespace BlobSallad
 
         public void DrawFace(Canvas canvas, double scaleFactor, TransformGroup translateTransform)
         {
-            if (_middlePointMass.Velocity > 0.004)
+            if (_middle.Velocity > 0.004)
             {
                 DrawOohFace(canvas, scaleFactor, translateTransform);
             }
@@ -559,19 +554,19 @@ namespace BlobSallad
             get
             {
                 index = PointMassIndex(index);
-                return _pointMasses[index];
+                return _points[index];
             }
         }
 
         public void DrawBody(Canvas canvas, double scaleFactor)
         {
             var pbzSeg = new PolyBezierSegment();
-            for (var i = 0; i < PointMasses.Length; ++i)
+            for (var i = 0; i < Points.Length; ++i)
             {
-                var prevPointMass = PointMasses[PointMassIndex(i - 1)];
-                var currentPointMass = PointMasses[PointMassIndex(i)];
-                var nextPointMass = PointMasses[PointMassIndex(i + 1)];
-                var nextNextPointMass = PointMasses[PointMassIndex(i + 2)];
+                var prevPointMass = Points[PointMassIndex(i - 1)];
+                var currentPointMass = Points[PointMassIndex(i)];
+                var nextPointMass = Points[PointMassIndex(i + 1)];
+                var nextNextPointMass = Points[PointMassIndex(i + 2)];
                 var tx = nextPointMass.XPos;
                 var ty = nextPointMass.YPos;
                 var cx = currentPointMass.XPos;
@@ -595,8 +590,8 @@ namespace BlobSallad
 
             var myPathSegmentCollection = new PathSegmentCollection {pbzSeg};
 
-            var startX = PointMasses[0].XPos * scaleFactor;
-            var startY = PointMasses[0].YPos * scaleFactor;
+            var startX = Points[0].XPos * scaleFactor;
+            var startY = Points[0].YPos * scaleFactor;
             var pthFigure = new PathFigure
             {
                 StartPoint = new Point(startX, startY),
@@ -625,7 +620,7 @@ namespace BlobSallad
             foreach (var stick in _skins)
                 stick.Draw(canvas, scaleFactor);
 
-            foreach (var pointMass in _pointMasses)
+            foreach (var pointMass in _points)
                 pointMass.Draw(canvas, scaleFactor);
         }
 
@@ -634,15 +629,15 @@ namespace BlobSallad
             var transformGroup = new TransformGroup();
 
             var up = new Vector(0.0, -1.0);
-            var ori = _pointMasses[0].Pos - _middlePointMass.Pos;
+            var ori = _points[0].Pos - _middle.Pos;
             var ang = Math.Acos(ori.DotProd(up) / ori.Length);
             var radians = (ori.X < 0.0) ? -ang : ang;
             var theta = (180.0 / Math.PI) * radians;
             var rotateTransform = new RotateTransform(theta);
             transformGroup.Children.Add(rotateTransform);
 
-            var tx = _middlePointMass.XPos * scaleFactor;
-            var ty = (_middlePointMass.YPos - 0.35 * Radius) * scaleFactor;
+            var tx = _middle.XPos * scaleFactor;
+            var ty = (_middle.YPos - 0.35 * Radius) * scaleFactor;
             var translateTransform = new TranslateTransform(tx, ty);
             transformGroup.Children.Add(translateTransform);
 

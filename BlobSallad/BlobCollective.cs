@@ -63,8 +63,6 @@ namespace BlobSallad
             _blobs.Remove(smallest);
             foreach (var blob in _blobs)
                 blob.UnLinkBlob(smallest);
-
-            smallest.Dispose();
         }
 
         public Blob FindLargest(Blob exclude)
