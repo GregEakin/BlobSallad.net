@@ -41,15 +41,11 @@ namespace BlobSallad
 
         public Blob(double x, double y, double radius, int numPoints)
         {
-            if (x < 0.0 || y < 0.0)
-                throw new ArgumentException("Can't have negative offsets for X and Y.");
             if (radius <= 0.0)
-                throw new ArgumentException("Can't a a radius <= zero.");
+                throw new ArgumentException("Can't have a negative radius.");
             if (numPoints < 0)
                 throw new ArgumentException("Not enough points.");
 
-            X = x;
-            Y = y;
             Radius = radius;
 
             for (var i = 0; i < numPoints; ++i)
@@ -92,13 +88,9 @@ namespace BlobSallad
         }
 
         public Blob(Blob motherBlob)
-            : this(motherBlob.XMiddle, motherBlob.YMiddle, motherBlob.Radius, motherBlob._points.Count)
+            : this(motherBlob.X, motherBlob.Y, motherBlob.Radius, motherBlob._points.Count)
         {
         }
-
-        public double X { get; set; }
-
-        public double Y { get; set; }
 
         public PointMass[] Points => _points.ToArray();
 
@@ -112,9 +104,9 @@ namespace BlobSallad
 
         public bool Selected { get; set; }
 
-        public double XMiddle => _middle.XPos;
+        public double X => _middle.XPos;
 
-        public double YMiddle => _middle.YPos;
+        public double Y => _middle.YPos;
 
         public double Mass => _middle.Mass;
 

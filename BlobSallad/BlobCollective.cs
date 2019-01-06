@@ -114,8 +114,8 @@ namespace BlobSallad
                 if (blob == neighbor)
                     continue;
 
-                var aXbX = neighbor.XMiddle - blob.XMiddle;
-                var aYbY = neighbor.YMiddle - blob.YMiddle;
+                var aXbX = neighbor.X - blob.X;
+                var aYbY = neighbor.Y - blob.Y;
                 var distance = aXbX * aXbX + aYbY * aYbY;
                 if (distance >= minDistance)
                     continue;
@@ -127,7 +127,7 @@ namespace BlobSallad
             return closest;
         }
 
-        public Point? SelectBlob(double x, double y)
+        public Point? FindClosest(double x, double y)
         {
             if (SelectedBlob != null)
                 return null;
@@ -137,8 +137,8 @@ namespace BlobSallad
 
             foreach (var blob in _blobs)
             {
-                var aXbX = x - blob.XMiddle;
-                var aYbY = y - blob.YMiddle;
+                var aXbX = x - blob.X;
+                var aYbY = y - blob.Y;
                 var dist = aXbX * aXbX + aYbY * aYbY;
                 if (dist >= minDist)
                     continue;

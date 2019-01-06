@@ -174,7 +174,7 @@ namespace BlobSallad
 
             var x = mouseCoords.X;
             var y = mouseCoords.Y;
-            _selectOffset = _blobColl.SelectBlob(x, y);
+            _selectOffset = _blobColl.FindClosest(x, y);
         }
 
         private void MainWindow_MouseUp(object sender, MouseEventArgs e)

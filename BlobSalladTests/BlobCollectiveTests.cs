@@ -107,7 +107,7 @@ namespace BlobSalladTests
         public void SelectBlobMissTest()
         {
             var collective = new BlobCollective(1.0, 1.0, 4);
-            collective.SelectBlob(2.0, 2.0);
+            collective.FindClosest(2.0, 2.0);
             Assert.IsNull(collective.SelectedBlob);
         }
 
@@ -115,7 +115,7 @@ namespace BlobSalladTests
         public void SelectBlobHitTest()
         {
             var collective = new BlobCollective(1.0, 1.0, 4);
-            collective.SelectBlob(1.0, 1.1);
+            collective.FindClosest(1.0, 1.1);
             Assert.NotNull(collective.SelectedBlob);
             Assert.True(collective.SelectedBlob.Selected);
         }

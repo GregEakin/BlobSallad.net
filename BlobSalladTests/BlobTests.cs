@@ -19,8 +19,8 @@ namespace BlobSalladTests
         public void CtorTest()
         {
             var blob = new Blob(71.0, 67.0, 11.0, 5);
-            Assert.AreEqual(71.0, blob.XMiddle);
-            Assert.AreEqual(67.0, blob.YMiddle);
+            Assert.AreEqual(71.0, blob.X);
+            Assert.AreEqual(67.0, blob.Y);
             Assert.AreEqual(11.0, blob.Radius);
             Assert.AreEqual(1.0, blob.Mass);
         }
@@ -59,7 +59,7 @@ namespace BlobSalladTests
             var canvas = new Canvas { Width = 100, Height = 100 };
 
             var blob = new Blob(41.0, 43.0, 23.0, 5);
-            DrawDot(canvas, Brushes.Blue, blob.Mass, blob.XMiddle, blob.YMiddle);
+            DrawDot(canvas, Brushes.Blue, blob.Mass, blob.X, blob.Y);
 
             foreach (var bone in blob.Bones)
             {
@@ -168,7 +168,7 @@ namespace BlobSalladTests
             var blob2 = new Blob(59.0, 61.0, 13.0, 5);
             blob1.LinkBlob(blob2);
 
-            DrawDot(canvas, Brushes.Blue, blob1.Mass, blob1.XMiddle, blob1.YMiddle);
+            DrawDot(canvas, Brushes.Blue, blob1.Mass, blob1.X, blob1.Y);
 
             blob2.DrawSimpleBody(canvas, 1.0);
 
@@ -223,7 +223,7 @@ namespace BlobSalladTests
             blob.Force = new Vector(3.0, 3.0);
             blob.Move(2.0);
 
-            DrawDot(canvas, Brushes.Blue, 2.0, blob.XMiddle, blob.YMiddle);
+            DrawDot(canvas, Brushes.Blue, 2.0, blob.X, blob.Y);
             blob.DrawSimpleBody(canvas, 1.0);
 
             var wpf = new ContentControl { Content = canvas };
@@ -261,7 +261,7 @@ namespace BlobSalladTests
             blob.MoveTo(61.0, 59.0);
             blob.DrawSimpleBody(canvas, 1.0);
 
-            DrawDot(canvas, Brushes.Blue, 2.0, blob.XMiddle, blob.YMiddle);
+            DrawDot(canvas, Brushes.Blue, 2.0, blob.X, blob.Y);
 
             var wpf = new ContentControl {Content = canvas};
             WpfApprovals.Verify(wpf);
