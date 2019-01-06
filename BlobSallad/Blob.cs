@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -193,15 +194,19 @@ namespace BlobSallad
 
         public void AddForce(Vector force)
         {
-            foreach (var pointMass in _points)
-                pointMass.AddForce(force);
-
             _middle.AddForce(force);
-            var pointMass0 = _points[0];
-            pointMass0.AddForce(force);
-            pointMass0.AddForce(force);
-            pointMass0.AddForce(force);
-            pointMass0.AddForce(force);
+            foreach (var point in _points)
+                point.AddForce(force);
+
+            if (!_points.Any())
+                return;
+
+            // put a spin on the blob
+            var pointMass = _points[0];
+            pointMass.AddForce(force);
+            pointMass.AddForce(force);
+            pointMass.AddForce(force);
+            pointMass.AddForce(force);
         }
 
         public void MoveTo(double x, double y)
