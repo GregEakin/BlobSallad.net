@@ -45,7 +45,7 @@ namespace BlobSalladTests
             var canvas = new Canvas { Width = 100, Height = 100 };
 
             var blob = new Blob(41.0, 43.0, 23.0, 5);
-            var sticks = blob.Sticks;
+            var sticks = blob.Skins;
             foreach (var stick in sticks)
                 stick.Draw(canvas, 1.0);
 
@@ -61,7 +61,7 @@ namespace BlobSalladTests
             var blob = new Blob(41.0, 43.0, 23.0, 5);
             DrawDot(canvas, Brushes.Blue, blob.Mass, blob.XMiddle, blob.YMiddle);
 
-            var joints = blob.Joints;
+            var joints = blob.Bones;
             foreach (var joint in joints)
             {
                 DrawDot(canvas, Brushes.Red, joint.PointMassA.Mass, joint.PointMassA.XPos, joint.PointMassA.YPos);
@@ -141,11 +141,11 @@ namespace BlobSalladTests
             var blob2 = new Blob(59.0, 61.0, 13.0, 0);
             blob1.LinkBlob(blob2);
 
-            Assert.AreEqual(0, blob2.Joints.Length);
-            Assert.AreEqual(1, blob1.Joints.Length);
-            var joint = blob1.Joints[0];
-            Assert.AreEqual(22.800, joint.ShortLimit, 0.01);
-            Assert.IsTrue(double.IsInfinity(joint.LongLimit));
+            Assert.AreEqual(0, blob2.Collisions.Length);
+            Assert.AreEqual(1, blob1.Collisions.Length);
+            var collision = blob1.Collisions[0];
+            Assert.AreEqual(22.800, collision.ShortLimit, 0.01);
+            Assert.IsTrue(double.IsInfinity(collision.LongLimit));
         }
 
         [Test]
@@ -156,8 +156,8 @@ namespace BlobSalladTests
             blob1.LinkBlob(blob2);
             blob1.UnLinkBlob(blob2);
 
-            Assert.AreEqual(0, blob2.Joints.Length);
-            Assert.AreEqual(0, blob1.Joints.Length);
+            Assert.AreEqual(0, blob2.Bones.Length);
+            Assert.AreEqual(0, blob1.Bones.Length);
         }
 
         [Test]
@@ -173,15 +173,24 @@ namespace BlobSalladTests
 
             blob2.DrawSimpleBody(canvas, 1.0);
 
-            var joints = blob1.Joints;
-            foreach (var joint in joints)
+            foreach (var bone in blob1.Bones)
             {
-                var pointMassA = joint.PointMassA;
-                var pointMassB = joint.PointMassB;
+                var pointMassA = bone.PointMassA;
+                var pointMassB = bone.PointMassB;
                 DrawDot(canvas, Brushes.Red, 2.0, pointMassA.XPos, pointMassA.YPos);
                 DrawLine(canvas, Brushes.Black, 
                         pointMassA.XPos, pointMassA.YPos,
                         pointMassB.XPos, pointMassB.YPos);
+            }
+
+            foreach (var collision in blob1.Collisions)
+            {
+                var pointMassA = collision.PointMassA;
+                var pointMassB = collision.PointMassB;
+                DrawDot(canvas, Brushes.Red, 2.0, pointMassA.XPos, pointMassA.YPos);
+                DrawLine(canvas, Brushes.Black,
+                    pointMassA.XPos, pointMassA.YPos,
+                    pointMassB.XPos, pointMassB.YPos);
             }
 
             var wpf = new ContentControl { Content = canvas };

@@ -27,10 +27,11 @@ namespace BlobSallad
             Ooh
         }
 
-        private readonly List<Stick> _sticks = new List<Stick>();
-        private readonly List<PointMass> _pointMasses = new List<PointMass>();
-        private readonly List<Joint> _joints = new List<Joint>();
         private readonly PointMass _middlePointMass;
+        private readonly List<PointMass> _pointMasses = new List<PointMass>();
+        private readonly List<Skin> _skins = new List<Skin>();
+        private readonly List<Bones> _bones = new List<Bones>();
+        private readonly List<Collision> _collisions = new List<Collision>();
         private readonly Random _random = new Random();
         private readonly Color _highlight = Colors.Pink; // 255, 204, 204
         private readonly Color _normal = Colors.White;
@@ -68,21 +69,25 @@ namespace BlobSallad
                 var pointMassA = _pointMasses[i];
                 var index = PointMassIndex(i + 1);
                 var pointMassB = _pointMasses[index];
-                var stick = new Stick(pointMassA, pointMassB);
-                _sticks.Add(stick);
+                var stick = new Skin(pointMassA, pointMassB);
+                _skins.Add(stick);
             }
 
-            const double low = 0.95;
-            const double high = 1.05;
             for (var i = 0; i < numPointMasses; ++i)
             {
+                const double crossShort = 0.95;
+                const double crossLong = 1.05;
+                const double middleShort = crossLong * 0.9;
+                const double middleLong = crossShort * 1.1;
                 var pointMassA = _pointMasses[i];
+
                 var index = PointMassIndex(i + numPointMasses / 2 + 1);
                 var pointMassB = _pointMasses[index];
-                var joint1 = new Joint(pointMassA, pointMassB, low, high);
-                _joints.Add(joint1);
-                var joint2 = new Joint(pointMassA, _middlePointMass, high * 0.9, low * 1.1);
-                _joints.Add(joint2);
+                var joint1 = new Bones(pointMassA, pointMassB, crossShort, crossLong);
+                _bones.Add(joint1);
+
+                var joint2 = new Bones(pointMassA, _middlePointMass, middleShort, middleLong);
+                _bones.Add(joint2);
             }
         }
 
@@ -93,18 +98,20 @@ namespace BlobSallad
 
         public void Dispose()
         {
-            _joints.Clear();
+            _collisions.Clear();
         }
 
         public double X { get; set; }
 
         public double Y { get; set; }
 
-        public Stick[] Sticks => _sticks.ToArray();
-
         public PointMass[] PointMasses => _pointMasses.ToArray();
 
-        public Joint[] Joints => _joints.ToArray();
+        public Skin[] Skins => _skins.ToArray();
+
+        public Bones[] Bones => _bones.ToArray();
+
+        public Collision[] Collisions => _collisions.ToArray();
 
         public double Radius { get; private set; }
 
@@ -125,29 +132,32 @@ namespace BlobSallad
         public void LinkBlob(Blob blob)
         {
             var dist = Radius + blob.Radius;
-            var joint = new Joint(_middlePointMass, blob._middlePointMass, dist * 0.95);
-            _joints.Add(joint);
+            var collision = new Collision(_middlePointMass, blob._middlePointMass, dist * 0.95);
+            _collisions.Add(collision);
         }
 
         public void UnLinkBlob(Blob blob)
         {
-            foreach (var joint in _joints)
+            foreach (var collision in _collisions)
             {
-                if (joint.PointMassB != blob._middlePointMass)
+                if (collision.PointMassB != blob._middlePointMass)
                     continue;
 
-                _joints.Remove(joint);
+                _collisions.Remove(collision);
                 break;
             }
         }
 
         public void Scale(double scaleFactor)
         {
-            foreach (var joint in _joints)
+            foreach (var stick in _skins)
+                stick.Scale(scaleFactor);
+
+            foreach (var joint in _bones)
                 joint.Scale(scaleFactor);
 
-            foreach (var stick in _sticks)
-                stick.Scale(scaleFactor);
+            foreach (var collision in _collisions)
+                collision.Scale(scaleFactor);
 
             Radius *= scaleFactor;
         }
@@ -171,11 +181,14 @@ namespace BlobSallad
                     pointMass.Friction = friction;
                 }
 
-                foreach (var stick in _sticks)
+                foreach (var stick in _skins)
                     stick.Sc(env);
 
-                foreach (var joint in _joints)
-                    joint.Sc();
+                foreach (var joint in _bones)
+                    joint.Sc(env);
+
+                foreach (var collision in _collisions)
+                    collision.Sc(env);
             }
         }
 
@@ -609,7 +622,7 @@ namespace BlobSallad
 
         public void DrawSimpleBody(Canvas canvas, double scaleFactor)
         {
-            foreach (var stick in _sticks)
+            foreach (var stick in _skins)
                 stick.Draw(canvas, scaleFactor);
 
             foreach (var pointMass in _pointMasses)

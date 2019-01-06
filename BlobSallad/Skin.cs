@@ -1,4 +1,4 @@
-﻿// Found from https://blobsallad.se/
+﻿// Found from htt0ps://blobsallad.se/
 // Originally Written by: bjoern.lindberg@gmail.com
 // Translated to C# by Greg Eakin
 
@@ -9,12 +9,11 @@ using System.Windows.Shapes;
 
 namespace BlobSallad
 {
-    public class Stick
+    public class Skin : Force
     {
-        public Stick(PointMass pointMassA, PointMass pointMassB)
+        public Skin(PointMass pointMassA, PointMass pointMassB)
+            : base(pointMassA, pointMassB)
         {
-            PointMassA = pointMassA;
-            PointMassB = pointMassB;
             var aXbX = pointMassA.XPos - pointMassB.XPos;
             var aYbY = pointMassA.YPos - pointMassB.YPos;
             LengthSquared = aXbX * aXbX + aYbY * aYbY;
@@ -25,17 +24,13 @@ namespace BlobSallad
 
         public double LengthSquared { get; private set; }
 
-        public PointMass PointMassA { get; }
-
-        public PointMass PointMassB { get; }
-
-        public void Scale(double scaleFactor)
+        public override void Scale(double scaleFactor)
         {
             Length *= scaleFactor;
             LengthSquared = Length * Length;
         }
 
-        public void Sc(Environment env)
+        public override void Sc(Environment env)
         {
             var delta = PointMassB.Pos - PointMassA.Pos;
             var dotProd = delta.DotProd(delta);
@@ -45,25 +40,7 @@ namespace BlobSallad
             PointMassB.Pos.Add(delta);
         }
 
-        public void SetForce(Vector force)
-        {
-            PointMassA.Force = force;
-            PointMassB.Force = force;
-        }
-
-        public void AddForce(Vector force)
-        {
-            PointMassA.AddForce(force);
-            PointMassB.AddForce(force);
-        }
-
-        public void Move(double dt)
-        {
-            PointMassA.Move(dt);
-            PointMassB.Move(dt);
-        }
-
-        public void Draw(Canvas canvas, double scaleFactor)
+        public override void Draw(Canvas canvas, double scaleFactor)
         {
             PointMassA.Draw(canvas, scaleFactor);
             PointMassB.Draw(canvas, scaleFactor);

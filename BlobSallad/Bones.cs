@@ -2,29 +2,18 @@
 // Originally Written by: bjoern.lindberg@gmail.com
 // Translated to C# by Greg Eakin
 
+using System.Windows.Controls;
+
 namespace BlobSallad
 {
-    public class Joint
+    public class Bones : Force
     {
         private double _slSquared;
         private double _llSquared;
 
-        public Joint(PointMass pointMassA, PointMass pointMassB, double shortLimit)
+        public Bones(PointMass pointMassA, PointMass pointMassB, double shortFactor, double longFactor)
+            : base(pointMassA, pointMassB)
         {
-            PointMassA = pointMassA;
-            PointMassB = pointMassB;
-
-            ShortLimit = shortLimit;
-            LongLimit = double.PositiveInfinity;
-            _slSquared = ShortLimit * ShortLimit;
-            _llSquared = LongLimit * LongLimit;
-        }
-
-        public Joint(PointMass pointMassA, PointMass pointMassB, double shortFactor, double longFactor)
-        {
-            PointMassA = pointMassA;
-            PointMassB = pointMassB;
-
             var delta = PointMassB.Pos - PointMassA.Pos;
             ShortLimit = delta.Length * shortFactor;
             LongLimit = delta.Length * longFactor;
@@ -32,15 +21,11 @@ namespace BlobSallad
             _llSquared = LongLimit * LongLimit;
         }
 
-        public PointMass PointMassA { get; }
-
-        public PointMass PointMassB { get; }
-
         public double LongLimit { get; private set; }
 
         public double ShortLimit { get; private set; }
 
-        public void Scale(double scaleFactor)
+        public override void Scale(double scaleFactor)
         {
             ShortLimit *= scaleFactor;
             LongLimit *= scaleFactor;
@@ -48,7 +33,7 @@ namespace BlobSallad
             _llSquared = LongLimit * LongLimit;
         }
 
-        public void Sc()
+        public override void Sc(Environment env)
         {
             var delta = PointMassB.Pos - PointMassA.Pos;
             var dp = delta.DotProd(delta);
@@ -66,6 +51,10 @@ namespace BlobSallad
                 PointMassA.Pos.Sub(delta);
                 PointMassB.Pos.Add(delta);
             }
+        }
+
+        public override void Draw(Canvas canvas, double scaleFactor)
+        {
         }
     }
 }

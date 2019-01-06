@@ -36,27 +36,25 @@ namespace BlobSallad
 
         public bool Collision(Vector curPos, Vector prePos)
         {
-            var x = curPos.X;
-            if (x < Left)
+            if (curPos.X < Left)
             {
                 curPos.X = Left;
                 return true;
             }
 
-            if (x > Right)
+            if (curPos.X > Right)
             {
                 curPos.X = Right;
                 return true;
             }
 
-            var y = curPos.Y;
-            if (y < Top)
+            if (curPos.Y < Top)
             {
                 curPos.Y = Top;
                 return true;
             }
 
-            if (y > Bottom)
+            if (curPos.Y > Bottom)
             {
                 curPos.Y = Bottom;
                 return true;
