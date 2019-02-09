@@ -207,7 +207,7 @@ namespace BlobSalladTests
 
             var blob = new Blob(41.0, 43.0, 23.0, 5);
             blob.Scale(3.0);
-            blob.DrawSmile(canvas, 1.0, transformGroup);
+            blob.DrawSmile(canvas, 1.0, transformGroup, Brushes.Transparent);
             blob.DrawEyesOpen(canvas, 1.0, transformGroup);
 
             var wpf = new ContentControl { Content = canvas };
@@ -315,7 +315,7 @@ namespace BlobSalladTests
             transformGroup.Children.Add(translateTransform);
 
             var blob = new Blob(50.0, 50.0, 25.0, 5);
-            blob.DrawSmile(canvas, 3.0, transformGroup);
+            blob.DrawSmile(canvas, 3.0, transformGroup, Brushes.Transparent);
 
             var wpf = new ContentControl {Content = canvas};
             WpfApprovals.Verify(wpf);
@@ -331,7 +331,7 @@ namespace BlobSalladTests
             transformGroup.Children.Add(translateTransform);
 
             var blob = new Blob(50.0, 50.0, 25.0, 5);
-            blob.DrawOpenMouth(canvas, 3.0, transformGroup);
+            blob.DrawSmile(canvas, 3.0, transformGroup, Brushes.Black);
 
             var wpf = new ContentControl {Content = canvas};
             WpfApprovals.Verify(wpf);

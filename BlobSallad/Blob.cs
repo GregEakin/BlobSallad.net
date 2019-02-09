@@ -357,7 +357,7 @@ namespace BlobSallad
             }
         }
 
-        public void DrawSmile(Canvas canvas, double scaleFactor, TransformGroup translateTransform)
+        public void DrawSmile(Canvas canvas, double scaleFactor, TransformGroup translateTransform, Brush fill)
         {
             var point = new Point(0.25 * Radius * scaleFactor, 0.1 * Radius * scaleFactor);
             var size = new Size(0.25 * Radius * scaleFactor, 0.25 * Radius * scaleFactor);
@@ -384,41 +384,7 @@ namespace BlobSallad
                 Stroke = Brushes.Black,
                 StrokeThickness = 2.0,
                 Data = pathGeometry,
-                Fill = Brushes.Transparent,
-                RenderTransform = translateTransform
-            };
-
-            canvas.Children.Add(arcPath);
-        }
-
-        public void DrawOpenMouth(Canvas canvas, double scaleFactor, TransformGroup translateTransform)
-        {
-            var point = new Point(0.25 * Radius * scaleFactor, 0.1 * Radius * scaleFactor);
-            var size = new Size(0.25 * Radius * scaleFactor, 0.25 * Radius * scaleFactor);
-            var arcSegment = new ArcSegment
-            {
-                Point = point,
-                Size = size,
-                IsLargeArc = true,
-                SweepDirection = SweepDirection.Counterclockwise,
-            };
-
-            // pathGeometry = {M-34.5,13.8A27.6,27.6,0,1,0,34.5,13.8}
-            var pathFigure = new PathFigure
-            {
-                StartPoint = new Point(-0.25 * Radius * scaleFactor, 0.1 * Radius * scaleFactor)
-            };
-            pathFigure.Segments.Add(arcSegment);
-
-            var pathGeometry = new PathGeometry();
-            pathGeometry.Figures.Add(pathFigure);
-
-            var arcPath = new Path
-            {
-                Stroke = Brushes.Black,
-                StrokeThickness = 2.0,
-                Data = pathGeometry,
-                Fill = Brushes.Black,
+                Fill = fill,
                 RenderTransform = translateTransform
             };
 
@@ -427,74 +393,41 @@ namespace BlobSallad
 
         public void DrawOohFace(Canvas canvas, double scaleFactor, TransformGroup translateTransform)
         {
+            DrawSmile(canvas, scaleFactor, translateTransform, Brushes.Black);
+
+            var startPointA = new Point(-0.25 * Radius * scaleFactor, -0.3 * Radius * scaleFactor);
+            var pathFigureA = new PathFigure {StartPoint = startPointA};
+
+            var point1A = new Point(-0.05 * Radius * scaleFactor, -0.2 * Radius * scaleFactor);
+            var lineSegment1A = new LineSegment {Point = point1A};
+            pathFigureA.Segments.Add(lineSegment1A);
+
+            var point2A = new Point(-0.25 * Radius * scaleFactor, -0.1 * Radius * scaleFactor);
+            var lineSegment2A = new LineSegment {Point = point2A};
+            pathFigureA.Segments.Add(lineSegment2A);
+
+            var startPointB = new Point(0.25 * Radius * scaleFactor, -0.3 * Radius * scaleFactor);
+            var pathFigureB = new PathFigure {StartPoint = startPointB};
+
+            var point1B = new Point(0.05 * Radius * scaleFactor, -0.2 * Radius * scaleFactor);
+            var lineSegment1B = new LineSegment {Point = point1B};
+            pathFigureB.Segments.Add(lineSegment1B);
+
+            var point2B = new Point(0.25 * Radius * scaleFactor, -0.1 * Radius * scaleFactor);
+            var lineSegment2B = new LineSegment {Point = point2B};
+            pathFigureB.Segments.Add(lineSegment2B);
+
+            // Figures = {M-34.5,-41.4L-6.9,-27.6L-34.5,-13.8 M34.5,-41.4L6.9,-27.6L34.5,-13.8}
+            var pathGeometry = new PathGeometry {Figures = new PathFigureCollection {pathFigureA, pathFigureB}};
+            var path = new Path
             {
-                var point = new Point(0.25 * Radius * scaleFactor, 0.1 * Radius * scaleFactor);
-                var size = new Size(0.25 * Radius * scaleFactor, 0.25 * Radius * scaleFactor);
-                var arcSegment = new ArcSegment
-                {
-                    Point = point,
-                    Size = size,
-                    IsLargeArc = true,
-                    SweepDirection = SweepDirection.Counterclockwise,
-                };
+                Stroke = Brushes.Black,
+                StrokeThickness = 2.0,
+                Data = pathGeometry,
+                RenderTransform = translateTransform
+            };
 
-                // pathGeometry = {M-34.5,13.8A27.6,27.6,0,1,0,34.5,13.8}
-                var pathFigure = new PathFigure
-                {
-                    StartPoint = new Point(-0.25 * Radius * scaleFactor, 0.1 * Radius * scaleFactor)
-                };
-                pathFigure.Segments.Add(arcSegment);
-
-                var pathGeometry = new PathGeometry();
-                pathGeometry.Figures.Add(pathFigure);
-
-                var arcPath = new Path
-                {
-                    Stroke = Brushes.Black,
-                    StrokeThickness = 2.0,
-                    Data = pathGeometry,
-                    Fill = Brushes.Black,
-                    RenderTransform = translateTransform
-                };
-
-                canvas.Children.Add(arcPath);
-            }
-
-            {
-                var startPointA = new Point(-0.25 * Radius * scaleFactor, -0.3 * Radius * scaleFactor);
-                var pathFigureA = new PathFigure {StartPoint = startPointA};
-
-                var point1A = new Point(-0.05 * Radius * scaleFactor, -0.2 * Radius * scaleFactor);
-                var lineSegment1A = new LineSegment {Point = point1A};
-                pathFigureA.Segments.Add(lineSegment1A);
-
-                var point2A = new Point(-0.25 * Radius * scaleFactor, -0.1 * Radius * scaleFactor);
-                var lineSegment2A = new LineSegment {Point = point2A};
-                pathFigureA.Segments.Add(lineSegment2A);
-
-                var startPointB = new Point(0.25 * Radius * scaleFactor, -0.3 * Radius * scaleFactor);
-                var pathFigureB = new PathFigure {StartPoint = startPointB};
-
-                var point1B = new Point(0.05 * Radius * scaleFactor, -0.2 * Radius * scaleFactor);
-                var lineSegment1B = new LineSegment {Point = point1B};
-                pathFigureB.Segments.Add(lineSegment1B);
-
-                var point2B = new Point(0.25 * Radius * scaleFactor, -0.1 * Radius * scaleFactor);
-                var lineSegment2B = new LineSegment {Point = point2B};
-                pathFigureB.Segments.Add(lineSegment2B);
-
-                // Figures = {M-34.5,-41.4L-6.9,-27.6L-34.5,-13.8 M34.5,-41.4L6.9,-27.6L34.5,-13.8}
-                var pathGeometry = new PathGeometry {Figures = new PathFigureCollection {pathFigureA, pathFigureB}};
-                var path = new Path
-                {
-                    Stroke = Brushes.Black,
-                    StrokeThickness = 2.0,
-                    Data = pathGeometry,
-                    RenderTransform = translateTransform
-                };
-
-                canvas.Children.Add(path);
-            }
+            canvas.Children.Add(path);
         }
 
         public void UpdateFace()
@@ -528,11 +461,11 @@ namespace BlobSallad
             {
                 if (_drawFaceStyle == Face.Smile)
                 {
-                    DrawSmile(canvas, scaleFactor, translateTransform);
+                    DrawSmile(canvas, scaleFactor, translateTransform, Brushes.Transparent);
                 }
                 else
                 {
-                    DrawOpenMouth(canvas, scaleFactor, translateTransform);
+                    DrawSmile(canvas, scaleFactor, translateTransform, Brushes.Black);
                 }
 
                 if (_drawEyeStyle == Eye.Open)
