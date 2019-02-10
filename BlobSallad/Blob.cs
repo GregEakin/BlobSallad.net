@@ -185,10 +185,9 @@ namespace BlobSallad
             get => _middle.Force;
             set
             {
+                _middle.Force = value;
                 foreach (var pointMass in _points)
                     pointMass.Force = value;
-
-                _middle.Force = value;
             }
         }
 
@@ -497,20 +496,20 @@ namespace BlobSallad
                 var currentPointMass = Points[PointMassIndex(i)];
                 var nextPointMass = Points[PointMassIndex(i + 1)];
                 var nextNextPointMass = Points[PointMassIndex(i + 2)];
-                var tx = nextPointMass.XPos;
-                var ty = nextPointMass.YPos;
+
                 var cx = currentPointMass.XPos;
                 var cy = currentPointMass.YPos;
-                var px = cx * 0.5 + tx * 0.5;
-                var py = cy * 0.5 + ty * 0.5;
+                var tx = nextPointMass.XPos;
+                var ty = nextPointMass.YPos;
                 var nx = cx - prevPointMass.XPos + tx - nextNextPointMass.XPos;
                 var ny = cy - prevPointMass.YPos + ty - nextNextPointMass.YPos;
-                px += nx * 0.16;
-                py += ny * 0.16;
-                px *= scaleFactor;
-                py *= scaleFactor;
+                var px = cx * 0.5 + tx * 0.5 + nx * 0.16;
+                var py = cy * 0.5 + ty * 0.5 + ny * 0.16;
+
                 tx *= scaleFactor;
                 ty *= scaleFactor;
+                px *= scaleFactor;
+                py *= scaleFactor;
 
                 // generalPath.curveTo(px, py, tx, ty, tx, ty);
                 pbzSeg.Points.Add(new Point(px, py));
