@@ -144,7 +144,6 @@ namespace BlobSalladTests
             Assert.AreEqual(1, blob1.Collisions.Length);
             var collision = blob1.Collisions[0];
             Assert.AreEqual(22.800, collision.ShortLimit, 0.01);
-            Assert.IsTrue(double.IsInfinity(collision.LongLimit));
         }
 
         [Test]
