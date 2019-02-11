@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -24,7 +23,7 @@ namespace BlobSallad
 
         private Point? _savedMouseCoords;
         private Point? _selectOffset;
-        private bool _stopped = false;
+        private bool _stopped;
 
         public MainWindow()
         {
