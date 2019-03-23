@@ -136,8 +136,8 @@ namespace BlobSalladTests
         [Test]
         public void AddBlob2Test()
         {
-            var blob1 = new Blob(17.0, 19.0, 11.0, 0);
-            var blob2 = new Blob(59.0, 61.0, 13.0, 0);
+            var blob1 = new Blob(17.0, 19.0, 11.0, 3);
+            var blob2 = new Blob(59.0, 61.0, 13.0, 3);
             blob1.LinkBlob(blob2);
 
             Assert.AreEqual(0, blob2.Collisions.Length);
@@ -149,13 +149,13 @@ namespace BlobSalladTests
         [Test]
         public void RemoveBlob2Test()
         {
-            var blob1 = new Blob(17.0, 19.0, 11.0, 0);
-            var blob2 = new Blob(59.0, 61.0, 13.0, 0);
+            var blob1 = new Blob(17.0, 19.0, 11.0, 3);
+            var blob2 = new Blob(59.0, 61.0, 13.0, 3);
             blob1.LinkBlob(blob2);
             blob1.UnLinkBlob(blob2);
 
-            Assert.AreEqual(0, blob2.Bones.Length);
-            Assert.AreEqual(0, blob1.Bones.Length);
+            Assert.AreEqual(0, blob2.Collisions.Length);
+            Assert.AreEqual(0, blob1.Collisions.Length);
         }
 
         [Test]
