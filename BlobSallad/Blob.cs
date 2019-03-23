@@ -32,7 +32,7 @@ namespace BlobSallad
         private readonly List<PointMass> _points = new List<PointMass>();
         private readonly List<Skin> _skins = new List<Skin>();
         private readonly List<Bones> _bones = new List<Bones>();
-        private readonly List<Collision> _collisions = new List<Collision>();
+        private readonly List<Neighbor> _neighbors = new List<Neighbor>();
         private readonly Random _random = new Random();
         private readonly Color _highlight = Colors.Pink; // 255, 204, 204
         private readonly Color _normal = Colors.White;
@@ -99,7 +99,7 @@ namespace BlobSallad
 
         public Bones[] Bones => _bones.ToArray();
 
-        public Collision[] Collisions => _collisions.ToArray();
+        public Neighbor[] Neighbors => _neighbors.ToArray();
 
         public double Radius { get; private set; }
 
@@ -120,18 +120,18 @@ namespace BlobSallad
         public void LinkBlob(Blob blob)
         {
             var dist = Radius + blob.Radius;
-            var collision = new Collision(_middle, blob._middle, dist * 0.95);
-            _collisions.Add(collision);
+            var neighbor = new Neighbor(_middle, blob._middle, dist * 0.95);
+            _neighbors.Add(neighbor);
         }
 
         public void UnLinkBlob(Blob blob)
         {
-            foreach (var collision in _collisions)
+            foreach (var neighbor in _neighbors)
             {
-                if (collision.PointMassB != blob._middle)
+                if (neighbor.PointMassB != blob._middle)
                     continue;
 
-                _collisions.Remove(collision);
+                _neighbors.Remove(neighbor);
                 break;
             }
         }
@@ -144,8 +144,8 @@ namespace BlobSallad
             foreach (var bone in _bones)
                 bone.Scale(scaleFactor);
 
-            foreach (var collision in _collisions)
-                collision.Scale(scaleFactor);
+            foreach (var neighbor in _neighbors)
+                neighbor.Scale(scaleFactor);
 
             Radius *= scaleFactor;
         }
@@ -164,8 +164,8 @@ namespace BlobSallad
             {
                 foreach (var pointMass in _points)
                 {
-                    var collision = env.Collision(pointMass.Pos, pointMass.Prev);
-                    var friction = collision ? 0.75 : 0.01;
+                    var neighbor = env.Collision(pointMass.Pos, pointMass.Prev);
+                    var friction = neighbor ? 0.75 : 0.01;
                     pointMass.Friction = friction;
                 }
 
@@ -175,8 +175,8 @@ namespace BlobSallad
                 foreach (var bone in _bones)
                     bone.Sc(env);
 
-                foreach (var collision in _collisions)
-                    collision.Sc(env);
+                foreach (var neighbor in _neighbors)
+                    neighbor.Sc(env);
             }
         }
 

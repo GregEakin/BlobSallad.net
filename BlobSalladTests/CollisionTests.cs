@@ -5,7 +5,7 @@ namespace BlobSalladTests
 {
     public class CollisionTests
     {
-        private Collision _collision;
+        private Neighbor _collision;
         private PointMass _pointMassA;
         private PointMass _pointMassB;
 
@@ -24,7 +24,7 @@ namespace BlobSalladTests
 
             // sum of the two radii
             var dist = 17;
-            _collision = new Collision(_pointMassA, _pointMassB, dist);
+            _collision = new Neighbor(_pointMassA, _pointMassB, dist);
 
             Assert.AreEqual(17.000, _collision.ShortLimit, 0.01);
         }

@@ -2,11 +2,11 @@
 
 namespace BlobSallad
 {
-    public class Collision : Force
+    public class Neighbor : Force
     {
         private double _slSquared;
 
-        public Collision(PointMass pointMassA, PointMass pointMassB, double shortLimit)
+        public Neighbor(PointMass pointMassA, PointMass pointMassB, double shortLimit)
             : base(pointMassA, pointMassB)
         {
             ShortLimit = shortLimit;

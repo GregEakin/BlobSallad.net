@@ -57,7 +57,7 @@
     </ApplicationDefinition>
     <Compile Include="Blob.cs" />
     <Compile Include="BlobCollective.cs" />
-    <Compile Include="Collision.cs" />
+    <Compile Include="Neighbor.cs" />
     <Compile Include="Environment.cs" />
     <Compile Include="Bones.cs" />
     <Compile Include="Force.cs" />

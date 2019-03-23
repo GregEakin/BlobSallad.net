@@ -140,9 +140,9 @@ namespace BlobSalladTests
             var blob2 = new Blob(59.0, 61.0, 13.0, 3);
             blob1.LinkBlob(blob2);
 
-            Assert.AreEqual(0, blob2.Collisions.Length);
-            Assert.AreEqual(1, blob1.Collisions.Length);
-            var collision = blob1.Collisions[0];
+            Assert.AreEqual(0, blob2.Neighbors.Length);
+            Assert.AreEqual(1, blob1.Neighbors.Length);
+            var collision = blob1.Neighbors[0];
             Assert.AreEqual(22.800, collision.ShortLimit, 0.01);
         }
 
@@ -154,8 +154,8 @@ namespace BlobSalladTests
             blob1.LinkBlob(blob2);
             blob1.UnLinkBlob(blob2);
 
-            Assert.AreEqual(0, blob2.Collisions.Length);
-            Assert.AreEqual(0, blob1.Collisions.Length);
+            Assert.AreEqual(0, blob2.Neighbors.Length);
+            Assert.AreEqual(0, blob1.Neighbors.Length);
         }
 
         [Test]
@@ -181,7 +181,7 @@ namespace BlobSalladTests
                         pointMassB.XPos, pointMassB.YPos);
             }
 
-            foreach (var collision in blob1.Collisions)
+            foreach (var collision in blob1.Neighbors)
             {
                 var pointMassA = collision.PointMassA;
                 var pointMassB = collision.PointMassB;
