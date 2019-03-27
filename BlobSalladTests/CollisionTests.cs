@@ -27,7 +27,6 @@ namespace BlobSalladTests
             _collision = new Collision(_pointMassA, _pointMassB, dist);
 
             Assert.AreEqual(17.000, _collision.ShortLimit, 0.01);
-            Assert.AreEqual(double.PositiveInfinity, _collision.LongLimit, 0.01);
         }
     }
 }
