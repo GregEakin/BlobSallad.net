@@ -170,7 +170,6 @@ namespace BlobSallad
                 return;
 
             var mouseCoords = GetMouseCoords(e);
-
             var x = mouseCoords.X;
             var y = mouseCoords.Y;
             _selectOffset = _blobColl.FindClosest(x, y);

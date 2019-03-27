@@ -5,7 +5,9 @@ The GUI drawing code is verified with [ApprovalTests.Net](https://github.com/app
 ## From the website: [Blob Sallad](https://blobsallad.se/)
 ![Blob Sallad](Blob.PNG)
 
-Original version by: [Bjoern Lindberg](mailto:bjoern.lindberg@gmail.com)
+Original version by: [Björn Lindberg](mailto:bjoern.lindberg@gmail.com)
+
+## See his writeup at [Blob Sallad — Canvas Tag and JavaScript Physics Simulation Experiment](https://dev.opera.com/articles/blob-sallad-canvas-tag-and-javascript/)
 
 ## Sample code
 Here's a test that verifies the [OohFace](BlobSalladTests/BlobTests.DrawOohFaceTest.Microsoft_Windows_10_Pro.approved.png).
