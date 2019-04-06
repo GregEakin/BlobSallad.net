@@ -3,14 +3,14 @@ using NUnit.Framework;
 
 namespace BlobSalladTests
 {
-    public class CollisionTests
+    public class NeighborTests
     {
         private Neighbor _collision;
         private PointMass _pointMassA;
         private PointMass _pointMassB;
 
         [Test]
-        public void CtorCollisionTest()
+        public void CtorNeighborTest()
         {
             var cxA = 41.0;
             var cyA = 43.0;
@@ -23,10 +23,10 @@ namespace BlobSalladTests
             _pointMassB = new PointMass(cxB, cyB, massB);
 
             // sum of the two radii
-            var dist = 17;
+            var dist = 17.0;
             _collision = new Neighbor(_pointMassA, _pointMassB, dist);
 
-            Assert.AreEqual(17.000, _collision.ShortLimit, 0.01);
+            Assert.AreEqual(dist, _collision.ShortLimit, 0.01);
         }
     }
 }

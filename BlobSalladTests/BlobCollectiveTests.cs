@@ -1,5 +1,4 @@
-﻿using System;
-using ApprovalTests.Reporters;
+﻿using ApprovalTests.Reporters;
 using ApprovalTests.Wpf;
 using BlobSallad;
 using NUnit.Framework;

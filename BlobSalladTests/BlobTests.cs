@@ -64,23 +64,23 @@ namespace BlobSalladTests
             foreach (var bone in blob.Bones)
             {
                 DrawDot(canvas, Brushes.Red, bone.PointMassA.Mass, bone.PointMassA.XPos, bone.PointMassA.YPos);
-                DrawLine(canvas, Brushes.Black, 
-                        bone.PointMassA.XPos, bone.PointMassA.YPos,
-                        bone.PointMassB.XPos, bone.PointMassB.YPos);
+                DrawLine(canvas, Brushes.Black,
+                    bone.PointMassA.XPos, bone.PointMassA.YPos,
+                    bone.PointMassB.XPos, bone.PointMassB.YPos);
             }
 
             var wpf = new ContentControl { Content = canvas };
             WpfApprovals.Verify(wpf);
         }
 
-        private void DrawDot(Canvas canvas, Brush brush, double radius, double x, double y)
+        private static void DrawDot(Panel canvas, Brush brush, double radius, double x, double y)
         {
             var circle = new Ellipse
             {
                 Width = 2.0 * radius,
                 Height = 2.0 * radius,
-                Fill = Brushes.Black,
-                Stroke = Brushes.Black,
+                Fill = brush,
+                Stroke = brush,
                 StrokeThickness = 1.0,
                 // RenderTransform = translateTransform,
             };
@@ -91,7 +91,7 @@ namespace BlobSalladTests
             canvas.Children.Add(circle);
         }
 
-        private void DrawLine(Canvas canvas, Brush brush, double x1, double y1, double x2, double y2)
+        private static void DrawLine(Panel canvas, Brush brush, double x1, double y1, double x2, double y2)
         {
             var startPoint = new System.Windows.Point(x1, y1);
             var pathFigure = new PathFigure { StartPoint = startPoint };
@@ -142,8 +142,8 @@ namespace BlobSalladTests
 
             Assert.AreEqual(0, blob2.Neighbors.Length);
             Assert.AreEqual(1, blob1.Neighbors.Length);
-            var collision = blob1.Neighbors[0];
-            Assert.AreEqual(22.800, collision.ShortLimit, 0.01);
+            var neighbor = blob1.Neighbors[0];
+            Assert.AreEqual(22.800, neighbor.ShortLimit, 0.01);
         }
 
         [Test]
@@ -176,15 +176,15 @@ namespace BlobSalladTests
                 var pointMassA = bone.PointMassA;
                 var pointMassB = bone.PointMassB;
                 DrawDot(canvas, Brushes.Red, 2.0, pointMassA.XPos, pointMassA.YPos);
-                DrawLine(canvas, Brushes.Black, 
-                        pointMassA.XPos, pointMassA.YPos,
-                        pointMassB.XPos, pointMassB.YPos);
+                DrawLine(canvas, Brushes.Black,
+                    pointMassA.XPos, pointMassA.YPos,
+                    pointMassB.XPos, pointMassB.YPos);
             }
 
-            foreach (var collision in blob1.Neighbors)
+            foreach (var neighbor in blob1.Neighbors)
             {
-                var pointMassA = collision.PointMassA;
-                var pointMassB = collision.PointMassB;
+                var pointMassA = neighbor.PointMassA;
+                var pointMassB = neighbor.PointMassB;
                 DrawDot(canvas, Brushes.Red, 2.0, pointMassA.XPos, pointMassA.YPos);
                 DrawLine(canvas, Brushes.Black,
                     pointMassA.XPos, pointMassA.YPos,
@@ -218,8 +218,7 @@ namespace BlobSalladTests
         {
             var canvas = new Canvas { Width = 100, Height = 100 };
 
-            var blob = new Blob(41.0, 43.0, 23.0, 5);
-            blob.Force = new Vector(3.0, 3.0);
+            var blob = new Blob(41.0, 43.0, 23.0, 5) { Force = new Vector(3.0, 3.0) };
             blob.Move(2.0);
 
             DrawDot(canvas, Brushes.Blue, 2.0, blob.X, blob.Y);
@@ -235,8 +234,7 @@ namespace BlobSalladTests
             var canvas = new Canvas { Width = 100, Height = 100 };
 
             var environment = new Environment(0.0, 0.0, 100.0, 100.0);
-            var blob = new Blob(71.0, 67.0, 23.0, 5);
-            blob.Force = new Vector(3.0, 3.0);
+            var blob = new Blob(71.0, 67.0, 23.0, 5) { Force = new Vector(3.0, 3.0) };
             blob.Move(3.0);
             blob.Sc(environment);
             blob.DrawSimpleBody(canvas, 1.0);
@@ -254,7 +252,7 @@ namespace BlobSalladTests
         [Test]
         public void MoveToTest()
         {
-            var canvas = new Canvas {Width = 100, Height = 100};
+            var canvas = new Canvas { Width = 100, Height = 100 };
 
             var blob = new Blob(41.0, 43.0, 23.0, 5);
             blob.MoveTo(61.0, 59.0);
@@ -262,7 +260,7 @@ namespace BlobSalladTests
 
             DrawDot(canvas, Brushes.Blue, 2.0, blob.X, blob.Y);
 
-            var wpf = new ContentControl {Content = canvas};
+            var wpf = new ContentControl { Content = canvas };
             WpfApprovals.Verify(wpf);
         }
 
@@ -275,7 +273,7 @@ namespace BlobSalladTests
         [Test]
         public void DrawEyesOpenTest()
         {
-            var canvas = new Canvas {Width = 100, Height = 100};
+            var canvas = new Canvas { Width = 100, Height = 100 };
 
             var translateTransform = new TranslateTransform(50.0, 50.0);
             var transformGroup = new TransformGroup();
@@ -284,14 +282,14 @@ namespace BlobSalladTests
             var blob = new Blob(50.0, 50.0, 25.0, 5);
             blob.DrawEyesOpen(canvas, 3.0, transformGroup);
 
-            var wpf = new ContentControl {Content = canvas};
+            var wpf = new ContentControl { Content = canvas };
             WpfApprovals.Verify(wpf);
         }
 
         [Test]
         public void DrawEyesClosedTest()
         {
-            var canvas = new Canvas {Width = 100, Height = 100};
+            var canvas = new Canvas { Width = 100, Height = 100 };
 
             var translateTransform = new TranslateTransform(50.0, 50.0);
             var transformGroup = new TransformGroup();
@@ -300,14 +298,14 @@ namespace BlobSalladTests
             var blob = new Blob(50.0, 50.0, 25.0, 5);
             blob.DrawEyesClosed(canvas, 3.0, transformGroup);
 
-            var wpf = new ContentControl {Content = canvas};
+            var wpf = new ContentControl { Content = canvas };
             WpfApprovals.Verify(wpf);
         }
 
         [Test]
         public void DrawSmileTest()
         {
-            var canvas = new Canvas {Width = 100, Height = 100};
+            var canvas = new Canvas { Width = 100, Height = 100 };
 
             var translateTransform = new TranslateTransform(50.0, 50.0);
             var transformGroup = new TransformGroup();
@@ -316,14 +314,14 @@ namespace BlobSalladTests
             var blob = new Blob(50.0, 50.0, 25.0, 5);
             blob.DrawSmile(canvas, 3.0, transformGroup, Brushes.Transparent);
 
-            var wpf = new ContentControl {Content = canvas};
+            var wpf = new ContentControl { Content = canvas };
             WpfApprovals.Verify(wpf);
         }
 
         [Test]
         public void DrawOpenMouthTest()
         {
-            var canvas = new Canvas {Width = 100, Height = 100};
+            var canvas = new Canvas { Width = 100, Height = 100 };
 
             var translateTransform = new TranslateTransform(50.0, 50.0);
             var transformGroup = new TransformGroup();
@@ -332,14 +330,14 @@ namespace BlobSalladTests
             var blob = new Blob(50.0, 50.0, 25.0, 5);
             blob.DrawSmile(canvas, 3.0, transformGroup, Brushes.Black);
 
-            var wpf = new ContentControl {Content = canvas};
+            var wpf = new ContentControl { Content = canvas };
             WpfApprovals.Verify(wpf);
         }
 
         [Test]
         public void DrawOohFaceTest()
         {
-            var canvas = new Canvas {Width = 100, Height = 100};
+            var canvas = new Canvas { Width = 100, Height = 100 };
 
             var translateTransform = new TranslateTransform(50.0, 50.0);
             var transformGroup = new TransformGroup();
@@ -348,14 +346,14 @@ namespace BlobSalladTests
             var blob = new Blob(50.0, 50.0, 25.0, 5);
             blob.DrawOohFace(canvas, 3.0, transformGroup);
 
-            var wpf = new ContentControl {Content = canvas};
+            var wpf = new ContentControl { Content = canvas };
             WpfApprovals.Verify(wpf);
         }
 
         [Test]
         public void DrawFaceTest()
         {
-            var canvas = new Canvas {Width = 100, Height = 100};
+            var canvas = new Canvas { Width = 100, Height = 100 };
 
             var translateTransform = new TranslateTransform(50.0, 50.0);
             var transformGroup = new TransformGroup();
@@ -364,7 +362,7 @@ namespace BlobSalladTests
             var blob = new Blob(50.0, 50.0, 25.0, 5);
             blob.DrawFace(canvas, 3.0, transformGroup);
 
-            var wpf = new ContentControl {Content = canvas};
+            var wpf = new ContentControl { Content = canvas };
             WpfApprovals.Verify(wpf);
         }
 
@@ -383,24 +381,24 @@ namespace BlobSalladTests
         [Test]
         public void DrawSimpleBodyTest()
         {
-            var canvas = new Canvas {Width = 100, Height = 100};
+            var canvas = new Canvas { Width = 100, Height = 100 };
 
             var blob = new Blob(50.0, 50.0, 25.0, 5);
             blob.DrawSimpleBody(canvas, 1.0);
 
-            var wpf = new ContentControl {Content = canvas};
+            var wpf = new ContentControl { Content = canvas };
             WpfApprovals.Verify(wpf);
         }
 
         [Test]
         public void DrawTest()
         {
-            var canvas = new Canvas {Width = 200, Height = 200};
+            var canvas = new Canvas { Width = 200, Height = 200 };
 
             var blob = new Blob(13.0, 17.0, 11.0, 5);
             blob.Draw(canvas, 5.0);
 
-            var wpf = new ContentControl {Content = canvas};
+            var wpf = new ContentControl { Content = canvas };
             WpfApprovals.Verify(wpf);
         }
     }

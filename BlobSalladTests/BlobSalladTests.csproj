@@ -83,7 +83,7 @@
   <ItemGroup>
     <Compile Include="BlobCollectiveTests.cs" />
     <Compile Include="BlobTests.cs" />
-    <Compile Include="CollisionTests.cs" />
+    <Compile Include="NeighborTests.cs" />
     <Compile Include="EnvironmentTests.cs" />
     <Compile Include="BoneTests.cs" />
     <Compile Include="PointMassTests.cs" />
