@@ -18,7 +18,7 @@ namespace BlobSallad
         {
             Open,
             Closed,
-            Crossed
+            Yihaa
         }
 
         public enum Face
@@ -511,7 +511,6 @@ namespace BlobSallad
                 px *= scaleFactor;
                 py *= scaleFactor;
 
-                // generalPath.curveTo(px, py, tx, ty, tx, ty);
                 pbzSeg.Points.Add(new Point(px, py));
                 pbzSeg.Points.Add(new Point(tx, ty));
                 pbzSeg.Points.Add(new Point(tx, ty));
