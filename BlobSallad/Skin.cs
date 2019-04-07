@@ -9,7 +9,7 @@ using System.Windows.Shapes;
 
 namespace BlobSallad
 {
-    public class Skin : Force
+    public class Skin : Connection
     {
         public Skin(PointMass pointMassA, PointMass pointMassB)
             : base(pointMassA, pointMassB)

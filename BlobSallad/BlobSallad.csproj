@@ -60,7 +60,7 @@
     <Compile Include="Neighbor.cs" />
     <Compile Include="Environment.cs" />
     <Compile Include="Bone.cs" />
-    <Compile Include="Force.cs" />
+    <Compile Include="Connection.cs" />
     <Compile Include="Gravity.cs" />
     <Compile Include="PointMass.cs" />
     <Compile Include="Skin.cs" />

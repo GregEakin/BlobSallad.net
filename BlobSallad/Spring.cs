@@ -2,7 +2,7 @@
 
 namespace BlobSallad
 {
-    public class Spring : Force
+    public class Spring : Connection
     {
         public Spring(PointMass pointMassA, PointMass pointMassB) : base(pointMassA, pointMassB)
         {

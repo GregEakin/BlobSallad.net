@@ -6,7 +6,7 @@ using System.Windows.Controls;
 
 namespace BlobSallad
 {
-    public class Bone : Force
+    public class Bone : Connection
     {
         private double _slSquared;
         private double _llSquared;

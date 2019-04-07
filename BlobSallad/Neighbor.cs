@@ -2,7 +2,7 @@
 
 namespace BlobSallad
 {
-    public class Neighbor : Force
+    public class Neighbor : Connection
     {
         private double _slSquared;
 

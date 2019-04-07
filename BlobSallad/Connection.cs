@@ -2,9 +2,9 @@
 
 namespace BlobSallad
 {
-    public abstract class Force
+    public abstract class Connection
     {
-        protected Force(PointMass pointMassA, PointMass pointMassB)
+        protected Connection(PointMass pointMassA, PointMass pointMassB)
         {
             PointMassA = pointMassA;
             PointMassB = pointMassB;

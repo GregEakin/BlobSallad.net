@@ -2,7 +2,7 @@
 
 namespace BlobSallad
 {
-    public class Gravity : Force
+    public class Gravity : Connection
     {
         public Gravity(PointMass pointMassA, PointMass pointMassB) : base(pointMassA, pointMassB)
         {
