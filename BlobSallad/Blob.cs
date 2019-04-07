@@ -31,7 +31,7 @@ namespace BlobSallad
         private readonly PointMass _middle;
         private readonly List<PointMass> _points = new List<PointMass>();
         private readonly List<Skin> _skins = new List<Skin>();
-        private readonly List<Bones> _bones = new List<Bones>();
+        private readonly List<Bone> _bones = new List<Bone>();
         private readonly List<Neighbor> _neighbors = new List<Neighbor>();
         private readonly Random _random = new Random();
         private readonly Color _highlight = Colors.Pink; // 255, 204, 204
@@ -80,10 +80,10 @@ namespace BlobSallad
 
                 var index = PointMassIndex(i + numPoints / 2 + 1);
                 var pointMassB = _points[index];
-                var bone1 = new Bones(pointMassA, pointMassB, crossShort, crossLong);
+                var bone1 = new Bone(pointMassA, pointMassB, crossShort, crossLong);
                 _bones.Add(bone1);
 
-                var bone2 = new Bones(pointMassA, _middle, middleShort, middleLong);
+                var bone2 = new Bone(pointMassA, _middle, middleShort, middleLong);
                 _bones.Add(bone2);
             }
         }
@@ -97,7 +97,7 @@ namespace BlobSallad
 
         public Skin[] Skins => _skins.ToArray();
 
-        public Bones[] Bones => _bones.ToArray();
+        public Bone[] Bones => _bones.ToArray();
 
         public Neighbor[] Neighbors => _neighbors.ToArray();
 

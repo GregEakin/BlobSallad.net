@@ -61,7 +61,7 @@ namespace BlobSalladTests
             var blob = new Blob(41.0, 43.0, 23.0, 5);
             DrawDot(canvas, Brushes.Blue, blob.Mass, blob.X, blob.Y);
 
-            foreach (var bone in blob.Bones)
+            foreach (var bone in blob.Bone)
             {
                 DrawDot(canvas, Brushes.Red, bone.PointMassA.Mass, bone.PointMassA.XPos, bone.PointMassA.YPos);
                 DrawLine(canvas, Brushes.Black,
@@ -171,7 +171,7 @@ namespace BlobSalladTests
 
             blob2.DrawSimpleBody(canvas, 1.0);
 
-            foreach (var bone in blob1.Bones)
+            foreach (var bone in blob1.Bone)
             {
                 var pointMassA = bone.PointMassA;
                 var pointMassB = bone.PointMassB;

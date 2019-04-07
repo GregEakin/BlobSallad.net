@@ -5,7 +5,7 @@ namespace BlobSalladTests
 {
     public class BoneTests
     {
-        private Bones _bone;
+        private Bone _bone;
         private PointMass _pointMassA;
         private PointMass _pointMassB;
 
@@ -25,7 +25,7 @@ namespace BlobSalladTests
             // The blob can change shape by plus or minus 5%
             var low = 0.95;
             var high = 1.05;
-            _bone = new Bones(_pointMassA, _pointMassB, low, high);
+            _bone = new Bone(_pointMassA, _pointMassB, low, high);
 
             Assert.AreEqual(36.498, _bone.ShortLimit, 0.01);
             Assert.AreEqual(40.340, _bone.LongLimit, 0.01);
@@ -46,7 +46,7 @@ namespace BlobSalladTests
 
             var low = 0.95;
             var high = 1.05;
-            _bone = new Bones(_pointMassA, _pointMassB, low, high);
+            _bone = new Bone(_pointMassA, _pointMassB, low, high);
             _bone.Scale(10.0);
 
             Assert.AreEqual(364.978, _bone.ShortLimit, 0.01);

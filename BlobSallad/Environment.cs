@@ -36,31 +36,30 @@ namespace BlobSallad
 
         public bool Collision(Vector curPos, Vector prePos)
         {
+            var outOfBounds = false;
             if (curPos.X < Left)
             {
                 curPos.X = Left;
-                return true;
+                outOfBounds = true;
             }
-
-            if (curPos.X > Right)
+            else if (curPos.X > Right)
             {
                 curPos.X = Right;
-                return true;
+                outOfBounds = true;
             }
 
             if (curPos.Y < Top)
             {
                 curPos.Y = Top;
-                return true;
+                outOfBounds = true;
             }
-
-            if (curPos.Y > Bottom)
+            else if (curPos.Y > Bottom)
             {
                 curPos.Y = Bottom;
-                return true;
+                outOfBounds = true;
             }
 
-            return false;
+            return outOfBounds;
         }
 
         public void Draw(Canvas canvas, double scaleFactor)

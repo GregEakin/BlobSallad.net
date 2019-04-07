@@ -59,7 +59,7 @@
     <Compile Include="BlobCollective.cs" />
     <Compile Include="Neighbor.cs" />
     <Compile Include="Environment.cs" />
-    <Compile Include="Bones.cs" />
+    <Compile Include="Bone.cs" />
     <Compile Include="Force.cs" />
     <Compile Include="Gravity.cs" />
     <Compile Include="PointMass.cs" />

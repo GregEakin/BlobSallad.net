@@ -6,12 +6,12 @@ using System.Windows.Controls;
 
 namespace BlobSallad
 {
-    public class Bones : Force
+    public class Bone : Force
     {
         private double _slSquared;
         private double _llSquared;
 
-        public Bones(PointMass pointMassA, PointMass pointMassB, double shortFactor, double longFactor)
+        public Bone(PointMass pointMassA, PointMass pointMassB, double shortFactor, double longFactor)
             : base(pointMassA, pointMassB)
         {
             var delta = PointMassB.Pos - PointMassA.Pos;
