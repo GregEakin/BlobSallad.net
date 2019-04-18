@@ -23,10 +23,10 @@ namespace BlobSalladTests
             _pointMassB = new PointMass(cxB, cyB, massB);
 
             // sum of the two radii
-            var dist = 17.0;
-            _collision = new Neighbor(_pointMassA, _pointMassB, dist);
+            var distance = 17.0;
+            _collision = new Neighbor(_pointMassA, _pointMassB, distance);
 
-            Assert.AreEqual(dist, _collision.ShortLimit, 0.01);
+            Assert.AreEqual(distance, _collision.Limit, 0.01);
         }
     }
 }

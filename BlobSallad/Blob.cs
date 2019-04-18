@@ -119,8 +119,8 @@ namespace BlobSallad
 
         public void LinkBlob(Blob blob)
         {
-            var dist = Radius + blob.Radius;
-            var neighbor = new Neighbor(_middle, blob._middle, dist * 0.95);
+            var distance = Radius + blob.Radius;
+            var neighbor = new Neighbor(_middle, blob._middle, distance * 0.95);
             _neighbors.Add(neighbor);
         }
 

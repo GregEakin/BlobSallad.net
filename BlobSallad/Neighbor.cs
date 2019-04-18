@@ -6,32 +6,30 @@ namespace BlobSallad
     {
         private double _slSquared;
 
-        public Neighbor(PointMass pointMassA, PointMass pointMassB, double shortLimit)
+        public Neighbor(PointMass pointMassA, PointMass pointMassB, double limit)
             : base(pointMassA, pointMassB)
         {
-            ShortLimit = shortLimit;
-            _slSquared = ShortLimit * ShortLimit;
+            Limit = limit;
+            _slSquared = limit * limit;
         }
 
-        public double ShortLimit { get; private set; }
+        public double Limit { get; private set; }
 
         public override void Scale(double scaleFactor)
         {
-            ShortLimit *= scaleFactor;
-            _slSquared = ShortLimit * ShortLimit;
+            Limit *= scaleFactor;
+            _slSquared = Limit * Limit;
         }
 
         public override void Sc(Environment env)
         {
             var delta = PointMassB.Pos - PointMassA.Pos;
-            var dp = delta.DotProd(delta);
-            if (dp < _slSquared)
-            {
-                var scaleFactor = _slSquared / (dp + _slSquared) - 0.5;
-                delta.Scale(scaleFactor);
-                PointMassA.Pos.Sub(delta);
-                PointMassB.Pos.Add(delta);
-            }
+            var distance = delta.DotProd(delta);
+            if (!(distance < _slSquared)) return;
+            var scaleFactor = _slSquared / (distance + _slSquared) - 0.5;
+            delta.Scale(scaleFactor);
+            PointMassA.Pos.Sub(delta);
+            PointMassB.Pos.Add(delta);
         }
 
         public override void Draw(Canvas canvas, double scaleFactor)

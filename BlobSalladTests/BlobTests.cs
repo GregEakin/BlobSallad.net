@@ -61,7 +61,7 @@ namespace BlobSalladTests
             var blob = new Blob(41.0, 43.0, 23.0, 5);
             DrawDot(canvas, Brushes.Blue, blob.Mass, blob.X, blob.Y);
 
-            foreach (var bone in blob.Bone)
+            foreach (var bone in blob.Bones)
             {
                 DrawDot(canvas, Brushes.Red, bone.PointMassA.Mass, bone.PointMassA.XPos, bone.PointMassA.YPos);
                 DrawLine(canvas, Brushes.Black,
@@ -143,7 +143,7 @@ namespace BlobSalladTests
             Assert.AreEqual(0, blob2.Neighbors.Length);
             Assert.AreEqual(1, blob1.Neighbors.Length);
             var neighbor = blob1.Neighbors[0];
-            Assert.AreEqual(22.800, neighbor.ShortLimit, 0.01);
+            Assert.AreEqual(22.800, neighbor.Limit, 0.01);
         }
 
         [Test]
@@ -171,7 +171,7 @@ namespace BlobSalladTests
 
             blob2.DrawSimpleBody(canvas, 1.0);
 
-            foreach (var bone in blob1.Bone)
+            foreach (var bone in blob1.Bones)
             {
                 var pointMassA = bone.PointMassA;
                 var pointMassB = bone.PointMassB;

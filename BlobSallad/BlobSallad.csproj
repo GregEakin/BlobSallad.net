@@ -61,10 +61,8 @@
     <Compile Include="Environment.cs" />
     <Compile Include="Bone.cs" />
     <Compile Include="Connection.cs" />
-    <Compile Include="Gravity.cs" />
     <Compile Include="PointMass.cs" />
     <Compile Include="Skin.cs" />
-    <Compile Include="Spring.cs" />
     <Compile Include="Vector.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

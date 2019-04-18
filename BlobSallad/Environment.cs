@@ -2,6 +2,7 @@
 // Originally Written by: bjoern.lindberg@gmail.com
 // Translated to C# by Greg Eakin
 
+using System;
 using System.Windows.Controls;
 
 namespace BlobSallad
@@ -10,6 +11,11 @@ namespace BlobSallad
     {
         public Environment(double x, double y, double w, double h)
         {
+            if (w < 0.0f)
+                throw new Exception("Can't have negative width.");
+            if (h < 0.0f)
+                throw new Exception("Can't have negative height.");
+
             Left = x;
             Right = x + w;
             Top = y;

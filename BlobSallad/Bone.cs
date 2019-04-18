@@ -36,17 +36,17 @@ namespace BlobSallad
         public override void Sc(Environment env)
         {
             var delta = PointMassB.Pos - PointMassA.Pos;
-            var dp = delta.DotProd(delta);
-            if (dp < _slSquared)
+            var distance = delta.DotProd(delta);
+            if (distance < _slSquared)
             {
-                var scaleFactor = _slSquared / (dp + _slSquared) - 0.5;
+                var scaleFactor = _slSquared / (distance + _slSquared) - 0.5;
                 delta.Scale(scaleFactor);
                 PointMassA.Pos.Sub(delta);
                 PointMassB.Pos.Add(delta);
             }
-            else if (dp > _llSquared)
+            else if (distance > _llSquared)
             {
-                var scaleFactor = _llSquared / (dp + _llSquared) - 0.5;
+                var scaleFactor = _llSquared / (distance + _llSquared) - 0.5;
                 delta.Scale(scaleFactor);
                 PointMassA.Pos.Sub(delta);
                 PointMassB.Pos.Add(delta);

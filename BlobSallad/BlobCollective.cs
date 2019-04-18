@@ -20,6 +20,9 @@ namespace BlobSallad
 
         public BlobCollective(double x, double y, int maxNum)
         {
+            if (maxNum < 1)
+                throw new Exception("Need at least one blob in the collective.");
+
             MaxNum = maxNum;
             _blobs.Add(new Blob(x, y, BlobInitialRadius, BlobPointMasses));
         }
@@ -139,12 +142,12 @@ namespace BlobSallad
             {
                 var aXbX = x - blob.X;
                 var aYbY = y - blob.Y;
-                var dist = aXbX * aXbX + aYbY * aYbY;
-                if (dist >= minDist)
+                var distance = aXbX * aXbX + aYbY * aYbY;
+                if (distance >= minDist)
                     continue;
 
-                minDist = dist;
-                if (dist >= blob.Radius / 2.0)
+                minDist = distance;
+                if (distance >= blob.Radius / 2.0)
                     continue;
 
                 SelectedBlob = blob;
