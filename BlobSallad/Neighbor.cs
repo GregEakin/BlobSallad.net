@@ -25,7 +25,7 @@ namespace BlobSallad
         {
             var delta = PointMassB.Pos - PointMassA.Pos;
             var distance = delta.DotProd(delta);
-            if (!(distance < _slSquared)) return;
+            if (distance >= _slSquared) return;
             var scaleFactor = _slSquared / (distance + _slSquared) - 0.5;
             delta.Scale(scaleFactor);
             PointMassA.Pos.Sub(delta);

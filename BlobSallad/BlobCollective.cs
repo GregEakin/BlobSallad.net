@@ -24,7 +24,8 @@ namespace BlobSallad
                 throw new Exception("Need at least one blob in the collective.");
 
             MaxNum = maxNum;
-            _blobs.Add(new Blob(x, y, BlobInitialRadius, BlobPointMasses));
+            var blob = new Blob(x, y, BlobInitialRadius, BlobPointMasses);
+            _blobs.Add(blob);
         }
 
         public int MaxNum { get; }
@@ -60,8 +61,8 @@ namespace BlobSallad
 
             var smallest = FindSmallest(null);
             var closest = FindClosest(smallest);
-            var length = Math.Sqrt(smallest.Radius * smallest.Radius + closest.Radius * closest.Radius);
-            closest.Scale(0.945 * length / closest.Radius);
+            var distance = Math.Sqrt(smallest.Radius * smallest.Radius + closest.Radius * closest.Radius);
+            closest.Scale(0.945 * distance / closest.Radius);
 
             _blobs.Remove(smallest);
             foreach (var blob in _blobs)
@@ -135,7 +136,7 @@ namespace BlobSallad
             if (SelectedBlob != null)
                 return null;
 
-            var minDist = double.MaxValue;
+            var minDistance = double.MaxValue;
             Point? selectOffset = null;
 
             foreach (var blob in _blobs)
@@ -143,10 +144,10 @@ namespace BlobSallad
                 var aXbX = x - blob.X;
                 var aYbY = y - blob.Y;
                 var distance = aXbX * aXbX + aYbY * aYbY;
-                if (distance >= minDist)
+                if (distance >= minDistance)
                     continue;
 
-                minDist = distance;
+                minDistance = distance;
                 if (distance >= blob.Radius / 2.0)
                     continue;
 

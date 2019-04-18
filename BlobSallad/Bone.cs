@@ -2,6 +2,7 @@
 // Originally Written by: bjoern.lindberg@gmail.com
 // Translated to C# by Greg Eakin
 
+using System;
 using System.Windows.Controls;
 
 namespace BlobSallad
@@ -14,6 +15,13 @@ namespace BlobSallad
         public Bone(PointMass pointMassA, PointMass pointMassB, double shortFactor, double longFactor)
             : base(pointMassA, pointMassB)
         {
+            if (shortFactor < 0)
+                throw new Exception("Short Factor needs to be greater than zero.");
+            if (longFactor < 0)
+                throw new Exception("Long Factor needs to be greater than zero.");
+            if (shortFactor >= longFactor)
+                throw new Exception("Short Factor needs to be less than Long Factor.");
+
             var delta = PointMassB.Pos - PointMassA.Pos;
             ShortLimit = delta.Length * shortFactor;
             LongLimit = delta.Length * longFactor;
