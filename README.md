@@ -1,6 +1,7 @@
 # Blob Sallad .NET
 I found this little blob engine code, and converted it run in WPF under C#.
 The GUI drawing code is verified with [ApprovalTests.Net](https://github.com/approvals/ApprovalTests.Net).
+See the [Android Kotlin](https://github.com/GregEakin/BlobSallad.Android) version.
 
 ## From the website: [Blob Sallad](https://blobsallad.se/)
 ![Blob Sallad](Blob.PNG)
