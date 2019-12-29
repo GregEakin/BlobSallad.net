@@ -13,7 +13,7 @@ Original version by: [Björn Lindberg](mailto:bjoern.lindberg@gmail.com)
 ## Sample code
 Here's a test that verifies the [OohFace](BlobSalladTests/BlobTests.DrawOohFaceTest.Microsoft_Windows_10_Pro.approved.png).
 It creates a canvas, sets up the translate tranformation, executes the test code, and verifies the results.
-If this code produces the same image, as the one approved, the test will pass.
+If this code produces the same image, as [the one approved](BlobSalladTests/BlobTests.DrawOohFaceTest.Microsoft_Windows_10_Pro.approved.png), the test will pass.
 ```C#
 [Test]
 public void DrawOohFaceTest()
