@@ -1,5 +1,6 @@
 ﻿using BlobSallad;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace BlobSalladTests
 {
@@ -26,7 +27,7 @@ namespace BlobSalladTests
             var distance = 17.0;
             _collision = new Neighbor(_pointMassA, _pointMassB, distance);
 
-            Assert.AreEqual(distance, _collision.Limit, 0.01);
+            ClassicAssert.AreEqual(distance, _collision.Limit, 0.01);
         }
     }
 }

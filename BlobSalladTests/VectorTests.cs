@@ -1,5 +1,6 @@
 ﻿using BlobSallad;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace BlobSalladTests
 {
@@ -9,8 +10,8 @@ namespace BlobSalladTests
         public void CtorTest()
         {
             var vector = new Vector(71, 67);
-            Assert.AreEqual(71.0, vector.X);
-            Assert.AreEqual(67.0, vector.Y);
+            ClassicAssert.AreEqual(71.0, vector.X);
+            ClassicAssert.AreEqual(67.0, vector.Y);
         }
 
         [Test]
@@ -18,7 +19,7 @@ namespace BlobSalladTests
         {
             var vector = new Vector(71.0, 67.0);
             vector.AddX(100.0);
-            Assert.AreEqual(171.0, vector.X);
+            ClassicAssert.AreEqual(171.0, vector.X);
         }
 
         [Test]
@@ -26,7 +27,7 @@ namespace BlobSalladTests
         {
             var vector = new Vector(71.0, 67.0);
             vector.AddY(100.0);
-            Assert.AreEqual(167.0, vector.Y);
+            ClassicAssert.AreEqual(167.0, vector.Y);
         }
 
         [Test]
@@ -35,8 +36,8 @@ namespace BlobSalladTests
             var vector = new Vector(71.0, 67.0);
             var setter = new Vector(61.0, 59.0);
             vector.Set(setter);
-            Assert.AreEqual(61.0, vector.X);
-            Assert.AreEqual(59.0, vector.Y);
+            ClassicAssert.AreEqual(61.0, vector.X);
+            ClassicAssert.AreEqual(59.0, vector.Y);
         }
 
         [Test]
@@ -45,8 +46,8 @@ namespace BlobSalladTests
             var vector = new Vector(71.0, 67.0);
             var setter = new Vector(13.0, 11.0);
             vector.Add(setter);
-            Assert.AreEqual(84.0, vector.X);
-            Assert.AreEqual(78.0, vector.Y);
+            ClassicAssert.AreEqual(84.0, vector.X);
+            ClassicAssert.AreEqual(78.0, vector.Y);
         }
 
         [Test]
@@ -55,8 +56,8 @@ namespace BlobSalladTests
             var vector = new Vector(71.0, 67.0);
             var setter = new Vector(13.0, 11.0);
             vector.Sub(setter);
-            Assert.AreEqual(58.0, vector.X);
-            Assert.AreEqual(56.0, vector.Y);
+            ClassicAssert.AreEqual(58.0, vector.X);
+            ClassicAssert.AreEqual(56.0, vector.Y);
         }
 
         [Test]
@@ -65,8 +66,8 @@ namespace BlobSalladTests
             var vector = new Vector(71.0, 67.0);
             var setter = new Vector(13.0, 11.0);
             var b = vector - setter;
-            Assert.AreEqual(58.0, b.X);
-            Assert.AreEqual(56.0, b.Y);
+            ClassicAssert.AreEqual(58.0, b.X);
+            ClassicAssert.AreEqual(56.0, b.Y);
         }
 
         [Test]
@@ -75,7 +76,7 @@ namespace BlobSalladTests
             var vector = new Vector(71.0, 67.0);
             var setter = new Vector(13.0, 11.0);
             var dot = vector.DotProd(setter);
-            Assert.AreEqual(1660.0, dot);
+            ClassicAssert.AreEqual(1660.0, dot);
         }
 
         [Test]
@@ -83,7 +84,7 @@ namespace BlobSalladTests
         {
             var vector = new Vector(71.0, 67.0);
             var length = vector.Length;
-            Assert.AreEqual(97.621, length, 0.01);
+            ClassicAssert.AreEqual(97.621, length, 0.01);
         }
 
         [Test]
@@ -91,15 +92,15 @@ namespace BlobSalladTests
         {
             var vector = new Vector(71.0, 67.0);
             vector.Scale(2.0);
-            Assert.AreEqual(142.0, vector.X);
-            Assert.AreEqual(134.0, vector.Y);
+            ClassicAssert.AreEqual(142.0, vector.X);
+            ClassicAssert.AreEqual(134.0, vector.Y);
         }
 
         [Test]
         public void StringTest()
         {
             var vector = new Vector(71.0, 67.0);
-            Assert.AreEqual("(X: 71, Y: 67)", vector.ToString());
+            ClassicAssert.AreEqual("(X: 71, Y: 67)", vector.ToString());
         }
 
         [Test]
@@ -107,7 +108,7 @@ namespace BlobSalladTests
         {
             var vector = new Vector(71.0, 67.0);
             vector.X = 99.0;
-            Assert.AreEqual(99.0, vector.X);
+            ClassicAssert.AreEqual(99.0, vector.X);
         }
 
         [Test]
@@ -115,7 +116,7 @@ namespace BlobSalladTests
         {
             var vector = new Vector(71.0, 67.0);
             vector.Y = 99.0;
-            Assert.AreEqual(99.0, vector.Y);
+            ClassicAssert.AreEqual(99.0, vector.Y);
         }
     }
 }

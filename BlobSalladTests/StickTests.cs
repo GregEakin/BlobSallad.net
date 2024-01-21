@@ -4,6 +4,7 @@ using ApprovalTests.Reporters;
 using ApprovalTests.Wpf;
 using BlobSallad;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace BlobSalladTests
 {
@@ -17,10 +18,10 @@ namespace BlobSalladTests
             var massA = new PointMass(13.0, 31.0, 5.0);
             var massB = new PointMass(17.0, 35.0, 7.0);
             var stick = new Skin(massA, massB);
-            Assert.AreSame(massA, stick.PointMassA);
-            Assert.AreSame(massB, stick.PointMassB);
-            Assert.AreEqual(5.656, stick.Length, 0.01);
-            Assert.AreEqual(32.0, stick.LengthSquared, 0.01);
+            ClassicAssert.AreSame(massA, stick.PointMassA);
+            ClassicAssert.AreSame(massB, stick.PointMassB);
+            ClassicAssert.AreEqual(5.656, stick.Length, 0.01);
+            ClassicAssert.AreEqual(32.0, stick.LengthSquared, 0.01);
         }
 
         [Test]
@@ -30,8 +31,8 @@ namespace BlobSalladTests
             var massB = new PointMass(17.0, 35.0, 7.0);
             var stick = new Skin(massA, massB);
             stick.Scale(2.0);
-            Assert.AreEqual(11.313, stick.Length, 0.01);
-            Assert.AreEqual(128.0, stick.LengthSquared, 0.01);
+            ClassicAssert.AreEqual(11.313, stick.Length, 0.01);
+            ClassicAssert.AreEqual(128.0, stick.LengthSquared, 0.01);
         }
 
         [Test]
@@ -41,8 +42,8 @@ namespace BlobSalladTests
             var massB = new PointMass(17.0, 35.0, 7.0);
             var stick = new Skin(massA, massB);
 
-            Assert.AreEqual(5.657, stick.Length, 0.01);
-            Assert.AreEqual(32.000, stick.LengthSquared, 0.01);
+            ClassicAssert.AreEqual(5.657, stick.Length, 0.01);
+            ClassicAssert.AreEqual(32.000, stick.LengthSquared, 0.01);
         }
 
         [Test]
@@ -53,10 +54,10 @@ namespace BlobSalladTests
             var stick = new Skin(massA, massB);
             stick.Sc(null);
 
-            Assert.AreEqual(13.0, stick.PointMassA.XPos, 0.01);
-            Assert.AreEqual(17.0, stick.PointMassA.YPos, 0.01);
-            Assert.AreEqual(43.0, stick.PointMassB.XPos, 0.01);
-            Assert.AreEqual(41.0, stick.PointMassB.YPos, 0.01);
+            ClassicAssert.AreEqual(13.0, stick.PointMassA.XPos, 0.01);
+            ClassicAssert.AreEqual(17.0, stick.PointMassA.YPos, 0.01);
+            ClassicAssert.AreEqual(43.0, stick.PointMassB.XPos, 0.01);
+            ClassicAssert.AreEqual(41.0, stick.PointMassB.YPos, 0.01);
         }
 
         [Test]

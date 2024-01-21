@@ -1,5 +1,6 @@
 ﻿using BlobSallad;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace BlobSalladTests
 {
@@ -9,10 +10,10 @@ namespace BlobSalladTests
         public void CtorTest()
         {
             var environment = new Environment(37.0, 31.0, 19.0, 17.0);
-            Assert.AreEqual(37.0, environment.Left);
-            Assert.AreEqual(56.0, environment.Right);
-            Assert.AreEqual(31.0, environment.Top);
-            Assert.AreEqual(48.0, environment.Bottom);
+            ClassicAssert.AreEqual(37.0, environment.Left);
+            ClassicAssert.AreEqual(56.0, environment.Right);
+            ClassicAssert.AreEqual(31.0, environment.Top);
+            ClassicAssert.AreEqual(48.0, environment.Bottom);
         }
 
         [Test]
@@ -21,10 +22,10 @@ namespace BlobSalladTests
             var environment = new Environment(37.0, 31.0, 19.0, 17.0);
             environment.Width = 23.0;
 
-            Assert.AreEqual(37.0, environment.Left);
-            Assert.AreEqual(60.0, environment.Right);
-            Assert.AreEqual(31.0, environment.Top);
-            Assert.AreEqual(48.0, environment.Bottom);
+            ClassicAssert.AreEqual(37.0, environment.Left);
+            ClassicAssert.AreEqual(60.0, environment.Right);
+            ClassicAssert.AreEqual(31.0, environment.Top);
+            ClassicAssert.AreEqual(48.0, environment.Bottom);
         }
 
         [Test]
@@ -33,10 +34,10 @@ namespace BlobSalladTests
             var environment = new Environment(37.0, 31.0, 19.0, 17.0);
             environment.Height = 23.0;
 
-            Assert.AreEqual(37.0, environment.Left);
-            Assert.AreEqual(56.0, environment.Right);
-            Assert.AreEqual(31.0, environment.Top);
-            Assert.AreEqual(54.0, environment.Bottom);
+            ClassicAssert.AreEqual(37.0, environment.Left);
+            ClassicAssert.AreEqual(56.0, environment.Right);
+            ClassicAssert.AreEqual(31.0, environment.Top);
+            ClassicAssert.AreEqual(54.0, environment.Bottom);
         }
 
         [Test]
@@ -45,7 +46,7 @@ namespace BlobSalladTests
             var environment = new Environment(37.0, 31.0, 19.0, 17.0);
             var curPos = new Vector(47.0, 39.0);
             var collision = environment.Collision(curPos, curPos);
-            Assert.False(collision);
+            ClassicAssert.False(collision);
         }
 
         [Test]
@@ -54,8 +55,8 @@ namespace BlobSalladTests
             var environment = new Environment(37.0, 31.0, 19.0, 17.0);
             var curPos = new Vector(36.0, 39.0);
             var collision = environment.Collision(curPos, curPos);
-            Assert.True(collision);
-            Assert.AreEqual(37.0, curPos.X);
+            ClassicAssert.True(collision);
+            ClassicAssert.AreEqual(37.0, curPos.X);
         }
 
         [Test]
@@ -64,8 +65,8 @@ namespace BlobSalladTests
             var environment = new Environment(37.0, 31.0, 19.0, 17.0);
             var curPos = new Vector(57.0, 39.0);
             var collision = environment.Collision(curPos, curPos);
-            Assert.True(collision);
-            Assert.AreEqual(56.0, curPos.X);
+            ClassicAssert.True(collision);
+            ClassicAssert.AreEqual(56.0, curPos.X);
         }
 
         [Test]
@@ -74,8 +75,8 @@ namespace BlobSalladTests
             var environment = new Environment(37.0, 31.0, 19.0, 17.0);
             var curPos = new Vector(47.0, 49.0);
             var collision = environment.Collision(curPos, curPos);
-            Assert.True(collision);
-            Assert.AreEqual(48.0, curPos.Y);
+            ClassicAssert.True(collision);
+            ClassicAssert.AreEqual(48.0, curPos.Y);
         }
 
         [Test]
@@ -84,8 +85,8 @@ namespace BlobSalladTests
             var environment = new Environment(37.0, 31.0, 19.0, 17.0);
             var curPos = new Vector(47.0, 30.0);
             var collision = environment.Collision(curPos, curPos);
-            Assert.True(collision);
-            Assert.AreEqual(31.0, curPos.Y);
+            ClassicAssert.True(collision);
+            ClassicAssert.AreEqual(31.0, curPos.Y);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using BlobSallad;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace BlobSalladTests
 {
@@ -27,8 +28,8 @@ namespace BlobSalladTests
             var high = 1.05;
             _bone = new Bone(_pointMassA, _pointMassB, low, high);
 
-            Assert.AreEqual(36.498, _bone.ShortLimit, 0.01);
-            Assert.AreEqual(40.340, _bone.LongLimit, 0.01);
+            ClassicAssert.AreEqual(36.498, _bone.ShortLimit, 0.01);
+            ClassicAssert.AreEqual(40.340, _bone.LongLimit, 0.01);
         }
 
         [Test]
@@ -49,8 +50,8 @@ namespace BlobSalladTests
             _bone = new Bone(_pointMassA, _pointMassB, low, high);
             _bone.Scale(10.0);
 
-            Assert.AreEqual(364.978, _bone.ShortLimit, 0.01);
-            Assert.AreEqual(403.397, _bone.LongLimit, 0.01);
+            ClassicAssert.AreEqual(364.978, _bone.ShortLimit, 0.01);
+            ClassicAssert.AreEqual(403.397, _bone.LongLimit, 0.01);
         }
     }
 }

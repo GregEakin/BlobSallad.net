@@ -5,6 +5,7 @@ using NUnit.Framework;
 using System;
 using System.Threading;
 using System.Windows.Controls;
+using NUnit.Framework.Legacy;
 using Vector = BlobSallad.Vector;
 
 namespace BlobSalladTests
@@ -17,7 +18,7 @@ namespace BlobSalladTests
         public void CtorTest()
         {
             var pointMass = new PointMass(31.0, 23.0, 11.0);
-            Assert.AreEqual(11.0, pointMass.Mass);
+            ClassicAssert.AreEqual(11.0, pointMass.Mass);
         }
 
         [Test]
@@ -28,10 +29,10 @@ namespace BlobSalladTests
             pointMass.Force = force;
 
             pointMass.Move(3.0);
-            Assert.AreEqual(31.0, pointMass.XPrev, 0.01);
-            Assert.AreEqual(23.0, pointMass.YPrev, 0.01);
-            Assert.AreEqual(36.727, pointMass.XPos, 0.01);
-            Assert.AreEqual(33.636, pointMass.YPos, 0.01);
+            ClassicAssert.AreEqual(31.0, pointMass.XPrev, 0.01);
+            ClassicAssert.AreEqual(23.0, pointMass.YPrev, 0.01);
+            ClassicAssert.AreEqual(36.727, pointMass.XPos, 0.01);
+            ClassicAssert.AreEqual(33.636, pointMass.YPos, 0.01);
         }
 
         [Test]

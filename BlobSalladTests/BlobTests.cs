@@ -7,6 +7,7 @@ using System.Threading;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using NUnit.Framework.Legacy;
 using Environment = BlobSallad.Environment;
 
 namespace BlobSalladTests
@@ -19,10 +20,10 @@ namespace BlobSalladTests
         public void CtorTest()
         {
             var blob = new Blob(71.0, 67.0, 11.0, 5);
-            Assert.AreEqual(71.0, blob.X);
-            Assert.AreEqual(67.0, blob.Y);
-            Assert.AreEqual(11.0, blob.Radius);
-            Assert.AreEqual(1.0, blob.Mass);
+            ClassicAssert.AreEqual(71.0, blob.X);
+            ClassicAssert.AreEqual(67.0, blob.Y);
+            ClassicAssert.AreEqual(11.0, blob.Radius);
+            ClassicAssert.AreEqual(1.0, blob.Mass);
         }
 
         [Test]
@@ -123,13 +124,13 @@ namespace BlobSalladTests
                 var pointMas = blob[i];
 
                 var mass = i < 2 ? 4.0 : 1.0;
-                Assert.AreEqual(mass, pointMas.Mass);
+                ClassicAssert.AreEqual(mass, pointMas.Mass);
 
                 var theta = i * 2.0 * Math.PI / 5;
                 var cx = Math.Cos(theta) * 11.0 + 71.0;
                 var cy = Math.Sin(theta) * 11.0 + 67.0;
-                Assert.AreEqual(cx, pointMas.XPos);
-                Assert.AreEqual(cy, pointMas.YPos);
+                ClassicAssert.AreEqual(cx, pointMas.XPos);
+                ClassicAssert.AreEqual(cy, pointMas.YPos);
             }
         }
 
@@ -140,10 +141,10 @@ namespace BlobSalladTests
             var blob2 = new Blob(59.0, 61.0, 13.0, 3);
             blob1.LinkBlob(blob2);
 
-            Assert.AreEqual(0, blob2.Neighbors.Length);
-            Assert.AreEqual(1, blob1.Neighbors.Length);
+            ClassicAssert.AreEqual(0, blob2.Neighbors.Length);
+            ClassicAssert.AreEqual(1, blob1.Neighbors.Length);
             var neighbor = blob1.Neighbors[0];
-            Assert.AreEqual(22.800, neighbor.Limit, 0.01);
+            ClassicAssert.AreEqual(22.800, neighbor.Limit, 0.01);
         }
 
         [Test]
@@ -154,8 +155,8 @@ namespace BlobSalladTests
             blob1.LinkBlob(blob2);
             blob1.UnLinkBlob(blob2);
 
-            Assert.AreEqual(0, blob2.Neighbors.Length);
-            Assert.AreEqual(0, blob1.Neighbors.Length);
+            ClassicAssert.AreEqual(0, blob2.Neighbors.Length);
+            ClassicAssert.AreEqual(0, blob1.Neighbors.Length);
         }
 
         [Test]
