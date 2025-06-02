@@ -7,218 +7,217 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace BlobSallad
+namespace BlobSallad;
+
+public class BlobCollective
 {
-    public class BlobCollective
+    private const int BlobPointMasses = 8;
+    private const double BlobInitialRadius = 0.4;
+
+    private readonly Random _random = new Random();
+
+    private readonly List<Blob> _blobs = new List<Blob>();
+
+    public BlobCollective(double x, double y, int maxNum)
     {
-        private const int BlobPointMasses = 8;
-        private const double BlobInitialRadius = 0.4;
+        if (maxNum < 1)
+            throw new Exception("Need at least one blob in the collective.");
 
-        private readonly Random _random = new Random();
+        MaxNum = maxNum;
+        var blob = new Blob(x, y, BlobInitialRadius, BlobPointMasses);
+        _blobs.Add(blob);
+    }
 
-        private readonly List<Blob> _blobs = new List<Blob>();
+    public int MaxNum { get; }
 
-        public BlobCollective(double x, double y, int maxNum)
+    public int NumActive => _blobs.Count;
+
+    public Blob SelectedBlob { get; private set; }
+
+    public void Split()
+    {
+        if (NumActive >= MaxNum)
+            return;
+
+        var motherBlob = FindLargest(null);
+        if (motherBlob == null)
+            return;
+
+        motherBlob.Scale(0.75);
+        var newBlob = new Blob(motherBlob);
+        foreach (var blob in _blobs)
         {
-            if (maxNum < 1)
-                throw new Exception("Need at least one blob in the collective.");
-
-            MaxNum = maxNum;
-            var blob = new Blob(x, y, BlobInitialRadius, BlobPointMasses);
-            _blobs.Add(blob);
+            blob.LinkBlob(newBlob);
+            newBlob.LinkBlob(blob);
         }
 
-        public int MaxNum { get; }
+        _blobs.Add(newBlob);
+    }
 
-        public int NumActive => _blobs.Count;
+    public void Join()
+    {
+        if (NumActive <= 1)
+            return;
 
-        public Blob SelectedBlob { get; private set; }
+        var smallest = FindSmallest(null);
+        var closest = FindClosest(smallest);
+        var distance = Math.Sqrt(smallest.Radius * smallest.Radius + closest.Radius * closest.Radius);
+        closest.Scale(0.945 * distance / closest.Radius);
 
-        public void Split()
+        _blobs.Remove(smallest);
+        foreach (var blob in _blobs)
+            blob.UnLinkBlob(smallest);
+    }
+
+    public Blob FindLargest(Blob exclude)
+    {
+        var maxRadius = double.MinValue;
+        Blob largest = null;
+
+        foreach (var blob in _blobs)
         {
-            if (NumActive >= MaxNum)
-                return;
+            if (blob == exclude)
+                continue;
 
-            var motherBlob = FindLargest(null);
-            if (motherBlob == null)
-                return;
+            if (blob.Radius <= maxRadius)
+                continue;
 
-            motherBlob.Scale(0.75);
-            var newBlob = new Blob(motherBlob);
-            foreach (var blob in _blobs)
-            {
-                blob.LinkBlob(newBlob);
-                newBlob.LinkBlob(blob);
-            }
-
-            _blobs.Add(newBlob);
+            maxRadius = blob.Radius;
+            largest = blob;
         }
 
-        public void Join()
+        return largest;
+    }
+
+    public Blob FindSmallest(Blob exclude)
+    {
+        var minRadius = double.MaxValue;
+        Blob smallest = null;
+
+        foreach (var blob in _blobs)
         {
-            if (NumActive <= 1)
-                return;
+            if (blob == exclude)
+                continue;
 
-            var smallest = FindSmallest(null);
-            var closest = FindClosest(smallest);
-            var distance = Math.Sqrt(smallest.Radius * smallest.Radius + closest.Radius * closest.Radius);
-            closest.Scale(0.945 * distance / closest.Radius);
+            if (blob.Radius >= minRadius)
+                continue;
 
-            _blobs.Remove(smallest);
-            foreach (var blob in _blobs)
-                blob.UnLinkBlob(smallest);
+            minRadius = blob.Radius;
+            smallest = blob;
         }
 
-        public Blob FindLargest(Blob exclude)
+        return smallest;
+    }
+
+    public Blob FindClosest(Blob neighbor)
+    {
+        var minDistance = double.MaxValue;
+        Blob closest = null;
+        foreach (var blob in _blobs)
         {
-            var maxRadius = double.MinValue;
-            Blob largest = null;
+            if (blob == neighbor)
+                continue;
 
-            foreach (var blob in _blobs)
-            {
-                if (blob == exclude)
-                    continue;
+            var aXbX = neighbor.X - blob.X;
+            var aYbY = neighbor.Y - blob.Y;
+            var distance = aXbX * aXbX + aYbY * aYbY;
+            if (distance >= minDistance)
+                continue;
 
-                if (blob.Radius <= maxRadius)
-                    continue;
-
-                maxRadius = blob.Radius;
-                largest = blob;
-            }
-
-            return largest;
+            minDistance = distance;
+            closest = blob;
         }
 
-        public Blob FindSmallest(Blob exclude)
+        return closest;
+    }
+
+    public Point? FindClosest(double x, double y)
+    {
+        if (SelectedBlob != null)
+            return null;
+
+        var minDistance = double.MaxValue;
+        Point? selectOffset = null;
+
+        foreach (var blob in _blobs)
         {
-            var minRadius = double.MaxValue;
-            Blob smallest = null;
+            var aXbX = x - blob.X;
+            var aYbY = y - blob.Y;
+            var distance = aXbX * aXbX + aYbY * aYbY;
+            if (distance >= minDistance)
+                continue;
 
-            foreach (var blob in _blobs)
-            {
-                if (blob == exclude)
-                    continue;
+            minDistance = distance;
+            if (distance >= blob.Radius / 2.0)
+                continue;
 
-                if (blob.Radius >= minRadius)
-                    continue;
-
-                minRadius = blob.Radius;
-                smallest = blob;
-            }
-
-            return smallest;
+            SelectedBlob = blob;
+            selectOffset = new Point(aXbX, aYbY);
         }
 
-        public Blob FindClosest(Blob neighbor)
-        {
-            var minDistance = double.MaxValue;
-            Blob closest = null;
-            foreach (var blob in _blobs)
-            {
-                if (blob == neighbor)
-                    continue;
+        if (SelectedBlob != null)
+            SelectedBlob.Selected = true;
 
-                var aXbX = neighbor.X - blob.X;
-                var aYbY = neighbor.Y - blob.Y;
-                var distance = aXbX * aXbX + aYbY * aYbY;
-                if (distance >= minDistance)
-                    continue;
+        return selectOffset;
+    }
 
-                minDistance = distance;
-                closest = blob;
-            }
+    public void UnselectBlob()
+    {
+        if (SelectedBlob == null)
+            return;
 
-            return closest;
-        }
+        SelectedBlob.Selected = false;
+        SelectedBlob = null;
+    }
 
-        public Point? FindClosest(double x, double y)
-        {
-            if (SelectedBlob != null)
-                return null;
+    public void SelectedBlobMoveTo(double x, double y)
+    {
+        SelectedBlob.MoveTo(x, y);
+    }
 
-            var minDistance = double.MaxValue;
-            Point? selectOffset = null;
+    public void Move(double dt)
+    {
+        foreach (var blob in _blobs)
+            blob.Move(dt);
+    }
 
-            foreach (var blob in _blobs)
-            {
-                var aXbX = x - blob.X;
-                var aYbY = y - blob.Y;
-                var distance = aXbX * aXbX + aYbY * aYbY;
-                if (distance >= minDistance)
-                    continue;
+    public void Sc(Environment env)
+    {
+        foreach (var blob in _blobs)
+            blob.Sc(env);
+    }
 
-                minDistance = distance;
-                if (distance >= blob.Radius / 2.0)
-                    continue;
-
-                SelectedBlob = blob;
-                selectOffset = new Point(aXbX, aYbY);
-            }
-
-            if (SelectedBlob != null)
-                SelectedBlob.Selected = true;
-
-            return selectOffset;
-        }
-
-        public void UnselectBlob()
-        {
-            if (SelectedBlob == null)
-                return;
-
-            SelectedBlob.Selected = false;
-            SelectedBlob = null;
-        }
-
-        public void SelectedBlobMoveTo(double x, double y)
-        {
-            SelectedBlob.MoveTo(x, y);
-        }
-
-        public void Move(double dt)
-        {
-            foreach (var blob in _blobs)
-                blob.Move(dt);
-        }
-
-        public void Sc(Environment env)
-        {
-            foreach (var blob in _blobs)
-                blob.Sc(env);
-        }
-
-        public Vector Force
-        {
-            set
-            {
-                foreach (var blob in _blobs)
-                {
-                    var force = blob == SelectedBlob
-                        ? new Vector(0.0, 0.0)
-                        : value;
-                    blob.Force = force;
-                }
-            }
-        }
-
-        public void AddForce(Vector force)
+    public Vector Force
+    {
+        set
         {
             foreach (var blob in _blobs)
             {
-                if (blob == SelectedBlob)
-                    continue;
-
-                var x = force.X * (_random.NextDouble() * 0.75 + 0.25);
-                var y = force.Y * (_random.NextDouble() * 0.75 + 0.25);
-                var newForce = new Vector(x, y);
-                blob.AddForce(newForce);
+                var force = blob == SelectedBlob
+                    ? new Vector(0.0, 0.0)
+                    : value;
+                blob.Force = force;
             }
         }
+    }
 
-        public void Draw(Canvas canvas, double scaleFactor)
+    public void AddForce(Vector force)
+    {
+        foreach (var blob in _blobs)
         {
-            foreach (var blob in _blobs)
-                blob.Draw(canvas, scaleFactor);
+            if (blob == SelectedBlob)
+                continue;
+
+            var x = force.X * (_random.NextDouble() * 0.75 + 0.25);
+            var y = force.Y * (_random.NextDouble() * 0.75 + 0.25);
+            var newForce = new Vector(x, y);
+            blob.AddForce(newForce);
         }
+    }
+
+    public void Draw(Canvas canvas, double scaleFactor)
+    {
+        foreach (var blob in _blobs)
+            blob.Draw(canvas, scaleFactor);
     }
 }
