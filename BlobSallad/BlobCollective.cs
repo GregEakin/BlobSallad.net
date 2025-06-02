@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -14,9 +15,9 @@ public class BlobCollective
     private const int BlobPointMasses = 8;
     private const double BlobInitialRadius = 0.4;
 
-    private readonly Random _random = new Random();
+    private readonly Random _random = new();
 
-    private readonly List<Blob> _blobs = new List<Blob>();
+    private readonly List<Blob> _blobs = new();
 
     public BlobCollective(double x, double y, int maxNum)
     {
@@ -74,14 +75,8 @@ public class BlobCollective
         var maxRadius = double.MinValue;
         Blob largest = null;
 
-        foreach (var blob in _blobs)
+        foreach (var blob in _blobs.Where(blob => blob != exclude && blob.Radius > maxRadius))
         {
-            if (blob == exclude)
-                continue;
-
-            if (blob.Radius <= maxRadius)
-                continue;
-
             maxRadius = blob.Radius;
             largest = blob;
         }
@@ -94,14 +89,8 @@ public class BlobCollective
         var minRadius = double.MaxValue;
         Blob smallest = null;
 
-        foreach (var blob in _blobs)
+        foreach (var blob in _blobs.Where(blob => blob != exclude && blob.Radius < minRadius))
         {
-            if (blob == exclude)
-                continue;
-
-            if (blob.Radius >= minRadius)
-                continue;
-
             minRadius = blob.Radius;
             smallest = blob;
         }

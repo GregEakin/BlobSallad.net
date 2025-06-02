@@ -29,11 +29,11 @@ public class Blob
     }
 
     private readonly PointMass _middle;
-    private readonly List<PointMass> _points = new List<PointMass>();
-    private readonly List<Skin> _skins = new List<Skin>();
-    private readonly List<Bone> _bones = new List<Bone>();
-    private readonly List<Neighbor> _neighbors = new List<Neighbor>();
-    private readonly Random _random = new Random();
+    private readonly List<PointMass> _points = [];
+    private readonly List<Skin> _skins = [];
+    private readonly List<Bone> _bones = [];
+    private readonly List<Neighbor> _neighbors = [];
+    private readonly Random _random = new();
     private readonly Color _highlight = Colors.Pink; // 255, 204, 204
     private readonly Color _normal = Colors.White;
 
@@ -417,7 +417,7 @@ public class Blob
         pathFigureB.Segments.Add(lineSegment2B);
 
         // Figures = {M-34.5,-41.4L-6.9,-27.6L-34.5,-13.8 M34.5,-41.4L6.9,-27.6L34.5,-13.8}
-        var pathGeometry = new PathGeometry {Figures = new PathFigureCollection {pathFigureA, pathFigureB}};
+        var pathGeometry = new PathGeometry {Figures = [pathFigureA, pathFigureB] };
         var path = new Path
         {
             Stroke = Brushes.Black,
@@ -431,23 +431,19 @@ public class Blob
 
     public void UpdateFace()
     {
-        if (_drawFaceStyle == Face.Smile && _random.NextDouble() < 0.05)
+        _drawFaceStyle = _drawFaceStyle switch
         {
-            _drawFaceStyle = Face.Open;
-        }
-        else if (_drawFaceStyle == Face.Open && _random.NextDouble() < 0.1)
-        {
-            _drawFaceStyle = Face.Smile;
-        }
+            Face.Smile when _random.NextDouble() < 0.05 => Face.Open,
+            Face.Open when _random.NextDouble() < 0.1 => Face.Smile,
+            _ => _drawFaceStyle
+        };
 
-        if (_drawEyeStyle == Eye.Open && _random.NextDouble() < 0.025)
+        _drawEyeStyle = _drawEyeStyle switch
         {
-            _drawEyeStyle = Eye.Closed;
-        }
-        else if (_drawEyeStyle == Eye.Closed && _random.NextDouble() < 0.3)
-        {
-            _drawEyeStyle = Eye.Open;
-        }
+            Eye.Open when _random.NextDouble() < 0.025 => Eye.Closed,
+            Eye.Closed when _random.NextDouble() < 0.3 => Eye.Open,
+            _ => _drawEyeStyle
+        };
     }
 
     public void DrawFace(Canvas canvas, double scaleFactor, TransformGroup translateTransform)
@@ -458,14 +454,8 @@ public class Blob
         }
         else
         {
-            if (_drawFaceStyle == Face.Smile)
-            {
-                DrawSmile(canvas, scaleFactor, translateTransform, Brushes.Transparent);
-            }
-            else
-            {
-                DrawSmile(canvas, scaleFactor, translateTransform, Brushes.Black);
-            }
+            var brush = _drawFaceStyle == Face.Smile ? Brushes.Transparent : Brushes.Black;
+            DrawSmile(canvas, scaleFactor, translateTransform, brush);
 
             if (_drawEyeStyle == Eye.Open)
             {
@@ -559,8 +549,8 @@ public class Blob
         var up = new Vector(0.0, -1.0);
         var ori = _points[0].Pos - _middle.Pos;
         var ang = Math.Acos(ori.DotProd(up) / ori.Length);
-        var radians = (ori.X < 0.0) ? -ang : ang;
-        var theta = (180.0 / Math.PI) * radians;
+        var radians = ori.X < 0.0 ? -ang : ang;
+        var theta = 180.0 / Math.PI * radians;
         var rotateTransform = new RotateTransform(theta);
         transformGroup.Children.Add(rotateTransform);
 

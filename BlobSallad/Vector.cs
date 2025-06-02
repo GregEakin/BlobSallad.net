@@ -70,5 +70,5 @@ public class Vector
         return $"(X: {X}, Y: {Y})";
     }
 
-    public static Vector operator -(Vector a, Vector b) => new Vector(a.X - b.X, a.Y - b.Y);
+    public static Vector operator -(Vector a, Vector b) => new(a.X - b.X, a.Y - b.Y);
 }

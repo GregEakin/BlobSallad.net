@@ -11,7 +11,7 @@ namespace BlobSallad;
 
 public class PointMass
 {
-    private readonly Vector _force = new Vector(0.0, 0.0);
+    private readonly Vector _force = new(0.0, 0.0);
 
     public PointMass(double cx, double cy, double mass)
     {
